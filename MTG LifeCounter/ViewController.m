@@ -116,6 +116,9 @@ GLfloat gCubeVertexData[216] =
     view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
     
     [self setupGL];
+    
+    UIImageView *vCounter = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backLifeCounter.png"]];
+    [self.view addSubview:vCounter];
 }
 
 - (void)viewDidUnload

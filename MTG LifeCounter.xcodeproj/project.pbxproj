@@ -25,6 +25,7 @@
 		04B24ABE143C8DA400549F8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A94143C8DA400549F8C /* Foundation.framework */; };
 		04B24AC6143C8DA400549F8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04B24AC4143C8DA400549F8C /* InfoPlist.strings */; };
 		04B24AC9143C8DA400549F8C /* MTG_LifeCounterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B24AC8143C8DA400549F8C /* MTG_LifeCounterTests.m */; };
+		04B24AD7143C92B000549F8C /* backLifeCounter.png in Resources */ = {isa = PBXBuildFile; fileRef = 04B24AD6143C92B000549F8C /* backLifeCounter.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,24 +45,25 @@
 		04B24A96143C8DA400549F8C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		04B24A98143C8DA400549F8C /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		04B24A9A143C8DA400549F8C /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
-		04B24A9E143C8DA400549F8C /* MTG LifeCounter-Info.plist */ = {isa = PBXFileReference; path = "MTG LifeCounter-Info.plist"; sourceTree = "<group>"; };
+		04B24A9E143C8DA400549F8C /* MTG LifeCounter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MTG LifeCounter-Info.plist"; sourceTree = "<group>"; };
 		04B24AA0143C8DA400549F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		04B24AA2143C8DA400549F8C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		04B24AA4143C8DA400549F8C /* MTG LifeCounter-Prefix.pch */ = {isa = PBXFileReference; path = "MTG LifeCounter-Prefix.pch"; sourceTree = "<group>"; };
-		04B24AA5143C8DA400549F8C /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		04B24AA4143C8DA400549F8C /* MTG LifeCounter-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MTG LifeCounter-Prefix.pch"; sourceTree = "<group>"; };
+		04B24AA5143C8DA400549F8C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		04B24AA6143C8DA400549F8C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		04B24AA9143C8DA400549F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		04B24AAC143C8DA400549F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		04B24AAE143C8DA400549F8C /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
 		04B24AB0143C8DA400549F8C /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
-		04B24AB2143C8DA400549F8C /* ViewController.h */ = {isa = PBXFileReference; path = ViewController.h; sourceTree = "<group>"; };
+		04B24AB2143C8DA400549F8C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		04B24AB3143C8DA400549F8C /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		04B24ABA143C8DA400549F8C /* MTG LifeCounterTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MTG LifeCounterTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04B24ABB143C8DA400549F8C /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		04B24AC3143C8DA400549F8C /* MTG LifeCounterTests-Info.plist */ = {isa = PBXFileReference; path = "MTG LifeCounterTests-Info.plist"; sourceTree = "<group>"; };
+		04B24AC3143C8DA400549F8C /* MTG LifeCounterTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MTG LifeCounterTests-Info.plist"; sourceTree = "<group>"; };
 		04B24AC5143C8DA400549F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		04B24AC7143C8DA400549F8C /* MTG_LifeCounterTests.h */ = {isa = PBXFileReference; path = MTG_LifeCounterTests.h; sourceTree = "<group>"; };
+		04B24AC7143C8DA400549F8C /* MTG_LifeCounterTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTG_LifeCounterTests.h; sourceTree = "<group>"; };
 		04B24AC8143C8DA400549F8C /* MTG_LifeCounterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MTG_LifeCounterTests.m; sourceTree = "<group>"; };
+		04B24AD6143C92B000549F8C /* backLifeCounter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = backLifeCounter.png; path = "MTG LifeCounter/img/backLifeCounter.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 		04B24A83143C8DA300549F8C = {
 			isa = PBXGroup;
 			children = (
+				04B24ADE143C978E00549F8C /* Resources */,
 				04B24A9C143C8DA400549F8C /* MTG LifeCounter */,
 				04B24AC1143C8DA400549F8C /* MTG LifeCounterTests */,
 				04B24A91143C8DA400549F8C /* Frameworks */,
@@ -166,6 +169,22 @@
 				04B24AC4143C8DA400549F8C /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		04B24AD9143C92BE00549F8C /* img */ = {
+			isa = PBXGroup;
+			children = (
+				04B24AD6143C92B000549F8C /* backLifeCounter.png */,
+			);
+			name = img;
+			sourceTree = "<group>";
+		};
+		04B24ADE143C978E00549F8C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				04B24AD9143C92BE00549F8C /* img */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -243,6 +262,7 @@
 				04B24AAD143C8DA400549F8C /* MainStoryboard_iPad.storyboard in Resources */,
 				04B24AAF143C8DA400549F8C /* Shader.fsh in Resources */,
 				04B24AB1143C8DA400549F8C /* Shader.vsh in Resources */,
+				04B24AD7143C92B000549F8C /* backLifeCounter.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +481,7 @@
 				04B24ACE143C8DA400549F8C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		04B24ACF143C8DA400549F8C /* Build configuration list for PBXNativeTarget "MTG LifeCounterTests" */ = {
 			isa = XCConfigurationList;
@@ -469,6 +490,7 @@
 				04B24AD1143C8DA400549F8C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
