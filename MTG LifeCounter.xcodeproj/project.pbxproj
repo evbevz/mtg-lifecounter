@@ -1,0 +1,476 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		04B24A93143C8DA400549F8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A92143C8DA400549F8C /* UIKit.framework */; };
+		04B24A95143C8DA400549F8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A94143C8DA400549F8C /* Foundation.framework */; };
+		04B24A97143C8DA400549F8C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A96143C8DA400549F8C /* CoreGraphics.framework */; };
+		04B24A99143C8DA400549F8C /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A98143C8DA400549F8C /* GLKit.framework */; };
+		04B24A9B143C8DA400549F8C /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A9A143C8DA400549F8C /* OpenGLES.framework */; };
+		04B24AA1143C8DA400549F8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04B24A9F143C8DA400549F8C /* InfoPlist.strings */; };
+		04B24AA3143C8DA400549F8C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B24AA2143C8DA400549F8C /* main.m */; };
+		04B24AA7143C8DA400549F8C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B24AA6143C8DA400549F8C /* AppDelegate.m */; };
+		04B24AAA143C8DA400549F8C /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04B24AA8143C8DA400549F8C /* MainStoryboard_iPhone.storyboard */; };
+		04B24AAD143C8DA400549F8C /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04B24AAB143C8DA400549F8C /* MainStoryboard_iPad.storyboard */; };
+		04B24AAF143C8DA400549F8C /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 04B24AAE143C8DA400549F8C /* Shader.fsh */; };
+		04B24AB1143C8DA400549F8C /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 04B24AB0143C8DA400549F8C /* Shader.vsh */; };
+		04B24AB4143C8DA400549F8C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B24AB3143C8DA400549F8C /* ViewController.m */; };
+		04B24ABC143C8DA400549F8C /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24ABB143C8DA400549F8C /* SenTestingKit.framework */; };
+		04B24ABD143C8DA400549F8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A92143C8DA400549F8C /* UIKit.framework */; };
+		04B24ABE143C8DA400549F8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A94143C8DA400549F8C /* Foundation.framework */; };
+		04B24AC6143C8DA400549F8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04B24AC4143C8DA400549F8C /* InfoPlist.strings */; };
+		04B24AC9143C8DA400549F8C /* MTG_LifeCounterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B24AC8143C8DA400549F8C /* MTG_LifeCounterTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		04B24ABF143C8DA400549F8C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 04B24A85143C8DA300549F8C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 04B24A8D143C8DA400549F8C;
+			remoteInfo = "MTG LifeCounter";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		04B24A8E143C8DA400549F8C /* MTG LifeCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MTG LifeCounter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		04B24A92143C8DA400549F8C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		04B24A94143C8DA400549F8C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		04B24A96143C8DA400549F8C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		04B24A98143C8DA400549F8C /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		04B24A9A143C8DA400549F8C /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		04B24A9E143C8DA400549F8C /* MTG LifeCounter-Info.plist */ = {isa = PBXFileReference; path = "MTG LifeCounter-Info.plist"; sourceTree = "<group>"; };
+		04B24AA0143C8DA400549F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		04B24AA2143C8DA400549F8C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		04B24AA4143C8DA400549F8C /* MTG LifeCounter-Prefix.pch */ = {isa = PBXFileReference; path = "MTG LifeCounter-Prefix.pch"; sourceTree = "<group>"; };
+		04B24AA5143C8DA400549F8C /* AppDelegate.h */ = {isa = PBXFileReference; path = AppDelegate.h; sourceTree = "<group>"; };
+		04B24AA6143C8DA400549F8C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		04B24AA9143C8DA400549F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		04B24AAC143C8DA400549F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		04B24AAE143C8DA400549F8C /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
+		04B24AB0143C8DA400549F8C /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
+		04B24AB2143C8DA400549F8C /* ViewController.h */ = {isa = PBXFileReference; path = ViewController.h; sourceTree = "<group>"; };
+		04B24AB3143C8DA400549F8C /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		04B24ABA143C8DA400549F8C /* MTG LifeCounterTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MTG LifeCounterTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		04B24ABB143C8DA400549F8C /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		04B24AC3143C8DA400549F8C /* MTG LifeCounterTests-Info.plist */ = {isa = PBXFileReference; path = "MTG LifeCounterTests-Info.plist"; sourceTree = "<group>"; };
+		04B24AC5143C8DA400549F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		04B24AC7143C8DA400549F8C /* MTG_LifeCounterTests.h */ = {isa = PBXFileReference; path = MTG_LifeCounterTests.h; sourceTree = "<group>"; };
+		04B24AC8143C8DA400549F8C /* MTG_LifeCounterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MTG_LifeCounterTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		04B24A8B143C8DA400549F8C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04B24A93143C8DA400549F8C /* UIKit.framework in Frameworks */,
+				04B24A95143C8DA400549F8C /* Foundation.framework in Frameworks */,
+				04B24A97143C8DA400549F8C /* CoreGraphics.framework in Frameworks */,
+				04B24A99143C8DA400549F8C /* GLKit.framework in Frameworks */,
+				04B24A9B143C8DA400549F8C /* OpenGLES.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04B24AB6143C8DA400549F8C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04B24ABC143C8DA400549F8C /* SenTestingKit.framework in Frameworks */,
+				04B24ABD143C8DA400549F8C /* UIKit.framework in Frameworks */,
+				04B24ABE143C8DA400549F8C /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		04B24A83143C8DA300549F8C = {
+			isa = PBXGroup;
+			children = (
+				04B24A9C143C8DA400549F8C /* MTG LifeCounter */,
+				04B24AC1143C8DA400549F8C /* MTG LifeCounterTests */,
+				04B24A91143C8DA400549F8C /* Frameworks */,
+				04B24A8F143C8DA400549F8C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		04B24A8F143C8DA400549F8C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				04B24A8E143C8DA400549F8C /* MTG LifeCounter.app */,
+				04B24ABA143C8DA400549F8C /* MTG LifeCounterTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		04B24A91143C8DA400549F8C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				04B24A92143C8DA400549F8C /* UIKit.framework */,
+				04B24A94143C8DA400549F8C /* Foundation.framework */,
+				04B24A96143C8DA400549F8C /* CoreGraphics.framework */,
+				04B24A98143C8DA400549F8C /* GLKit.framework */,
+				04B24A9A143C8DA400549F8C /* OpenGLES.framework */,
+				04B24ABB143C8DA400549F8C /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		04B24A9C143C8DA400549F8C /* MTG LifeCounter */ = {
+			isa = PBXGroup;
+			children = (
+				04B24AA5143C8DA400549F8C /* AppDelegate.h */,
+				04B24AA6143C8DA400549F8C /* AppDelegate.m */,
+				04B24AA8143C8DA400549F8C /* MainStoryboard_iPhone.storyboard */,
+				04B24AAB143C8DA400549F8C /* MainStoryboard_iPad.storyboard */,
+				04B24AAE143C8DA400549F8C /* Shader.fsh */,
+				04B24AB0143C8DA400549F8C /* Shader.vsh */,
+				04B24AB2143C8DA400549F8C /* ViewController.h */,
+				04B24AB3143C8DA400549F8C /* ViewController.m */,
+				04B24A9D143C8DA400549F8C /* Supporting Files */,
+			);
+			path = "MTG LifeCounter";
+			sourceTree = "<group>";
+		};
+		04B24A9D143C8DA400549F8C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				04B24A9E143C8DA400549F8C /* MTG LifeCounter-Info.plist */,
+				04B24A9F143C8DA400549F8C /* InfoPlist.strings */,
+				04B24AA2143C8DA400549F8C /* main.m */,
+				04B24AA4143C8DA400549F8C /* MTG LifeCounter-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		04B24AC1143C8DA400549F8C /* MTG LifeCounterTests */ = {
+			isa = PBXGroup;
+			children = (
+				04B24AC7143C8DA400549F8C /* MTG_LifeCounterTests.h */,
+				04B24AC8143C8DA400549F8C /* MTG_LifeCounterTests.m */,
+				04B24AC2143C8DA400549F8C /* Supporting Files */,
+			);
+			path = "MTG LifeCounterTests";
+			sourceTree = "<group>";
+		};
+		04B24AC2143C8DA400549F8C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				04B24AC3143C8DA400549F8C /* MTG LifeCounterTests-Info.plist */,
+				04B24AC4143C8DA400549F8C /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		04B24A8D143C8DA400549F8C /* MTG LifeCounter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04B24ACC143C8DA400549F8C /* Build configuration list for PBXNativeTarget "MTG LifeCounter" */;
+			buildPhases = (
+				04B24A8A143C8DA400549F8C /* Sources */,
+				04B24A8B143C8DA400549F8C /* Frameworks */,
+				04B24A8C143C8DA400549F8C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "MTG LifeCounter";
+			productName = "MTG LifeCounter";
+			productReference = 04B24A8E143C8DA400549F8C /* MTG LifeCounter.app */;
+			productType = "com.apple.product-type.application";
+		};
+		04B24AB9143C8DA400549F8C /* MTG LifeCounterTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04B24ACF143C8DA400549F8C /* Build configuration list for PBXNativeTarget "MTG LifeCounterTests" */;
+			buildPhases = (
+				04B24AB5143C8DA400549F8C /* Sources */,
+				04B24AB6143C8DA400549F8C /* Frameworks */,
+				04B24AB7143C8DA400549F8C /* Resources */,
+				04B24AB8143C8DA400549F8C /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				04B24AC0143C8DA400549F8C /* PBXTargetDependency */,
+			);
+			name = "MTG LifeCounterTests";
+			productName = "MTG LifeCounterTests";
+			productReference = 04B24ABA143C8DA400549F8C /* MTG LifeCounterTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		04B24A85143C8DA300549F8C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 04B24A88143C8DA300549F8C /* Build configuration list for PBXProject "MTG LifeCounter" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 04B24A83143C8DA300549F8C;
+			productRefGroup = 04B24A8F143C8DA400549F8C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				04B24A8D143C8DA400549F8C /* MTG LifeCounter */,
+				04B24AB9143C8DA400549F8C /* MTG LifeCounterTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		04B24A8C143C8DA400549F8C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04B24AA1143C8DA400549F8C /* InfoPlist.strings in Resources */,
+				04B24AAA143C8DA400549F8C /* MainStoryboard_iPhone.storyboard in Resources */,
+				04B24AAD143C8DA400549F8C /* MainStoryboard_iPad.storyboard in Resources */,
+				04B24AAF143C8DA400549F8C /* Shader.fsh in Resources */,
+				04B24AB1143C8DA400549F8C /* Shader.vsh in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04B24AB7143C8DA400549F8C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04B24AC6143C8DA400549F8C /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		04B24AB8143C8DA400549F8C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		04B24A8A143C8DA400549F8C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04B24AA3143C8DA400549F8C /* main.m in Sources */,
+				04B24AA7143C8DA400549F8C /* AppDelegate.m in Sources */,
+				04B24AB4143C8DA400549F8C /* ViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04B24AB5143C8DA400549F8C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04B24AC9143C8DA400549F8C /* MTG_LifeCounterTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		04B24AC0143C8DA400549F8C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 04B24A8D143C8DA400549F8C /* MTG LifeCounter */;
+			targetProxy = 04B24ABF143C8DA400549F8C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		04B24A9F143C8DA400549F8C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04B24AA0143C8DA400549F8C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		04B24AA8143C8DA400549F8C /* MainStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04B24AA9143C8DA400549F8C /* en */,
+			);
+			name = MainStoryboard_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		04B24AAB143C8DA400549F8C /* MainStoryboard_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04B24AAC143C8DA400549F8C /* en */,
+			);
+			name = MainStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		04B24AC4143C8DA400549F8C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04B24AC5143C8DA400549F8C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		04B24ACA143C8DA400549F8C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		04B24ACB143C8DA400549F8C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		04B24ACD143C8DA400549F8C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MTG LifeCounter/MTG LifeCounter-Prefix.pch";
+				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				INFOPLIST_FILE = "MTG LifeCounter/MTG LifeCounter-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		04B24ACE143C8DA400549F8C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MTG LifeCounter/MTG LifeCounter-Prefix.pch";
+				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				INFOPLIST_FILE = "MTG LifeCounter/MTG LifeCounter-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		04B24AD0143C8DA400549F8C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MTG LifeCounter.app/MTG LifeCounter";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MTG LifeCounter/MTG LifeCounter-Prefix.pch";
+				INFOPLIST_FILE = "MTG LifeCounterTests/MTG LifeCounterTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		04B24AD1143C8DA400549F8C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/MTG LifeCounter.app/MTG LifeCounter";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "MTG LifeCounter/MTG LifeCounter-Prefix.pch";
+				INFOPLIST_FILE = "MTG LifeCounterTests/MTG LifeCounterTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		04B24A88143C8DA300549F8C /* Build configuration list for PBXProject "MTG LifeCounter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04B24ACA143C8DA400549F8C /* Debug */,
+				04B24ACB143C8DA400549F8C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		04B24ACC143C8DA400549F8C /* Build configuration list for PBXNativeTarget "MTG LifeCounter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04B24ACD143C8DA400549F8C /* Debug */,
+				04B24ACE143C8DA400549F8C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		04B24ACF143C8DA400549F8C /* Build configuration list for PBXNativeTarget "MTG LifeCounterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04B24AD0143C8DA400549F8C /* Debug */,
+				04B24AD1143C8DA400549F8C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 04B24A85143C8DA300549F8C /* Project object */;
+}
