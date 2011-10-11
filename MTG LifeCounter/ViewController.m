@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "Card.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -117,8 +118,12 @@ GLfloat gCubeVertexData[216] =
     
     [self setupGL];
     
-    UIImageView *vCounter = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"backLifeCounter.png"]];
-    [self.view addSubview:vCounter];
+    NSLog(@"Create CardView");
+    CardView *card = [[CardView alloc] initWithFrame:CGRectMake(40, 40, 200, 300)];
+    card.backgroundImage = [UIImage imageNamed:@"backLifeCounter.png"];
+    card.margin = 10;
+    [self.view addSubview:card];
+    
 }
 
 - (void)viewDidUnload

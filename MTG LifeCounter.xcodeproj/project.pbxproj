@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0432315D143CBB32007968AF /* backLifeCounter.png in Resources */ = {isa = PBXBuildFile; fileRef = 0432315C143CBB32007968AF /* backLifeCounter.png */; };
+		043231621443480E007968AF /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 043231611443480E007968AF /* Card.m */; };
 		04B24A93143C8DA400549F8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A92143C8DA400549F8C /* UIKit.framework */; };
 		04B24A95143C8DA400549F8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A94143C8DA400549F8C /* Foundation.framework */; };
 		04B24A97143C8DA400549F8C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A96143C8DA400549F8C /* CoreGraphics.framework */; };
@@ -40,6 +41,8 @@
 
 /* Begin PBXFileReference section */
 		0432315C143CBB32007968AF /* backLifeCounter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = backLifeCounter.png; path = Resources/img/backLifeCounter.png; sourceTree = "<group>"; };
+		043231601443480E007968AF /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
+		043231611443480E007968AF /* Card.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Card.m; sourceTree = "<group>"; };
 		04B24A8E143C8DA400549F8C /* MTG LifeCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MTG LifeCounter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04B24A92143C8DA400549F8C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		04B24A94143C8DA400549F8C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -153,6 +156,8 @@
 				04B24AB2143C8DA400549F8C /* ViewController.h */,
 				04B24AB3143C8DA400549F8C /* ViewController.m */,
 				04B24A9D143C8DA400549F8C /* Supporting Files */,
+				043231601443480E007968AF /* Card.h */,
+				043231611443480E007968AF /* Card.m */,
 			);
 			path = "MTG LifeCounter";
 			sourceTree = "<group>";
@@ -300,6 +305,7 @@
 				04B24AA3143C8DA400549F8C /* main.m in Sources */,
 				04B24AA7143C8DA400549F8C /* AppDelegate.m in Sources */,
 				04B24AB4143C8DA400549F8C /* ViewController.m in Sources */,
+				043231621443480E007968AF /* Card.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +417,7 @@
 				GCC_PREFIX_HEADER = "MTG LifeCounter/MTG LifeCounter-Prefix.pch";
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = "MTG LifeCounter/MTG LifeCounter-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -423,6 +430,7 @@
 				GCC_PREFIX_HEADER = "MTG LifeCounter/MTG LifeCounter-Prefix.pch";
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = "MTG LifeCounter/MTG LifeCounter-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
