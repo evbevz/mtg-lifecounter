@@ -122,6 +122,9 @@ GLfloat gCubeVertexData[216] =
     CardView *card = [[CardView alloc] initWithFrame:CGRectMake(40, 40, 200, 300)];
     card.backgroundImage = [UIImage imageNamed:@"backLifeCounter.png"];
     card.margin = 10;
+    card.font = [UIFont systemFontOfSize:20];
+    card.linesColor = [UIColor blackColor];
+    card.fontColor = [UIColor blueColor];
     [self.view addSubview:card];
     
 }

@@ -11,14 +11,20 @@
 @interface CardView : UIView
 {
     UIColor *linesColor;
+    UIColor *fontColor;
     UIImage *backgroundImage;
     float   margin;
+    UIFont  *font;
+    
     int     lifeBase;
 }
 
-@property(nonatomic, retain) UIColor *linesColor;
-@property(nonatomic, retain) UIImage *backgroundImage;
-@property(nonatomic, readwrite) float margin;
+@property(nonatomic, retain) UIColor    *linesColor;
+@property(nonatomic, retain) UIImage    *backgroundImage;
+@property(nonatomic, readwrite) float   margin;
+@property(nonatomic, retain) UIFont     *font;
+@property(nonatomic, retain) UIColor    *fontColor;
+
 @property(nonatomic, readwrite) int lifeBase;
 
 @end

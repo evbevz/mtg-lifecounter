@@ -26,6 +26,10 @@
 @synthesize linesColor;
 @synthesize backgroundImage;
 @synthesize margin;
+@synthesize font;
+@synthesize lifeBase;
+@synthesize fontColor;
+
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -33,6 +37,9 @@
     if (self) {
         margin = 5;
         lifeBase = 0;
+        linesColor = [UIColor blackColor];
+        fontColor = [UIColor blackColor];
+        font = [UIFont systemFontOfSize:20.0];
     }
     return self;
 }
@@ -45,7 +52,8 @@
     NSLog(@"CardView:drawRect");
     
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetRGBStrokeColor(context, 250, 0, 0, 1);
+    CGContextSetStrokeColorWithColor(context, linesColor.CGColor);
+    //CGContextSetFillColorWithColor(context, linesColor.CGColor);
    //CGContextClearRect(context, rect);
     
     if(backgroundImage)
@@ -84,15 +92,31 @@
 
 - (void)drawLabels:(CGRect)rect :(CGContextRef)context
 {
+    CGContextSetTextMatrix(context, CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0));
+    CGContextSetStrokeColorWithColor(context, fontColor.CGColor);
+    float cellWidth = (rect.size.width - 2*margin)/4;
+    float cellHeight = (rect.size.height - 2*margin)/5;
+    
     char txt[4];
     for(int life = lifeBase + 20; life > lifeBase; --life)
     {
         sprintf(txt, "%d", life);
-        CGContextSelectFont(context, "Helvetica", 18.0, kCGEncodingMacRoman);
-        CGContextSetTextDrawingMode(context, kCGTextFill);
+        CGContextSelectFont(context, font.fontName.UTF8String, font.lineHeight, kCGEncodingMacRoman);
+        CGContextSetTextDrawingMode(context, kCGTextStroke);
+        
+        int col = (lifeBase + 20 - life) % 4;
+        int row = (lifeBase + 20 - life) / 4;
+        //NSLog(@"col = %d \t row = %d", col, row);
+        
+        NSString *str = [[NSString alloc] initWithUTF8String:txt];
+        CGSize txtSize = [str sizeWithFont:font];
+        
         CGContextShowTextAtPoint(context, 
-                                 margin + (life ^ 4) * (rect.size.width - 2*margin)/4, 
-                                 margin + (life ^ 5) * (rect.size.height - 2*margin)/5, txt, 2);
+                                 margin + col * cellWidth + cellWidth/2 - txtSize.width/2, 
+                                 margin + row * cellHeight + (cellHeight + txtSize.height)/2*0.9, 
+                                 txt, strlen(txt));
+        
+       
     }
 }
 
