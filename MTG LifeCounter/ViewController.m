@@ -11,6 +11,9 @@
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
+#define CARD_ROTATE_DURATION    0.4
+#define PLAYER_BUTTONS_CNT      5
+
 // Uniform index.
 enum
 {
@@ -84,6 +87,9 @@ GLfloat gCubeVertexData[216] =
     
     GLuint _vertexArray;
     GLuint _vertexBuffer;
+    
+    UIButton *btn[PLAYER_BUTTONS_CNT];
+    CardView *card;
 }
 @property (strong, nonatomic) EAGLContext *context;
 @property (strong, nonatomic) GLKBaseEffect *effect;
@@ -95,6 +101,9 @@ GLfloat gCubeVertexData[216] =
 - (BOOL)compileShader:(GLuint *)shader type:(GLenum)type file:(NSString *)file;
 - (BOOL)linkProgram:(GLuint)prog;
 - (BOOL)validateProgram:(GLuint)prog;
+
+- (void)selectPlayer:(int)i;
+
 @end
 
 @implementation ViewController
@@ -118,14 +127,29 @@ GLfloat gCubeVertexData[216] =
     
     [self setupGL];
     
+    // card
     NSLog(@"Create CardView");
-    CardView *card = [[CardView alloc] initWithFrame:CGRectMake(40, 40, 200, 300)];
+    card = [[CardView alloc] initWithFrame:CGRectMake(40, 40, 200, 300)];
     card.backgroundImage = [UIImage imageNamed:@"backLifeCounter.png"];
     card.margin = 10;
     card.font = [UIFont systemFontOfSize:20];
     card.linesColor = [UIColor blackColor];
     card.fontColor = [UIColor blueColor];
     [self.view addSubview:card];
+    
+    //buttons
+    float left = 0;
+    float width = 50;
+    float height = 50;
+    for(int i = 0; i < PLAYER_BUTTONS_CNT; ++i)
+    {
+        btn[i] = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        btn[i].frame = CGRectMake(left, 0, width, height);
+        [btn[i] addTarget:self action:@selector(playerButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
+        left += width;
+        
+        [self.view addSubview:btn[i]];
+    }
     
 }
 
@@ -197,6 +221,48 @@ GLfloat gCubeVertexData[216] =
         glDeleteProgram(_program);
         _program = 0;
     }
+}
+
+- (void)playerButtonTouched:(UIButton*)button
+{
+    for (int i = 0; i < PLAYER_BUTTONS_CNT; ++i) {
+        if (btn[i] == button) 
+        {
+            [self selectPlayer:i];
+        }
+    }
+}
+
+
+- (void)flipCard
+{
+	NSLog(@"showCardForButton");
+	    
+    [UIView beginAnimations:@"animationId" context:nil];
+    [UIView setAnimationDuration:CARD_ROTATE_DURATION];
+    [UIView setAnimationDelegate:self];
+    //[UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
+    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft
+                           forView:card cache:YES];
+    //[button setImage:image forState:UIControlStateNormal];
+	//[button setBackgroundImage:backImage forState:UIControlStateNormal];
+    [UIView commitAnimations];
+	
+    /*
+	if (_sound)
+	{
+		NSURL* soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Cards_turning.wav"																				 ofType:nil]];
+		self.player = [[[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil] autorelease];
+		[self.player play];
+	}
+    
+    _rotateEnabled = NO;
+     */
+}
+
+- (void)selectPlayer:(int)i
+{
+    [self flipCard];
 }
 
 #pragma mark - GLKView and GLKViewController delegate methods
