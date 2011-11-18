@@ -10,8 +10,8 @@
 #import "Card.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
-
 #define CARD_ROTATE_DURATION    0.4
+
 #define PLAYER_BUTTONS_CNT      5
 
 // Uniform index.
@@ -79,7 +79,9 @@ GLfloat gCubeVertexData[216] =
 };
 
 @interface ViewController () {
+    CardView    *card;
     GLuint _program;
+    GLKView     *glView;
     
     GLKMatrix4 _modelViewProjectionMatrix;
     GLKMatrix3 _normalMatrix;
@@ -89,7 +91,6 @@ GLfloat gCubeVertexData[216] =
     GLuint _vertexBuffer;
     
     UIButton *btn[PLAYER_BUTTONS_CNT];
-    CardView *card;
 }
 @property (strong, nonatomic) EAGLContext *context;
 @property (strong, nonatomic) GLKBaseEffect *effect;
@@ -115,27 +116,9 @@ GLfloat gCubeVertexData[216] =
 {
     [super viewDidLoad];
     
-    self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-
-    if (!self.context) {
-        NSLog(@"Failed to create ES context");
-    }
-    
-    GLKView *view = (GLKView *)self.view;
-    view.context = self.context;
-    view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
-    
-    [self setupGL];
-    
-    // card
-    NSLog(@"Create CardView");
-    card = [[CardView alloc] initWithFrame:CGRectMake(40, 40, 200, 300)];
-    card.backgroundImage = [UIImage imageNamed:@"backLifeCounter.png"];
-    card.margin = 10;
-    card.font = [UIFont systemFontOfSize:20];
-    card.linesColor = [UIColor blackColor];
-    card.fontColor = [UIColor blueColor];
-    [self.view addSubview:card];
+    UIView *main = [[UIView alloc] initWithFrame:self.view.frame];
+    glView = (GLKView*)self.view;
+    self.view = main;
     
     //buttons
     float left = 0;
@@ -150,6 +133,32 @@ GLfloat gCubeVertexData[216] =
         
         [self.view addSubview:btn[i]];
     }
+ 
+    NSLog(@"Create CardView");
+    card = [[CardView alloc] initWithFrame:CGRectMake(40, 40, 200, 300)];
+    card.backgroundImage = [UIImage imageNamed:@"backLifeCounter.png"];
+    card.margin = 10;
+    card.font = [UIFont systemFontOfSize:20];
+    card.linesColor = [UIColor blackColor];
+    card.fontColor = [UIColor blueColor];
+    [self.view addSubview:card];
+
+    glView.frame = CGRectMake(40, 40, 100, 100);
+    [self.view addSubview:glView];
+    
+    self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+
+    if (!self.context) {
+        NSLog(@"Failed to create ES context");
+    }
+    
+    GLKView *view = glView;
+    view.context = self.context;
+    view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
+    view.drawableColorFormat = GLKViewDrawableColorFormatRGBA8888;
+    view.backgroundColor = [UIColor clearColor];
+    
+    [self setupGL];
     
 }
 
@@ -234,42 +243,14 @@ GLfloat gCubeVertexData[216] =
 }
 
 
-- (void)flipCard
-{
-	NSLog(@"showCardForButton");
-	    
-    [UIView beginAnimations:@"animationId" context:nil];
-    [UIView setAnimationDuration:CARD_ROTATE_DURATION];
-    [UIView setAnimationDelegate:self];
-    //[UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
-    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft
-                           forView:card cache:YES];
-    //[button setImage:image forState:UIControlStateNormal];
-	//[button setBackgroundImage:backImage forState:UIControlStateNormal];
-    [UIView commitAnimations];
-	
-    /*
-	if (_sound)
-	{
-		NSURL* soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Cards_turning.wav"																				 ofType:nil]];
-		self.player = [[[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil] autorelease];
-		[self.player play];
-	}
-    
-    _rotateEnabled = NO;
-     */
-}
 
-- (void)selectPlayer:(int)i
-{
-    [self flipCard];
-}
 
 #pragma mark - GLKView and GLKViewController delegate methods
 
 - (void)update
 {
-    float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
+    NSLog(@"update");
+    float aspect = fabsf(glView.bounds.size.width / glView.bounds.size.height);
     GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
     
     self.effect.transform.projectionMatrix = projectionMatrix;
@@ -294,11 +275,16 @@ GLfloat gCubeVertexData[216] =
     _modelViewProjectionMatrix = GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
     
     _rotation += self.timeSinceLastUpdate * 0.5f;
+    
+    [glView setNeedsDisplay];
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-    glClearColor(0.65f, 0.65f, 0.65f, 1.0f);
+    NSLog(@"drawRect");
+    
+    //glClearColor(0.65f, 0.65f, 0.65f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     glBindVertexArrayOES(_vertexArray);
@@ -468,5 +454,35 @@ GLfloat gCubeVertexData[216] =
     
     return YES;
 }
+- (void)flipCard
+{
+	NSLog(@"showCardForButton");
+    
+    [UIView beginAnimations:@"animationId" context:nil];
+    [UIView setAnimationDuration:CARD_ROTATE_DURATION];
+    [UIView setAnimationDelegate:self];
+    //[UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
+    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft
+                           forView:card cache:YES];
+    //[button setImage:image forState:UIControlStateNormal];
+	//[button setBackgroundImage:backImage forState:UIControlStateNormal];
+    [UIView commitAnimations];
+	
+    /*
+     if (_sound)
+     {
+     NSURL* soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Cards_turning.wav"																				 ofType:nil]];
+     self.player = [[[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil] autorelease];
+     [self.player play];
+     }
+     
+     _rotateEnabled = NO;
+     */
+}
+- (void)selectPlayer:(int)i
+{
+    [self flipCard];
+}
+
 
 @end
