@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0432315D143CBB32007968AF /* backLifeCounter.png in Resources */ = {isa = PBXBuildFile; fileRef = 0432315C143CBB32007968AF /* backLifeCounter.png */; };
 		043231621443480E007968AF /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 043231611443480E007968AF /* Card.m */; };
+		04906AA71487E6B5000D51BE /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AA61487E6B5000D51BE /* Background.png */; };
+		04906AAA1487EB1D000D51BE /* Field.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AA91487EB1D000D51BE /* Field.png */; };
+		04906AB01487F332000D51BE /* Btn20Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AAF1487F332000D51BE /* Btn20Back.png */; };
+		04906AB31487F51F000D51BE /* Btn-20.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AB11487F51F000D51BE /* Btn-20.png */; };
+		04906AB41487F51F000D51BE /* Btn+20.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AB21487F51F000D51BE /* Btn+20.png */; };
 		04B24A93143C8DA400549F8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A92143C8DA400549F8C /* UIKit.framework */; };
 		04B24A95143C8DA400549F8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A94143C8DA400549F8C /* Foundation.framework */; };
 		04B24A97143C8DA400549F8C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A96143C8DA400549F8C /* CoreGraphics.framework */; };
@@ -38,9 +42,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0432315C143CBB32007968AF /* backLifeCounter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = backLifeCounter.png; path = Resources/img/backLifeCounter.png; sourceTree = "<group>"; };
 		043231601443480E007968AF /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
 		043231611443480E007968AF /* Card.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Card.m; sourceTree = "<group>"; };
+		04906AA61487E6B5000D51BE /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background.png; path = Resources/img/Background.png; sourceTree = "<group>"; };
+		04906AA91487EB1D000D51BE /* Field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Field.png; path = Resources/img/Field.png; sourceTree = "<group>"; };
+		04906AAF1487F332000D51BE /* Btn20Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Btn20Back.png; path = Resources/img/Btn20Back.png; sourceTree = "<group>"; };
+		04906AB11487F51F000D51BE /* Btn-20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Btn-20.png"; path = "Resources/img/Btn-20.png"; sourceTree = "<group>"; };
+		04906AB21487F51F000D51BE /* Btn+20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Btn+20.png"; path = "Resources/img/Btn+20.png"; sourceTree = "<group>"; };
 		04B24A8E143C8DA400549F8C /* MTG LifeCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MTG LifeCounter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04B24A92143C8DA400549F8C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		04B24A94143C8DA400549F8C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -102,7 +110,11 @@
 		0432315F143CBC70007968AF /* img */ = {
 			isa = PBXGroup;
 			children = (
-				0432315C143CBB32007968AF /* backLifeCounter.png */,
+				04906AB11487F51F000D51BE /* Btn-20.png */,
+				04906AB21487F51F000D51BE /* Btn+20.png */,
+				04906AAF1487F332000D51BE /* Btn20Back.png */,
+				04906AA61487E6B5000D51BE /* Background.png */,
+				04906AA91487EB1D000D51BE /* Field.png */,
 			);
 			name = img;
 			sourceTree = "<group>";
@@ -259,7 +271,11 @@
 				04B24AA1143C8DA400549F8C /* InfoPlist.strings in Resources */,
 				04B24AAF143C8DA400549F8C /* Shader.fsh in Resources */,
 				04B24AB1143C8DA400549F8C /* Shader.vsh in Resources */,
-				0432315D143CBB32007968AF /* backLifeCounter.png in Resources */,
+				04906AA71487E6B5000D51BE /* Background.png in Resources */,
+				04906AAA1487EB1D000D51BE /* Field.png in Resources */,
+				04906AB01487F332000D51BE /* Btn20Back.png in Resources */,
+				04906AB31487F51F000D51BE /* Btn-20.png in Resources */,
+				04906AB41487F51F000D51BE /* Btn+20.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

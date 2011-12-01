@@ -13,6 +13,7 @@
 #define CARD_ROTATE_DURATION    0.4
 
 #define PLAYER_BUTTONS_CNT      5
+#define CardNumbersColor        [UIColor colorWithRed:244.0/255 green:196.0/255 blue:126.0/255 alpha:1]
 
 // Uniform index.
 enum
@@ -116,10 +117,16 @@ GLfloat gCubeVertexData[216] =
 {
     [super viewDidLoad];
     
-    UIView *main = [[UIView alloc] initWithFrame:self.view.frame];
+    y_scale = [UIScreen mainScreen].bounds.size.height / 1024;
+	x_scale = [UIScreen mainScreen].bounds.size.width / 768;
+
+    UIImageView *main = [[UIImageView alloc] initWithFrame:self.view.frame];
+    main.image = [UIImage imageNamed:@"Background.png"];
     glView = (GLKView*)self.view;
     self.view = main;
+    [self.view setUserInteractionEnabled:true];
     
+    /*
     //buttons
     float left = 0;
     float width = 50;
@@ -133,15 +140,38 @@ GLfloat gCubeVertexData[216] =
         
         [self.view addSubview:btn[i]];
     }
- 
+ */
     NSLog(@"Create CardView");
-    card = [[CardView alloc] initWithFrame:CGRectMake(40, 40, 200, 300)];
-    card.backgroundImage = [UIImage imageNamed:@"backLifeCounter.png"];
-    card.margin = 10;
+    card = [[CardView alloc] initWithFrame:self.view.frame];
+    card.backgroundImage = [UIImage imageNamed:@"Field.png"];
+    card.frame = CGRectMake(140.0 * x_scale, 110.0 * y_scale, card.backgroundImage.size.width * x_scale, card.backgroundImage.size.height * y_scale);
+    card.margin = 2;
     card.font = [UIFont systemFontOfSize:20];
-    card.linesColor = [UIColor blackColor];
-    card.fontColor = [UIColor blueColor];
+    card.linesColor = [UIColor clearColor];
+    card.fontColor = CardNumbersColor;
+    card.backgroundColor = [UIColor clearColor];
     [self.view addSubview:card];
+    
+    // +20/-20
+    UIImageView *btn20back = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Btn20Back.png"]];
+    btn20back.frame = CGRectMake(250.0 * x_scale, 888.0 * y_scale, btn20back.image.size.width * x_scale, btn20back.image.size.height * y_scale);
+    [self.view addSubview:btn20back];
+    
+    UIImage *img = [UIImage imageNamed:@"Btn-20.png"];
+	btn20_dec = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn20_dec.frame = CGRectMake(270.0 * x_scale, 900.0 * y_scale, img.size.width * x_scale, img.size.height * y_scale);
+	[btn20_dec setImage:img forState:UIControlStateNormal];
+    [btn20_dec addTarget:self action:@selector(counterButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btn20_dec];
+
+    img = [UIImage imageNamed:@"Btn+20.png"];
+	btn20_inc = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn20_inc.frame = CGRectMake(432.0 * x_scale, 900.0 * y_scale, img.size.width * x_scale, img.size.height * y_scale);
+	[btn20_inc setImage:img forState:UIControlStateNormal];
+    [btn20_inc addTarget:self action:@selector(counterButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btn20_inc];
+
+
 
     glView.frame = CGRectMake(40, 40, 100, 100);
     [self.view addSubview:glView];
@@ -242,6 +272,16 @@ GLfloat gCubeVertexData[216] =
     }
 }
 
+- (void)counterButtonTouched:(UIButton*)button
+{
+    if(button == btn20_dec && card.lifeBase >= 20)
+        card.lifeBase -= 20;
+    
+    if(button == btn20_inc)
+        card.lifeBase += 20;
+    
+    [card setNeedsDisplay];
+}
 
 
 

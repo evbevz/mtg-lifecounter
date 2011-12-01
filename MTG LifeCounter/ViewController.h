@@ -10,5 +10,11 @@
 #import <GLKit/GLKit.h>
 
 @interface ViewController : GLKViewController
-
+{
+    float   x_scale;
+    float   y_scale;
+    
+    UIButton    *btn20_inc;
+    UIButton    *btn20_dec;
+}
 @end
