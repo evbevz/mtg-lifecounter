@@ -31,6 +31,7 @@
 		04906AD8148CBB3E000D51BE /* PoisonBtn+.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AC8148CBB3E000D51BE /* PoisonBtn+.png */; };
 		04906AD9148CBB3E000D51BE /* PoisonBtn+A.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AC9148CBB3E000D51BE /* PoisonBtn+A.png */; };
 		04906ADA148CBB3E000D51BE /* PoisonBtnsBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906ACA148CBB3E000D51BE /* PoisonBtnsBack.png */; };
+		04906ADC148D2DFB000D51BE /* GaramondPremrPro-Smbd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 04906ADB148D2DFB000D51BE /* GaramondPremrPro-Smbd.otf */; };
 		04B24A93143C8DA400549F8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A92143C8DA400549F8C /* UIKit.framework */; };
 		04B24A95143C8DA400549F8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A94143C8DA400549F8C /* Foundation.framework */; };
 		04B24A97143C8DA400549F8C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A96143C8DA400549F8C /* CoreGraphics.framework */; };
@@ -86,6 +87,7 @@
 		04906AC8148CBB3E000D51BE /* PoisonBtn+.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PoisonBtn+.png"; path = "Resources/img/PoisonBtn+.png"; sourceTree = "<group>"; };
 		04906AC9148CBB3E000D51BE /* PoisonBtn+A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PoisonBtn+A.png"; path = "Resources/img/PoisonBtn+A.png"; sourceTree = "<group>"; };
 		04906ACA148CBB3E000D51BE /* PoisonBtnsBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PoisonBtnsBack.png; path = Resources/img/PoisonBtnsBack.png; sourceTree = "<group>"; };
+		04906ADB148D2DFB000D51BE /* GaramondPremrPro-Smbd.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "GaramondPremrPro-Smbd.otf"; path = "Resources/GaramondPremrPro-Smbd.otf"; sourceTree = "<group>"; };
 		04B24A8E143C8DA400549F8C /* MTG LifeCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MTG LifeCounter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04B24A92143C8DA400549F8C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		04B24A94143C8DA400549F8C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -139,6 +141,7 @@
 		0432315E143CBC61007968AF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				04906ADB148D2DFB000D51BE /* GaramondPremrPro-Smbd.otf */,
 				0432315F143CBC70007968AF /* img */,
 			);
 			name = Resources;
@@ -357,6 +360,7 @@
 				04906AD8148CBB3E000D51BE /* PoisonBtn+.png in Resources */,
 				04906AD9148CBB3E000D51BE /* PoisonBtn+A.png in Resources */,
 				04906ADA148CBB3E000D51BE /* PoisonBtnsBack.png in Resources */,
+				04906ADC148D2DFB000D51BE /* GaramondPremrPro-Smbd.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,7 +13,8 @@
 #define CARD_ROTATE_DURATION    0.4
 
 #define PLAYER_BUTTONS_CNT      5
-#define CardNumbersColor        [UIColor colorWithRed:244.0/255 green:196.0/255 blue:126.0/255 alpha:1]
+#define CardNumbersColor        [UIColor colorWithRed:228.0/255 green:178.0/255 blue:114.0/255 alpha:1]
+#define CardNumbersBorderColor  [UIColor colorWithRed:57.0/255 green:34.0/255 blue:4.0/255 alpha:1]
 #define POISON_PREFIX           @"Poison_"
 
 #define MIN_SCALE               MIN(x_scale, y_scale)
@@ -148,15 +149,17 @@ GLfloat gCubeVertexData[216] =
     NSLog(@"Create CardView");
     card = [[CardView alloc] initWithFrame:self.view.frame];
     card.backgroundImage = [UIImage imageNamed:@"Field.png"];
-    card.frame = CGRectMake(150.0 * x_scale, 110.0 * y_scale, card.backgroundImage.size.width * MIN_SCALE, card.backgroundImage.size.height * MIN_SCALE);
+    card.frame = CGRectMake(140.0 * x_scale, 110.0 * y_scale, card.backgroundImage.size.width * MIN_SCALE, card.backgroundImage.size.height * MIN_SCALE);
     card.margin = 2;
-    card.font = [UIFont systemFontOfSize:20];
+    card.font = [UIFont fontWithName:@"GaramondPremrPro-Smbd" size:70 * x_scale];
     card.linesColor = [UIColor clearColor];
     card.fontColor = CardNumbersColor;
+    card.fontBorderColor = CardNumbersBorderColor;
     card.backgroundColor = [UIColor clearColor];
     [self.view addSubview:card];
     
-    float bottomBaseLine = card.frame.origin.y + card.frame.size.height + 110.0*y_scale;
+    float bottomBaseLine = card.frame.origin.y + card.frame.size.height + ([UIScreen mainScreen].bounds.size.height - (card.frame.origin.y + card.frame.size.height)) / 2.3;
+    
     // +20/-20
     UIImageView *btn20back = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Btn20Back.png"]];
     float width = btn20back.image.size.width * MAX_SCALE;

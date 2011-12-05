@@ -13,6 +13,7 @@
 {
     UIColor *linesColor;
     UIColor *fontColor;
+    UIColor *fontBorderColor;
     UIImage *backgroundImage;
     float   margin;
     UIFont  *font;
@@ -32,7 +33,7 @@
 @property(nonatomic, readwrite) float   margin;
 @property(nonatomic, retain) UIFont     *font;
 @property(nonatomic, retain) UIColor    *fontColor;
-
+@property(nonatomic, retain) UIColor    *fontBorderColor;
 @property(nonatomic, readwrite) int lifeBase;
 
 @end

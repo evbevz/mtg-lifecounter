@@ -29,6 +29,7 @@
 @synthesize font;
 @synthesize lifeBase;
 @synthesize fontColor;
+@synthesize fontBorderColor;
 
 
 - (id)initWithFrame:(CGRect)frame
@@ -101,8 +102,11 @@
 
 - (void)drawLabels:(CGRect)rect :(CGContextRef)context
 {
+    CGContextSelectFont(context, font.fontName.UTF8String, font.lineHeight, kCGEncodingMacRoman);
+    CGContextSetTextDrawingMode(context, kCGTextFill);
     CGContextSetTextMatrix(context, CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0));
-    CGContextSetStrokeColorWithColor(context, fontColor.CGColor);
+    CGContextSetFillColorWithColor(context, fontColor.CGColor);
+    CGContextSetStrokeColorWithColor(context,fontBorderColor.CGColor);
     float cellWidth = (rect.size.width - 2*margin)/4;
     float cellHeight = (rect.size.height - 2*margin)/5;
     
@@ -110,8 +114,6 @@
     for(int life = lifeBase + 20; life > lifeBase; --life)
     {
         sprintf(txt, "%d", life);
-        CGContextSelectFont(context, font.fontName.UTF8String, font.lineHeight, kCGEncodingMacRoman);
-        CGContextSetTextDrawingMode(context, kCGTextStroke);
         
         int col = (lifeBase + 20 - life) % 4;
         int row = (lifeBase + 20 - life) / 4;
@@ -120,11 +122,17 @@
         NSString *str = [[NSString alloc] initWithUTF8String:txt];
         CGSize txtSize = [str sizeWithFont:font];
         
+        CGContextSetTextDrawingMode(context, kCGTextFill);
         CGContextShowTextAtPoint(context, 
                                  margin + col * cellWidth + cellWidth/2 - txtSize.width/2, 
                                  margin + row * cellHeight + (cellHeight + txtSize.height)/2*0.9, 
                                  txt, strlen(txt));
         
+        //CGContextSetTextDrawingMode(context, kCGTextStroke);
+        //CGContextShowTextAtPoint(context, 
+        //                         margin + col * cellWidth + cellWidth/2 - txtSize.width/2, 
+        //                         margin + row * cellHeight + (cellHeight + txtSize.height)/2*0.9, 
+        //                         txt, strlen(txt));
        
     }
 }
