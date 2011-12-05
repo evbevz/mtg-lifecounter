@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ContentView.h"
 
-@interface CardView : UIView
+@interface CardView : ContentView
 {
     UIColor *linesColor;
     UIColor *fontColor;
@@ -17,7 +18,14 @@
     UIFont  *font;
     
     int     lifeBase;
+
+    float   marble_x;
+    float   marble_y;
+    
+    UIImageView *marble;
 }
+
+- (CGPoint) getTopLeftCellCenter;
 
 @property(nonatomic, retain) UIColor    *linesColor;
 @property(nonatomic, retain) UIImage    *backgroundImage;

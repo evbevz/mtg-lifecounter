@@ -41,6 +41,15 @@
         fontColor = [UIColor blackColor];
         font = [UIFont systemFontOfSize:20.0];
     }
+    
+    // Marble
+    //marble = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MarbleBlue.png"]];
+    //CGPoint coords = card.getTopLeftCellCenter;
+    //marble_x = coords.x + card.frame.origin.x - marble.image.size.width * y_scale / 2;
+    //marble_y = coords.y + card.frame.origin.y - marble.image.size.height * y_scale / 2;
+    //marble.frame = CGRectMake(marble_x, marble_y, marble.image.size.width * y_scale, marble.image.size.height * y_scale);
+    //[self.view addSubview:marble];
+
     return self;
 }
 
@@ -118,6 +127,23 @@
         
        
     }
+}
+
+- (CGPoint) getTopLeftCellCenter
+{
+    float cellWidth = (self.frame.size.width - 2*margin)/4;
+    float cellHeight = (self.frame.size.height - 2*margin)/5;
+    return CGPointMake(margin + cellWidth/2, margin + cellHeight/2);
+}
+
+#pragma mark ContentView
+- (void)contentView:(ContentView*)view didMoveTouch:(UITouch*)touch
+{
+    //CGPoint point = [touch locationInView:self];
+    //self.floatItem.center = point;
+    
+	//if(!_reverseAction)
+	//	[self scrollFarmIfNeeded];
 }
 
 

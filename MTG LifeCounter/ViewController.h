@@ -14,7 +14,15 @@
     float   x_scale;
     float   y_scale;
     
+    int         poison_val;
+    UIImageView *poison_img;
+    UIButton    *poison_inc;
+    UIButton    *poison_dec;
+    
     UIButton    *btn20_inc;
     UIButton    *btn20_dec;
 }
+
+-(void)showPoison;
+
 @end

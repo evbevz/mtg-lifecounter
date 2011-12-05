@@ -14,6 +14,10 @@
 
 #define PLAYER_BUTTONS_CNT      5
 #define CardNumbersColor        [UIColor colorWithRed:244.0/255 green:196.0/255 blue:126.0/255 alpha:1]
+#define POISON_PREFIX           @"Poison_"
+
+#define MIN_SCALE               MIN(x_scale, y_scale)
+#define MAX_SCALE               MAX(x_scale, y_scale)
 
 // Uniform index.
 enum
@@ -144,7 +148,7 @@ GLfloat gCubeVertexData[216] =
     NSLog(@"Create CardView");
     card = [[CardView alloc] initWithFrame:self.view.frame];
     card.backgroundImage = [UIImage imageNamed:@"Field.png"];
-    card.frame = CGRectMake(140.0 * x_scale, 110.0 * y_scale, card.backgroundImage.size.width * x_scale, card.backgroundImage.size.height * y_scale);
+    card.frame = CGRectMake(150.0 * x_scale, 110.0 * y_scale, card.backgroundImage.size.width * MIN_SCALE, card.backgroundImage.size.height * MIN_SCALE);
     card.margin = 2;
     card.font = [UIFont systemFontOfSize:20];
     card.linesColor = [UIColor clearColor];
@@ -152,27 +156,63 @@ GLfloat gCubeVertexData[216] =
     card.backgroundColor = [UIColor clearColor];
     [self.view addSubview:card];
     
+    float bottomBaseLine = card.frame.origin.y + card.frame.size.height + 110.0*y_scale;
     // +20/-20
     UIImageView *btn20back = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Btn20Back.png"]];
-    btn20back.frame = CGRectMake(250.0 * x_scale, 888.0 * y_scale, btn20back.image.size.width * x_scale, btn20back.image.size.height * y_scale);
+    float width = btn20back.image.size.width * MAX_SCALE;
+    float height = btn20back.image.size.height * MAX_SCALE;
+    btn20back.frame = CGRectMake(card.frame.origin.x + card.frame.size.width/2 - width/2, bottomBaseLine - height/2, width, height);
     [self.view addSubview:btn20back];
     
     UIImage *img = [UIImage imageNamed:@"Btn-20.png"];
 	btn20_dec = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn20_dec.frame = CGRectMake(270.0 * x_scale, 900.0 * y_scale, img.size.width * x_scale, img.size.height * y_scale);
+    width = img.size.width * MAX_SCALE;
+    height = img.size.height * MAX_SCALE;
+    btn20_dec.frame = CGRectMake(card.frame.origin.x + card.frame.size.width/2 - width - 5.0*MAX_SCALE, bottomBaseLine - height/2 + 1, width, height);
 	[btn20_dec setImage:img forState:UIControlStateNormal];
     [btn20_dec addTarget:self action:@selector(counterButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn20_dec];
 
     img = [UIImage imageNamed:@"Btn+20.png"];
 	btn20_inc = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn20_inc.frame = CGRectMake(432.0 * x_scale, 900.0 * y_scale, img.size.width * x_scale, img.size.height * y_scale);
+    btn20_inc.frame = CGRectMake(card.frame.origin.x + card.frame.size.width/2 + 5.0*MAX_SCALE, bottomBaseLine - height/2 + 1, width, height);
 	[btn20_inc setImage:img forState:UIControlStateNormal];
     [btn20_inc addTarget:self action:@selector(counterButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:btn20_inc];
 
+    // Poison
+    poison_val = 0;
+    poison_img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@%d.png",POISON_PREFIX,poison_val]]];
+    width = poison_img.image.size.width * MAX_SCALE;
+    height = poison_img.image.size.height * MAX_SCALE;
+    poison_img.frame = CGRectMake(45.0 * x_scale, card.frame.origin.y + card.frame.size.height - poison_img.image.size.height * MAX_SCALE + 10 * MAX_SCALE, width, height);
+    [self.view addSubview:poison_img];
+    
+    UIImageView *poison_btn_back = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PoisonBtnsBack.png"]];
+    width = poison_btn_back.image.size.width * MAX_SCALE;
+    height = poison_btn_back.image.size.height * MAX_SCALE;
+    poison_btn_back.frame = CGRectMake(27.0 * x_scale, bottomBaseLine - height/2, width, height);
+    [self.view addSubview:poison_btn_back];
+    
+    img = [UIImage imageNamed:@"PoisonBtn+.png"];
+    poison_inc = [UIButton buttonWithType:UIButtonTypeCustom];
+    width = img.size.width * MAX_SCALE;
+    height = img.size.height * MAX_SCALE;
+    poison_inc.frame = CGRectMake(poison_btn_back.frame.origin.x + poison_btn_back.frame.size.width/2 - 2.0 * MAX_SCALE, bottomBaseLine - height/2 + 1, width, height);
+    [poison_inc setImage:img forState:UIControlStateNormal];
+    [poison_inc setImage:[UIImage imageNamed:@"PoisonBtn+A.png"] forState:UIControlStateHighlighted];
+    [poison_inc addTarget:self action:@selector(poisonButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:poison_inc];
 
+    img = [UIImage imageNamed:@"PoisonBtn-.png"];
+    poison_dec = [UIButton buttonWithType:UIButtonTypeCustom];
+    poison_dec.frame = CGRectMake(poison_btn_back.frame.origin.x + poison_btn_back.frame.size.width/2 - width + 2.0 * MAX_SCALE, bottomBaseLine - height/2 + 1, width, height);
+    [poison_dec setImage:img forState:UIControlStateNormal];
+    [poison_dec setImage:[UIImage imageNamed:@"PoisonBtn-A.png"] forState:UIControlStateHighlighted];
+    [poison_dec addTarget:self action:@selector(poisonButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:poison_dec];
 
+    // Dice GL
     glView.frame = CGRectMake(40, 40, 100, 100);
     [self.view addSubview:glView];
     
@@ -283,7 +323,25 @@ GLfloat gCubeVertexData[216] =
     [card setNeedsDisplay];
 }
 
+- (void)poisonButtonTouched:(UIButton*)button
+{
+    if(button == poison_inc && poison_val < 10)
+    {
+        poison_val++;
+        [self showPoison];
+    }
+    
+    if(button == poison_dec && poison_val > 0)
+    {
+        poison_val--;
+        [self showPoison];
+    }
+}
 
+- (void) showPoison
+{
+    poison_img.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@%d.png", POISON_PREFIX, poison_val]];
+}
 
 #pragma mark - GLKView and GLKViewController delegate methods
 

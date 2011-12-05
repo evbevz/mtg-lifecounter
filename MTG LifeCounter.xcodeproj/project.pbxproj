@@ -13,6 +13,24 @@
 		04906AB01487F332000D51BE /* Btn20Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AAF1487F332000D51BE /* Btn20Back.png */; };
 		04906AB31487F51F000D51BE /* Btn-20.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AB11487F51F000D51BE /* Btn-20.png */; };
 		04906AB41487F51F000D51BE /* Btn+20.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AB21487F51F000D51BE /* Btn+20.png */; };
+		04906AB6148BB2C0000D51BE /* MarbleBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AB5148BB2C0000D51BE /* MarbleBlue.png */; };
+		04906AB9148BBA73000D51BE /* ContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04906AB8148BBA73000D51BE /* ContentView.m */; };
+		04906ACB148CBB3E000D51BE /* Poison_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906ABB148CBB3E000D51BE /* Poison_0.png */; };
+		04906ACC148CBB3E000D51BE /* Poison_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906ABC148CBB3E000D51BE /* Poison_1.png */; };
+		04906ACD148CBB3E000D51BE /* Poison_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906ABD148CBB3E000D51BE /* Poison_2.png */; };
+		04906ACE148CBB3E000D51BE /* Poison_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906ABE148CBB3E000D51BE /* Poison_3.png */; };
+		04906ACF148CBB3E000D51BE /* Poison_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906ABF148CBB3E000D51BE /* Poison_4.png */; };
+		04906AD0148CBB3E000D51BE /* Poison_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AC0148CBB3E000D51BE /* Poison_5.png */; };
+		04906AD1148CBB3E000D51BE /* Poison_6.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AC1148CBB3E000D51BE /* Poison_6.png */; };
+		04906AD2148CBB3E000D51BE /* Poison_7.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AC2148CBB3E000D51BE /* Poison_7.png */; };
+		04906AD3148CBB3E000D51BE /* Poison_8.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AC3148CBB3E000D51BE /* Poison_8.png */; };
+		04906AD4148CBB3E000D51BE /* Poison_9.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AC4148CBB3E000D51BE /* Poison_9.png */; };
+		04906AD5148CBB3E000D51BE /* Poison_10.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AC5148CBB3E000D51BE /* Poison_10.png */; };
+		04906AD6148CBB3E000D51BE /* PoisonBtn-.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AC6148CBB3E000D51BE /* PoisonBtn-.png */; };
+		04906AD7148CBB3E000D51BE /* PoisonBtn-A.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AC7148CBB3E000D51BE /* PoisonBtn-A.png */; };
+		04906AD8148CBB3E000D51BE /* PoisonBtn+.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AC8148CBB3E000D51BE /* PoisonBtn+.png */; };
+		04906AD9148CBB3E000D51BE /* PoisonBtn+A.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AC9148CBB3E000D51BE /* PoisonBtn+A.png */; };
+		04906ADA148CBB3E000D51BE /* PoisonBtnsBack.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906ACA148CBB3E000D51BE /* PoisonBtnsBack.png */; };
 		04B24A93143C8DA400549F8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A92143C8DA400549F8C /* UIKit.framework */; };
 		04B24A95143C8DA400549F8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A94143C8DA400549F8C /* Foundation.framework */; };
 		04B24A97143C8DA400549F8C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A96143C8DA400549F8C /* CoreGraphics.framework */; };
@@ -49,6 +67,25 @@
 		04906AAF1487F332000D51BE /* Btn20Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Btn20Back.png; path = Resources/img/Btn20Back.png; sourceTree = "<group>"; };
 		04906AB11487F51F000D51BE /* Btn-20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Btn-20.png"; path = "Resources/img/Btn-20.png"; sourceTree = "<group>"; };
 		04906AB21487F51F000D51BE /* Btn+20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Btn+20.png"; path = "Resources/img/Btn+20.png"; sourceTree = "<group>"; };
+		04906AB5148BB2C0000D51BE /* MarbleBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MarbleBlue.png; path = Resources/img/MarbleBlue.png; sourceTree = "<group>"; };
+		04906AB7148BBA73000D51BE /* ContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentView.h; sourceTree = "<group>"; };
+		04906AB8148BBA73000D51BE /* ContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentView.m; sourceTree = "<group>"; };
+		04906ABB148CBB3E000D51BE /* Poison_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_0.png; path = Resources/img/Poison_0.png; sourceTree = "<group>"; };
+		04906ABC148CBB3E000D51BE /* Poison_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_1.png; path = Resources/img/Poison_1.png; sourceTree = "<group>"; };
+		04906ABD148CBB3E000D51BE /* Poison_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_2.png; path = Resources/img/Poison_2.png; sourceTree = "<group>"; };
+		04906ABE148CBB3E000D51BE /* Poison_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_3.png; path = Resources/img/Poison_3.png; sourceTree = "<group>"; };
+		04906ABF148CBB3E000D51BE /* Poison_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_4.png; path = Resources/img/Poison_4.png; sourceTree = "<group>"; };
+		04906AC0148CBB3E000D51BE /* Poison_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_5.png; path = Resources/img/Poison_5.png; sourceTree = "<group>"; };
+		04906AC1148CBB3E000D51BE /* Poison_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_6.png; path = Resources/img/Poison_6.png; sourceTree = "<group>"; };
+		04906AC2148CBB3E000D51BE /* Poison_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_7.png; path = Resources/img/Poison_7.png; sourceTree = "<group>"; };
+		04906AC3148CBB3E000D51BE /* Poison_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_8.png; path = Resources/img/Poison_8.png; sourceTree = "<group>"; };
+		04906AC4148CBB3E000D51BE /* Poison_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_9.png; path = Resources/img/Poison_9.png; sourceTree = "<group>"; };
+		04906AC5148CBB3E000D51BE /* Poison_10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_10.png; path = Resources/img/Poison_10.png; sourceTree = "<group>"; };
+		04906AC6148CBB3E000D51BE /* PoisonBtn-.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PoisonBtn-.png"; path = "Resources/img/PoisonBtn-.png"; sourceTree = "<group>"; };
+		04906AC7148CBB3E000D51BE /* PoisonBtn-A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PoisonBtn-A.png"; path = "Resources/img/PoisonBtn-A.png"; sourceTree = "<group>"; };
+		04906AC8148CBB3E000D51BE /* PoisonBtn+.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PoisonBtn+.png"; path = "Resources/img/PoisonBtn+.png"; sourceTree = "<group>"; };
+		04906AC9148CBB3E000D51BE /* PoisonBtn+A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "PoisonBtn+A.png"; path = "Resources/img/PoisonBtn+A.png"; sourceTree = "<group>"; };
+		04906ACA148CBB3E000D51BE /* PoisonBtnsBack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = PoisonBtnsBack.png; path = Resources/img/PoisonBtnsBack.png; sourceTree = "<group>"; };
 		04B24A8E143C8DA400549F8C /* MTG LifeCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MTG LifeCounter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04B24A92143C8DA400549F8C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		04B24A94143C8DA400549F8C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -110,6 +147,8 @@
 		0432315F143CBC70007968AF /* img */ = {
 			isa = PBXGroup;
 			children = (
+				04906ABA148CBB25000D51BE /* Poison */,
+				04906AB5148BB2C0000D51BE /* MarbleBlue.png */,
 				04906AB11487F51F000D51BE /* Btn-20.png */,
 				04906AB21487F51F000D51BE /* Btn+20.png */,
 				04906AAF1487F332000D51BE /* Btn20Back.png */,
@@ -117,6 +156,29 @@
 				04906AA91487EB1D000D51BE /* Field.png */,
 			);
 			name = img;
+			sourceTree = "<group>";
+		};
+		04906ABA148CBB25000D51BE /* Poison */ = {
+			isa = PBXGroup;
+			children = (
+				04906ABB148CBB3E000D51BE /* Poison_0.png */,
+				04906ABC148CBB3E000D51BE /* Poison_1.png */,
+				04906ABD148CBB3E000D51BE /* Poison_2.png */,
+				04906ABE148CBB3E000D51BE /* Poison_3.png */,
+				04906ABF148CBB3E000D51BE /* Poison_4.png */,
+				04906AC0148CBB3E000D51BE /* Poison_5.png */,
+				04906AC1148CBB3E000D51BE /* Poison_6.png */,
+				04906AC2148CBB3E000D51BE /* Poison_7.png */,
+				04906AC3148CBB3E000D51BE /* Poison_8.png */,
+				04906AC4148CBB3E000D51BE /* Poison_9.png */,
+				04906AC5148CBB3E000D51BE /* Poison_10.png */,
+				04906AC6148CBB3E000D51BE /* PoisonBtn-.png */,
+				04906AC7148CBB3E000D51BE /* PoisonBtn-A.png */,
+				04906AC8148CBB3E000D51BE /* PoisonBtn+.png */,
+				04906AC9148CBB3E000D51BE /* PoisonBtn+A.png */,
+				04906ACA148CBB3E000D51BE /* PoisonBtnsBack.png */,
+			);
+			name = Poison;
 			sourceTree = "<group>";
 		};
 		04B24A83143C8DA300549F8C = {
@@ -155,6 +217,8 @@
 		04B24A9C143C8DA400549F8C /* MTG LifeCounter */ = {
 			isa = PBXGroup;
 			children = (
+				04906AB7148BBA73000D51BE /* ContentView.h */,
+				04906AB8148BBA73000D51BE /* ContentView.m */,
 				04B24AA5143C8DA400549F8C /* AppDelegate.h */,
 				04B24AA6143C8DA400549F8C /* AppDelegate.m */,
 				04B24AAE143C8DA400549F8C /* Shader.fsh */,
@@ -276,6 +340,23 @@
 				04906AB01487F332000D51BE /* Btn20Back.png in Resources */,
 				04906AB31487F51F000D51BE /* Btn-20.png in Resources */,
 				04906AB41487F51F000D51BE /* Btn+20.png in Resources */,
+				04906AB6148BB2C0000D51BE /* MarbleBlue.png in Resources */,
+				04906ACB148CBB3E000D51BE /* Poison_0.png in Resources */,
+				04906ACC148CBB3E000D51BE /* Poison_1.png in Resources */,
+				04906ACD148CBB3E000D51BE /* Poison_2.png in Resources */,
+				04906ACE148CBB3E000D51BE /* Poison_3.png in Resources */,
+				04906ACF148CBB3E000D51BE /* Poison_4.png in Resources */,
+				04906AD0148CBB3E000D51BE /* Poison_5.png in Resources */,
+				04906AD1148CBB3E000D51BE /* Poison_6.png in Resources */,
+				04906AD2148CBB3E000D51BE /* Poison_7.png in Resources */,
+				04906AD3148CBB3E000D51BE /* Poison_8.png in Resources */,
+				04906AD4148CBB3E000D51BE /* Poison_9.png in Resources */,
+				04906AD5148CBB3E000D51BE /* Poison_10.png in Resources */,
+				04906AD6148CBB3E000D51BE /* PoisonBtn-.png in Resources */,
+				04906AD7148CBB3E000D51BE /* PoisonBtn-A.png in Resources */,
+				04906AD8148CBB3E000D51BE /* PoisonBtn+.png in Resources */,
+				04906AD9148CBB3E000D51BE /* PoisonBtn+A.png in Resources */,
+				04906ADA148CBB3E000D51BE /* PoisonBtnsBack.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +395,7 @@
 				04B24AA7143C8DA400549F8C /* AppDelegate.m in Sources */,
 				04B24AB4143C8DA400549F8C /* ViewController.m in Sources */,
 				043231621443480E007968AF /* Card.m in Sources */,
+				04906AB9148BBA73000D51BE /* ContentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +493,7 @@
 				INFOPLIST_FILE = "MTG LifeCounter/MTG LifeCounter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos5.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -424,6 +507,7 @@
 				INFOPLIST_FILE = "MTG LifeCounter/MTG LifeCounter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos5.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
