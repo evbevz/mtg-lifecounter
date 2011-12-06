@@ -62,6 +62,7 @@
     NSLog(@"CardView:drawRect");
     
     CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
     CGContextSetStrokeColorWithColor(context, linesColor.CGColor);
     //CGContextSetFillColorWithColor(context, linesColor.CGColor);
    //CGContextClearRect(context, rect);

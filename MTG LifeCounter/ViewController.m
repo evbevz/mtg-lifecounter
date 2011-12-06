@@ -7,6 +7,9 @@
 //
 
 #import "ViewController.h"
+#import "ContentView.h"
+#import <QuartzCore/CABase.h>
+#import "ThrowDiceEngine.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 #define CARD_ROTATE_DURATION    0.4
@@ -39,6 +42,7 @@ GLfloat gCubeVertexData[216] =
 {
     // Data layout for each line below is:
     // positionX, positionY, positionZ,     normalX, normalY, normalZ,
+    
     0.5f, -0.5f, -0.5f,        1.0f, 0.0f, 0.0f,
     0.5f, 0.5f, -0.5f,         1.0f, 0.0f, 0.0f,
     0.5f, -0.5f, 0.5f,         1.0f, 0.0f, 0.0f,
@@ -113,6 +117,8 @@ GLfloat gCubeVertexData[216] =
 
 @synthesize context = _context;
 @synthesize effect = _effect;
+
+#pragma mark - regular ViewController methods
 
 - (void)viewDidLoad
 {
@@ -221,7 +227,10 @@ GLfloat gCubeVertexData[216] =
     
 
     // Dice GL
-    glView.frame = CGRectMake(40, 40, 100, 100);
+    dice_size = 110.0 * MAX_SCALE;
+    float margin = 30;
+    dice_position = CGPointMake([UIScreen mainScreen].bounds.size.width - dice_size/2 - margin * x_scale, [UIScreen mainScreen].bounds.size.height - dice_size/2 - margin * y_scale);
+    glView.frame = CGRectMake(dice_position.x - dice_size/2, dice_position.y - dice_size/2, dice_size, dice_size);
     [self.view addSubview:glView];
     
     self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
@@ -261,54 +270,12 @@ GLfloat gCubeVertexData[216] =
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-    } else {
+    if(interfaceOrientation == UIInterfaceOrientationPortrait)
         return YES;
-    }
+    
+    return NO;
 }
 
-- (void)setupGL
-{
-    [EAGLContext setCurrentContext:self.context];
-    
-    [self loadShaders];
-    
-    self.effect = [[GLKBaseEffect alloc] init];
-    self.effect.light0.enabled = GL_TRUE;
-    self.effect.light0.diffuseColor = GLKVector4Make(1.0f, 0.4f, 0.4f, 1.0f);
-    
-    glEnable(GL_DEPTH_TEST);
-    
-    glGenVertexArraysOES(1, &_vertexArray);
-    glBindVertexArrayOES(_vertexArray);
-    
-    glGenBuffers(1, &_vertexBuffer);
-    glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(gCubeVertexData), gCubeVertexData, GL_STATIC_DRAW);
-    
-    glEnableVertexAttribArray(GLKVertexAttribPosition);
-    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(0));
-    glEnableVertexAttribArray(GLKVertexAttribNormal);
-    glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(12));
-    
-    glBindVertexArrayOES(0);
-}
-
-- (void)tearDownGL
-{
-    [EAGLContext setCurrentContext:self.context];
-    
-    glDeleteBuffers(1, &_vertexBuffer);
-    glDeleteVertexArraysOES(1, &_vertexArray);
-    
-    self.effect = nil;
-    
-    if (_program) {
-        glDeleteProgram(_program);
-        _program = 0;
-    }
-}
 
 - (void)playerButtonTouched:(UIButton*)button
 {
@@ -386,6 +353,7 @@ GLfloat gCubeVertexData[216] =
      _rotateEnabled = NO;
      */
 }
+
 - (void)selectPlayer:(int)i
 {
     
@@ -396,8 +364,141 @@ GLfloat gCubeVertexData[216] =
     
 }
 
+#pragma mark - ViewController touches methods
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	NSLog(@"touchBegan");
+    
+    UITouch* touch = [touches anyObject];
+    if(CGRectContainsPoint(glView.frame, [touch locationInView:self.view]))
+    {
+        NSLog(@"dice touch began");
+        dice_throw_start = [touch locationInView:self.view];
+        dice_throw_time = CACurrentMediaTime();
+        dice_locked = YES;
+    }
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"touchCancelled");
+    
+    dice_locked = NO;
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"touchEnded");
+    
+    UITouch* touch = [touches anyObject];
+    dice_throw_end = [touch locationInView:self.view];
+    dice_throw_time = CACurrentMediaTime() - dice_throw_time;
+    NSLog(@"time: %f", dice_throw_time);
+    dice_locked = NO;
+    [self throwDice];
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"touchMoved");
+    
+    if(dice_locked)
+    {
+        UITouch* touch = [touches anyObject];
+        dice_position = [touch locationInView:self.view];
+        glView.frame = CGRectMake(dice_position.x - dice_size/2, dice_position.y - dice_size/2, dice_size, dice_size);
+        dice_throw_time = CACurrentMediaTime();
+        dice_throw_start = dice_position;
+    }
+}
+
+-(void) throwDice
+{
+    ThrowDiceEngine *engine = [ThrowDiceEngine alloc];
+    engine.startPoint = dice_throw_start;
+    engine.endPoint = dice_throw_end;
+    engine.initialVelocity = sqrtf(powf(dice_throw_end.x - dice_throw_start.x, 2) + powf(dice_throw_end.y - dice_throw_start.y, 2))/dice_throw_time;
+    engine.field = self.view.frame;
+    engine.velocityFading = 1;
+    
+    NSMutableArray *path = [engine GetPath];
+    for (NSMutableDictionary* point in path) {
+        NSLog(@"path: [%f, %f], %f sec", ((NSNumber*)[point valueForKey:@"x"]).floatValue, ((NSNumber*)[point valueForKey:@"y"]).floatValue, ((NSNumber*)[point valueForKey:@"duration"]).floatValue);
+    }
+
+    [UIView beginAnimations:@"animationId" context:nil];
+    [UIView setAnimationDuration:3];
+    [UIView setAnimationDelegate:self];
+    //[UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
+    //[UIView setAnimationTransition:UIViewAnimationTransitionNone
+    //                       forView:glView cache:YES];
+    //[button setImage:image forState:UIControlStateNormal];
+	//[button setBackgroundImage:backImage forState:UIControlStateNormal];
+    //card.lifeBase = (players[toPlayer].life - 1) / 20 * 20;
+    //[card setNeedsDisplay];
+    //NSLog(@"New lifebase = %d", card.lifeBase);
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    glView.frame = CGRectMake(0,0, dice_size, dice_size);
+    glView.frame = CGRectMake(100,100, dice_size, dice_size);
+    [UIView commitAnimations];
+	
+    /*
+     if (_sound)
+     {
+     NSURL* soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Cards_turning.wav"																				 ofType:nil]];
+     self.player = [[[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil] autorelease];
+     [self.player play];
+     }
+     
+     _rotateEnabled = NO;
+     */
+
+}
 
 #pragma mark - GLKView and GLKViewController delegate methods
+- (void)setupGL
+{
+    [EAGLContext setCurrentContext:self.context];
+    
+    [self loadShaders];
+    
+    self.effect = [[GLKBaseEffect alloc] init];
+    self.effect.light0.enabled = GL_TRUE;
+    self.effect.light0.diffuseColor = GLKVector4Make(1.0f, 0.4f, 0.4f, 1.0f);
+    
+    glEnable(GL_DEPTH_TEST);
+    
+    glGenVertexArraysOES(1, &_vertexArray);
+    glBindVertexArrayOES(_vertexArray);
+    
+    glGenBuffers(1, &_vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(gCubeVertexData), gCubeVertexData, GL_STATIC_DRAW);
+    
+    glEnableVertexAttribArray(GLKVertexAttribPosition);
+    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(0));
+    glEnableVertexAttribArray(GLKVertexAttribNormal);
+    glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(12));
+    
+    glBindVertexArrayOES(0);
+}
+
+- (void)tearDownGL
+{
+    [EAGLContext setCurrentContext:self.context];
+    
+    glDeleteBuffers(1, &_vertexBuffer);
+    glDeleteVertexArraysOES(1, &_vertexArray);
+    
+    self.effect = nil;
+    
+    if (_program) {
+        glDeleteProgram(_program);
+        _program = 0;
+    }
+}
 
 - (void)update
 {
@@ -407,15 +508,16 @@ GLfloat gCubeVertexData[216] =
     
     self.effect.transform.projectionMatrix = projectionMatrix;
     
-    GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -4.0f);
-    baseModelViewMatrix = GLKMatrix4Rotate(baseModelViewMatrix, _rotation, 0.0f, 1.0f, 0.0f);
+    GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -3.3f);
+    //baseModelViewMatrix = GLKMatrix4Rotate(baseModelViewMatrix, _rotation, 0.0f, 1.0f, 0.0f);
     
     // Compute the model view matrix for the object rendered with GLKit
-    GLKMatrix4 modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -1.5f);
-    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, _rotation, 1.0f, 1.0f, 1.0f);
-    modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
+    GLKMatrix4 modelViewMatrix;
+    //modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -1.5f);
+    //modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, _rotation, 1.0f, 1.0f, 1.0f);
+    //modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
     
-    self.effect.transform.modelviewMatrix = modelViewMatrix;
+    //self.effect.transform.modelviewMatrix = modelViewMatrix;
     
     // Compute the model view matrix for the object rendered with ES2
     modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 1.5f);
@@ -442,9 +544,9 @@ GLfloat gCubeVertexData[216] =
     glBindVertexArrayOES(_vertexArray);
     
     // Render the object with GLKit
-    [self.effect prepareToDraw];
+    //[self.effect prepareToDraw];
     
-    glDrawArrays(GL_TRIANGLES, 0, 36);
+    //glDrawArrays(GL_TRIANGLES, 0, 36);
     
     // Render the object again with ES2
     glUseProgram(_program);

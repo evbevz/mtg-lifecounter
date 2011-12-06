@@ -34,8 +34,16 @@ struct PlayerData
     UIButton    *btn[PLAYER_BUTTONS_CNT];
     struct PlayerData   players[PLAYER_BUTTONS_CNT];
     int         current_player;
+    
+    CGPoint     dice_position;
+    float       dice_size; 
+    CGPoint     dice_throw_start;
+    CGPoint     dice_throw_end;
+    float       dice_throw_time;
+    Boolean     dice_locked;
 }
 
 -(void)showPoison;
+-(void)throwDice;
 
 @end
