@@ -7,12 +7,10 @@
 //
 
 #import "ViewController.h"
-#import "Card.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 #define CARD_ROTATE_DURATION    0.4
 
-#define PLAYER_BUTTONS_CNT      5
 #define CardNumbersColor        [UIColor colorWithRed:228.0/255 green:178.0/255 blue:114.0/255 alpha:1]
 #define CardNumbersBorderColor  [UIColor colorWithRed:57.0/255 green:34.0/255 blue:4.0/255 alpha:1]
 #define POISON_PREFIX           @"Poison_"
@@ -85,8 +83,7 @@ GLfloat gCubeVertexData[216] =
 };
 
 @interface ViewController () {
-    CardView    *card;
-    GLuint _program;
+    GLuint      _program;
     GLKView     *glView;
     
     GLKMatrix4 _modelViewProjectionMatrix;
@@ -96,7 +93,6 @@ GLfloat gCubeVertexData[216] =
     GLuint _vertexArray;
     GLuint _vertexBuffer;
     
-    UIButton *btn[PLAYER_BUTTONS_CNT];
 }
 @property (strong, nonatomic) EAGLContext *context;
 @property (strong, nonatomic) GLKBaseEffect *effect;
@@ -124,32 +120,20 @@ GLfloat gCubeVertexData[216] =
     
     y_scale = [UIScreen mainScreen].bounds.size.height / 1024;
 	x_scale = [UIScreen mainScreen].bounds.size.width / 768;
-
+    
+    current_player = 0;
+    
     UIImageView *main = [[UIImageView alloc] initWithFrame:self.view.frame];
     main.image = [UIImage imageNamed:@"Background.png"];
     glView = (GLKView*)self.view;
     self.view = main;
     [self.view setUserInteractionEnabled:true];
     
-    /*
-    //buttons
-    float left = 0;
-    float width = 50;
-    float height = 50;
-    for(int i = 0; i < PLAYER_BUTTONS_CNT; ++i)
-    {
-        btn[i] = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        btn[i].frame = CGRectMake(left, 0, width, height);
-        [btn[i] addTarget:self action:@selector(playerButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
-        left += width;
-        
-        [self.view addSubview:btn[i]];
-    }
- */
-    NSLog(@"Create CardView");
+    
+    //NSLog(@"Create CardView");
     card = [[CardView alloc] initWithFrame:self.view.frame];
     card.backgroundImage = [UIImage imageNamed:@"Field.png"];
-    card.frame = CGRectMake(140.0 * x_scale, 110.0 * y_scale, card.backgroundImage.size.width * MIN_SCALE, card.backgroundImage.size.height * MIN_SCALE);
+    card.frame = CGRectMake(140.0 * x_scale, 110.0 * y_scale, card.backgroundImage.size.width * x_scale, card.backgroundImage.size.height * y_scale);
     card.margin = 2;
     card.font = [UIFont fontWithName:@"GaramondPremrPro-Smbd" size:70 * x_scale];
     card.linesColor = [UIColor clearColor];
@@ -214,6 +198,27 @@ GLfloat gCubeVertexData[216] =
     [poison_dec setImage:[UIImage imageNamed:@"PoisonBtn-A.png"] forState:UIControlStateHighlighted];
     [poison_dec addTarget:self action:@selector(poisonButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:poison_dec];
+
+    //bubbles
+    float bubblesBase = card.frame.origin.x / 1.75;
+    img = [UIImage imageNamed:@"Bubble.png"];
+    width = img.size.width * MAX_SCALE;
+    height = img.size.height * MAX_SCALE;
+    float top = card.frame.origin.y;
+    for(int i = 0; i < PLAYER_BUTTONS_CNT; ++i)
+    {
+        btn[i] = [UIButton buttonWithType:UIButtonTypeCustom];
+        btn[i].frame = CGRectMake(bubblesBase - width/2, top, width, height);
+        [btn[i] setImage:img forState:UIControlStateNormal];        
+        [btn[i] addTarget:self action:@selector(playerButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
+        top += (card.frame.size.height - poison_img.frame.size.height*0.9)/PLAYER_BUTTONS_CNT;
+        
+        [self.view addSubview:btn[i]];
+        
+        players[i].poison = 0;
+        players[i].life = 20;
+    }
+    
 
     // Dice GL
     glView.frame = CGRectMake(40, 40, 100, 100);
@@ -318,11 +323,15 @@ GLfloat gCubeVertexData[216] =
 - (void)counterButtonTouched:(UIButton*)button
 {
     if(button == btn20_dec && card.lifeBase >= 20)
+    {
         card.lifeBase -= 20;
-    
+        players[current_player].life -= 20;
+    }
     if(button == btn20_inc)
+    {
         card.lifeBase += 20;
-    
+        players[current_player].life += 20;
+    }
     [card setNeedsDisplay];
 }
 
@@ -339,6 +348,9 @@ GLfloat gCubeVertexData[216] =
         poison_val--;
         [self showPoison];
     }
+
+    players[current_player].poison = poison_val;
+
 }
 
 - (void) showPoison
@@ -346,11 +358,50 @@ GLfloat gCubeVertexData[216] =
     poison_img.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@%d.png", POISON_PREFIX, poison_val]];
 }
 
+- (void)flipCard:(int)toPlayer
+{
+	NSLog(@"showCardForButton");
+    
+    [UIView beginAnimations:@"animationId" context:nil];
+    [UIView setAnimationDuration:CARD_ROTATE_DURATION];
+    [UIView setAnimationDelegate:self];
+    //[UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
+    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft
+                           forView:card cache:YES];
+    //[button setImage:image forState:UIControlStateNormal];
+	//[button setBackgroundImage:backImage forState:UIControlStateNormal];
+    card.lifeBase = (players[toPlayer].life - 1) / 20 * 20;
+    [card setNeedsDisplay];
+    NSLog(@"New lifebase = %d", card.lifeBase);
+    [UIView commitAnimations];
+	
+    /*
+     if (_sound)
+     {
+     NSURL* soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Cards_turning.wav"																				 ofType:nil]];
+     self.player = [[[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil] autorelease];
+     [self.player play];
+     }
+     
+     _rotateEnabled = NO;
+     */
+}
+- (void)selectPlayer:(int)i
+{
+    
+    [self flipCard:i];
+    current_player = i;
+    poison_val = players[i].poison;
+    [self showPoison];
+    
+}
+
+
 #pragma mark - GLKView and GLKViewController delegate methods
 
 - (void)update
 {
-    NSLog(@"update");
+    //NSLog(@"update");
     float aspect = fabsf(glView.bounds.size.width / glView.bounds.size.height);
     GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
     
@@ -382,7 +433,7 @@ GLfloat gCubeVertexData[216] =
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
-    NSLog(@"drawRect");
+    //NSLog(@"drawRect");
     
     //glClearColor(0.65f, 0.65f, 0.65f, 1.0f);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -554,35 +605,6 @@ GLfloat gCubeVertexData[216] =
     }
     
     return YES;
-}
-- (void)flipCard
-{
-	NSLog(@"showCardForButton");
-    
-    [UIView beginAnimations:@"animationId" context:nil];
-    [UIView setAnimationDuration:CARD_ROTATE_DURATION];
-    [UIView setAnimationDelegate:self];
-    //[UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
-    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft
-                           forView:card cache:YES];
-    //[button setImage:image forState:UIControlStateNormal];
-	//[button setBackgroundImage:backImage forState:UIControlStateNormal];
-    [UIView commitAnimations];
-	
-    /*
-     if (_sound)
-     {
-     NSURL* soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Cards_turning.wav"																				 ofType:nil]];
-     self.player = [[[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil] autorelease];
-     [self.player play];
-     }
-     
-     _rotateEnabled = NO;
-     */
-}
-- (void)selectPlayer:(int)i
-{
-    [self flipCard];
 }
 
 

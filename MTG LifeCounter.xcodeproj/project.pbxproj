@@ -48,6 +48,7 @@
 		04B24ABE143C8DA400549F8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A94143C8DA400549F8C /* Foundation.framework */; };
 		04B24AC6143C8DA400549F8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04B24AC4143C8DA400549F8C /* InfoPlist.strings */; };
 		04B24AC9143C8DA400549F8C /* MTG_LifeCounterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B24AC8143C8DA400549F8C /* MTG_LifeCounterTests.m */; };
+		04B83BD0148E0C2800F0843E /* Bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 04B83BCF148E0C2800F0843E /* Bubble.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +111,7 @@
 		04B24AC5143C8DA400549F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		04B24AC7143C8DA400549F8C /* MTG_LifeCounterTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTG_LifeCounterTests.h; sourceTree = "<group>"; };
 		04B24AC8143C8DA400549F8C /* MTG_LifeCounterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MTG_LifeCounterTests.m; sourceTree = "<group>"; };
+		04B83BCF148E0C2800F0843E /* Bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Bubble.png; path = Resources/img/Bubble.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 			children = (
 				04906ABA148CBB25000D51BE /* Poison */,
 				04906AB5148BB2C0000D51BE /* MarbleBlue.png */,
+				04B83BCF148E0C2800F0843E /* Bubble.png */,
 				04906AB11487F51F000D51BE /* Btn-20.png */,
 				04906AB21487F51F000D51BE /* Btn+20.png */,
 				04906AAF1487F332000D51BE /* Btn20Back.png */,
@@ -361,6 +364,7 @@
 				04906AD9148CBB3E000D51BE /* PoisonBtn+A.png in Resources */,
 				04906ADA148CBB3E000D51BE /* PoisonBtnsBack.png in Resources */,
 				04906ADC148D2DFB000D51BE /* GaramondPremrPro-Smbd.otf in Resources */,
+				04B83BD0148E0C2800F0843E /* Bubble.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
