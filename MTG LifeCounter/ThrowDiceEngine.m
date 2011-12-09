@@ -56,7 +56,7 @@
         point3.y = (point1.y == field.origin.y ? (field.origin.y + field.size.height) : field.origin.y);
         
         CGPoint crossPoint;
-        CGPoint reflectionPoint = currentPoint;
+        CGPoint reflectionPoint = prevPoint;
         
         do {
             float A2 = point1.y - point2.y;
@@ -91,6 +91,7 @@
                 break;
             }
             NSLog(@"ThrowDiceEngine: ERROR!!! No crossPoint found!");
+            return path;
         } while (0);
         
         
@@ -108,7 +109,7 @@
         NSMutableDictionary *value = [[NSMutableDictionary alloc] initWithCapacity:3];
         [value setValue:[NSNumber numberWithFloat:crossPoint.x] forKey:@"x"];
         [value setValue:[NSNumber numberWithFloat:crossPoint.y] forKey:@"y"];
-        [value setValue:[NSNumber numberWithFloat:distance/velocity] forKey:@"duration"];
+        [value setValue:[NSNumber numberWithFloat:MAX(0.1, distance/velocity)] forKey:@"duration"];
 
         [path addObject:value];
         

@@ -39,7 +39,8 @@ struct PlayerData
     float       dice_size; 
     CGPoint     dice_throw_start;
     CGPoint     dice_throw_end;
-    float       dice_throw_time;
+    double      dice_throw_time;
+    double      dice_previous_move_time;
     Boolean     dice_locked;
 }
 
