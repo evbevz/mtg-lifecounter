@@ -10,6 +10,8 @@
 #import "ContentView.h"
 #import <QuartzCore/CABase.h>
 #import "ThrowDiceEngine.h"
+#import <QuartzCore/QuartzCore.h>
+#import "OpenGLView.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 #define CARD_ROTATE_DURATION    0.4
@@ -26,6 +28,7 @@ enum
 {
     UNIFORM_MODELVIEWPROJECTION_MATRIX,
     UNIFORM_NORMAL_MATRIX,
+    UNIFORM_TEXTURE,
     NUM_UNIFORMS
 };
 GLint uniforms[NUM_UNIFORMS];
@@ -35,56 +38,65 @@ enum
 {
     ATTRIB_VERTEX,
     ATTRIB_NORMAL,
+    ATTRIB_TEXTURE,
     NUM_ATTRIBUTES
 };
 
-GLfloat gCubeVertexData[216] = 
+GLfloat gCubeVertexData[216+72] = 
 {
     // Data layout for each line below is:
-    // positionX, positionY, positionZ,     normalX, normalY, normalZ,
+    // positionX, positionY, positionZ,     normalX, normalY, normalZ, texX, texY
     
-    0.5f, -0.5f, -0.5f,        1.0f, 0.0f, 0.0f,
-    0.5f, 0.5f, -0.5f,         1.0f, 0.0f, 0.0f,
-    0.5f, -0.5f, 0.5f,         1.0f, 0.0f, 0.0f,
-    0.5f, -0.5f, 0.5f,         1.0f, 0.0f, 0.0f,
-    0.5f, 0.5f, 0.5f,          1.0f, 0.0f, 0.0f,
-    0.5f, 0.5f, -0.5f,         1.0f, 0.0f, 0.0f,
+    0.5f, -0.5f, -0.5f,        1.0f, 0.0f, 0.0f,    0.0f, 0.0f,
+    0.5f, 0.5f, -0.5f,         1.0f, 0.0f, 0.0f,    0.0f, 1.0f,    
+    0.5f, -0.5f, 0.5f,         1.0f, 0.0f, 0.0f,    1.0f, 1.0f,
+    0.5f, -0.5f, 0.5f,         1.0f, 0.0f, 0.0f,    1.0f, 1.0f,
+    0.5f, 0.5f, 0.5f,          1.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+    0.5f, 0.5f, -0.5f,         1.0f, 0.0f, 0.0f,    0.0f, 1.0f,
     
-    0.5f, 0.5f, -0.5f,         0.0f, 1.0f, 0.0f,
-    -0.5f, 0.5f, -0.5f,        0.0f, 1.0f, 0.0f,
-    0.5f, 0.5f, 0.5f,          0.0f, 1.0f, 0.0f,
-    0.5f, 0.5f, 0.5f,          0.0f, 1.0f, 0.0f,
-    -0.5f, 0.5f, -0.5f,        0.0f, 1.0f, 0.0f,
-    -0.5f, 0.5f, 0.5f,         0.0f, 1.0f, 0.0f,
+    0.5f, 0.5f, -0.5f,         0.0f, 1.0f, 0.0f,    0.0f, 0.0f,
+    -0.5f, 0.5f, -0.5f,        0.0f, 1.0f, 0.0f,    0.0f, 1.0f,
+    0.5f, 0.5f, 0.5f,          0.0f, 1.0f, 0.0f,    1.0f, 1.0f,
+    0.5f, 0.5f, 0.5f,          0.0f, 1.0f, 0.0f,    1.0f, 1.0f,
+    -0.5f, 0.5f, -0.5f,        0.0f, 1.0f, 0.0f,    1.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f,         0.0f, 1.0f, 0.0f,    0.0f, 1.0f,
     
-    -0.5f, 0.5f, -0.5f,        -1.0f, 0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,       -1.0f, 0.0f, 0.0f,
-    -0.5f, 0.5f, 0.5f,         -1.0f, 0.0f, 0.0f,
-    -0.5f, 0.5f, 0.5f,         -1.0f, 0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,       -1.0f, 0.0f, 0.0f,
-    -0.5f, -0.5f, 0.5f,        -1.0f, 0.0f, 0.0f,
+    -0.5f, 0.5f, -0.5f,        -1.0f, 0.0f, 0.0f,    0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,       -1.0f, 0.0f, 0.0f,    0.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f,         -1.0f, 0.0f, 0.0f,    1.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f,         -1.0f, 0.0f, 0.0f,    1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,       -1.0f, 0.0f, 0.0f,    1.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f,        -1.0f, 0.0f, 0.0f,    0.0f, 1.0f,
     
-    -0.5f, -0.5f, -0.5f,       0.0f, -1.0f, 0.0f,
-    0.5f, -0.5f, -0.5f,        0.0f, -1.0f, 0.0f,
-    -0.5f, -0.5f, 0.5f,        0.0f, -1.0f, 0.0f,
-    -0.5f, -0.5f, 0.5f,        0.0f, -1.0f, 0.0f,
-    0.5f, -0.5f, -0.5f,        0.0f, -1.0f, 0.0f,
-    0.5f, -0.5f, 0.5f,         0.0f, -1.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,       0.0f, -1.0f, 0.0f,    0.0f, 0.0f,
+    0.5f, -0.5f, -0.5f,        0.0f, -1.0f, 0.0f,    0.0f, 1.0f,
+    -0.5f, -0.5f, 0.5f,        0.0f, -1.0f, 0.0f,    1.0f, 1.0f,
+    -0.5f, -0.5f, 0.5f,        0.0f, -1.0f, 0.0f,    1.0f, 1.0f,
+    0.5f, -0.5f, -0.5f,        0.0f, -1.0f, 0.0f,    1.0f, 0.0f,
+    0.5f, -0.5f, 0.5f,         0.0f, -1.0f, 0.0f,    0.0f, 1.0f,
     
-    0.5f, 0.5f, 0.5f,          0.0f, 0.0f, 1.0f,
-    -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,
-    0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,
-    0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,
-    -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f, 0.5f,        0.0f, 0.0f, 1.0f,
+    0.5f, 0.5f, 0.5f,          0.0f, 0.0f, 1.0f,    0.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,    0.0f, 1.0f,
+    0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,    1.0f, 1.0f,
+    0.5f, -0.5f, 0.5f,         0.0f, 0.0f, 1.0f,    1.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f,         0.0f, 0.0f, 1.0f,    1.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f,        0.0f, 0.0f, 1.0f,    0.0f, 1.0f,
     
-    0.5f, -0.5f, -0.5f,        0.0f, 0.0f, -1.0f,
-    -0.5f, -0.5f, -0.5f,       0.0f, 0.0f, -1.0f,
-    0.5f, 0.5f, -0.5f,         0.0f, 0.0f, -1.0f,
-    0.5f, 0.5f, -0.5f,         0.0f, 0.0f, -1.0f,
-    -0.5f, -0.5f, -0.5f,       0.0f, 0.0f, -1.0f,
-    -0.5f, 0.5f, -0.5f,        0.0f, 0.0f, -1.0f
+    0.5f, -0.5f, -0.5f,        0.0f, 0.0f, -1.0f,    0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,       0.0f, 0.0f, -1.0f,    0.0f, 1.0f,
+    0.5f, 0.5f, -0.5f,         0.0f, 0.0f, -1.0f,    1.0f, 1.0f,
+    0.5f, 0.5f, -0.5f,         0.0f, 0.0f, -1.0f,    1.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f,       0.0f, 0.0f, -1.0f,    1.0f, 0.0f,
+    -0.5f, 0.5f, -0.5f,        0.0f, 0.0f, -1.0f,    0.0f, 1.0f
 };
+
+typedef struct {
+    float Position[3];
+    float Color[4];
+    float TexCoord[2]; // New
+} Vertex;
+
+
 
 @interface ViewController () {
     GLuint      _program;
@@ -96,6 +108,7 @@ GLfloat gCubeVertexData[216] =
     
     GLuint _vertexArray;
     GLuint _vertexBuffer;
+    GLuint texture;
     
 }
 @property (strong, nonatomic) EAGLContext *context;
@@ -128,6 +141,7 @@ GLfloat gCubeVertexData[216] =
 	x_scale = [UIScreen mainScreen].bounds.size.width / 768;
     
     current_player = 0;
+    dice_in_animation = NO;
     
     UIImageView *main = [[UIImageView alloc] initWithFrame:self.view.frame];
     main.image = [UIImage imageNamed:@"Background.png"];
@@ -228,26 +242,30 @@ GLfloat gCubeVertexData[216] =
     
 
     // Dice GL
+    
     dice_size = 110.0 * MAX_SCALE;
     float margin = 30;
     dice_position = CGPointMake([UIScreen mainScreen].bounds.size.width - dice_size/2 - margin * x_scale, [UIScreen mainScreen].bounds.size.height - dice_size/2 - margin * y_scale);
-    glView.frame = CGRectMake(dice_position.x - dice_size/2, dice_position.y - dice_size/2, dice_size, dice_size);
-    [self.view addSubview:glView];
     
-    self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    OpenGLView *diceView = [[OpenGLView alloc] initWithFrame:CGRectMake(dice_position.x - dice_size/2, dice_position.y - dice_size/2, dice_size, dice_size)];
+    [self.view addSubview:diceView];
+    diceView.backgroundColor = [UIColor clearColor];
+    //glView.frame = CGRectMake(dice_position.x - dice_size/2, dice_position.y - dice_size/2, dice_size, dice_size);
+    //[self.view addSubview:glView];
+    
+    //self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 
-    if (!self.context) {
-        NSLog(@"Failed to create ES context");
-    }
+    //if (!self.context) {
+    //    NSLog(@"Failed to create ES context");
+    //}
     
-    GLKView *view = glView;
-    view.context = self.context;
-    view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
-    view.drawableColorFormat = GLKViewDrawableColorFormatRGBA8888;
-    view.backgroundColor = [UIColor clearColor];
+    //GLKView *view = glView;
+    //view.context = self.context;
+    //view.drawableDepthFormat = GLKViewDrawableDepthFormat24;
+    //view.drawableColorFormat = GLKViewDrawableColorFormatRGBA8888;
+    //view.backgroundColor = [UIColor clearColor];
     
-    [self setupGL];
-    
+    //[self setupGL];
 }
 
 - (void)viewDidUnload
@@ -378,8 +396,15 @@ GLfloat gCubeVertexData[216] =
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	NSLog(@"touchBegan");
+	NSLog(@"touchBegan/ dice_in_animation: %d", (int)dice_in_animation);
+    //if(dice_in_animation)
+    //{
+        NSLog(@"remove animation");
+        [self.view.layer removeAllAnimations]; 
+        dice_in_animation = false;
+    //}
     
+   
     UITouch* touch = [touches anyObject];
     if(CGRectContainsPoint(glView.frame, [touch locationInView:self.view]))
     {
@@ -387,6 +412,12 @@ GLfloat gCubeVertexData[216] =
         dice_throw_start = [touch locationInView:self.view];
         dice_throw_time = CACurrentMediaTime();
         dice_locked = YES;
+        
+        if(dice_in_animation)
+        {
+            NSLog(@"remove animation");
+            [self.view.layer removeAllAnimations]; 
+        }
     }
 }
 
@@ -488,6 +519,7 @@ GLfloat gCubeVertexData[216] =
         [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
         [UIView setAnimationCurve:([path count] > 0 ? UIViewAnimationCurveLinear : UIViewAnimationCurveEaseOut)];
         glView.frame = CGRectMake(((NSNumber*)[point valueForKey:@"x"]).floatValue - dice_size/2,((NSNumber*)[point valueForKey:@"y"]).floatValue - dice_size/2, dice_size, dice_size);
+        dice_in_animation = YES;
         [UIView commitAnimations];
     }
 	
@@ -512,7 +544,10 @@ GLfloat gCubeVertexData[216] =
         NSMutableArray *path = (__bridge_transfer NSMutableArray*)context;
         
         if([path count] == 0)
+        {
+            dice_in_animation = NO;
             return;
+        }
         
         NSMutableDictionary *point = [path objectAtIndex:0];
         [path removeObject:point];
@@ -532,6 +567,41 @@ GLfloat gCubeVertexData[216] =
 
 
 #pragma mark - GLKView and GLKViewController delegate methods
+- (GLuint)setupTexture:(NSString *)fileName {    
+    // 1
+    CGImageRef spriteImage = [UIImage imageNamed:fileName].CGImage;
+    if (!spriteImage) {
+        NSLog(@"Failed to load image %@", fileName);
+        exit(1);
+    }
+    
+    // 2
+    size_t width = CGImageGetWidth(spriteImage);
+    size_t height = CGImageGetHeight(spriteImage);
+    
+    GLubyte * spriteData = (GLubyte *) calloc(width*height*4, sizeof(GLubyte));
+    
+    CGContextRef spriteContext = CGBitmapContextCreate(spriteData, width, height, 8, width*4, 
+                                                       CGImageGetColorSpace(spriteImage), kCGImageAlphaPremultipliedLast);    
+    
+    // 3
+    CGContextDrawImage(spriteContext, CGRectMake(0, 0, width, height), spriteImage);
+    
+    CGContextRelease(spriteContext);
+    
+    // 4
+    GLuint texName;
+    glGenTextures(1, &texName);
+    glBindTexture(GL_TEXTURE_2D, texName);
+    
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); 
+    
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, spriteData);
+    
+    free(spriteData);        
+    return texName;    
+}
+
 - (void)setupGL
 {
     [EAGLContext setCurrentContext:self.context];
@@ -552,11 +622,16 @@ GLfloat gCubeVertexData[216] =
     glBufferData(GL_ARRAY_BUFFER, sizeof(gCubeVertexData), gCubeVertexData, GL_STATIC_DRAW);
     
     glEnableVertexAttribArray(GLKVertexAttribPosition);
-    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(0));
+    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(0));
     glEnableVertexAttribArray(GLKVertexAttribNormal);
-    glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, 24, BUFFER_OFFSET(12));
+    glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, 32, BUFFER_OFFSET(12));
+    
+    //texture = [self setupTexture:@"tile_floor.png"];
+    glEnable(GL_TEXTURE_2D);
+    glTexCoordPointer(2, GL_FLOAT, 32, BUFFER_OFFSET(24));
     
     glBindVertexArrayOES(0);
+    NSLog(@"texture name: %d", texture);
 }
 
 - (void)tearDownGL
@@ -573,6 +648,7 @@ GLfloat gCubeVertexData[216] =
         _program = 0;
     }
 }
+
 
 - (void)update
 {
@@ -595,14 +671,14 @@ GLfloat gCubeVertexData[216] =
     
     // Compute the model view matrix for the object rendered with ES2
     modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 1.5f);
-    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, _rotation, 1.0f, 1.0f, 1.0f);
+    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, _rotation, 1.0f, 0.0f, 0.0f);
     modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
     
     _normalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
     
     _modelViewProjectionMatrix = GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
     
-    _rotation += self.timeSinceLastUpdate * 0.5f;
+    _rotation += self.timeSinceLastUpdate * 1.5f;
     
     [glView setNeedsDisplay];
 }
@@ -628,7 +704,13 @@ GLfloat gCubeVertexData[216] =
     glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _modelViewProjectionMatrix.m);
     glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _normalMatrix.m);
     
+    
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glUniform1i(uniforms[UNIFORM_TEXTURE], 0);
+    
     glDrawArrays(GL_TRIANGLES, 0, 36);
+    
 }
 
 #pragma mark -  OpenGL ES 2 shader compilation
@@ -665,6 +747,7 @@ GLfloat gCubeVertexData[216] =
     // This needs to be done prior to linking.
     glBindAttribLocation(_program, ATTRIB_VERTEX, "position");
     glBindAttribLocation(_program, ATTRIB_NORMAL, "normal");
+    glBindAttribLocation(_program, ATTRIB_TEXTURE, "texCoordIn");
     
     // Link program.
     if (![self linkProgram:_program]) {
@@ -689,6 +772,7 @@ GLfloat gCubeVertexData[216] =
     // Get uniform locations.
     uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX] = glGetUniformLocation(_program, "modelViewProjectionMatrix");
     uniforms[UNIFORM_NORMAL_MATRIX] = glGetUniformLocation(_program, "normalMatrix");
+    uniforms[UNIFORM_TEXTURE] = glGetUniformLocation(_program, "texture");
     
     // Release vertex and fragment shaders.
     if (vertShader) {
@@ -740,6 +824,7 @@ GLfloat gCubeVertexData[216] =
 
 - (BOOL)linkProgram:(GLuint)prog
 {
+
     GLint status;
     glLinkProgram(prog);
     

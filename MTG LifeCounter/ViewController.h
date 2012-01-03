@@ -42,6 +42,8 @@ struct PlayerData
     double      dice_throw_time;
     double      dice_previous_move_time;
     Boolean     dice_locked;
+    Boolean     dice_in_animation;
+    
 }
 
 -(void)showPoison;
