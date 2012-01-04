@@ -12,5 +12,6 @@ varying vec2 TexCoordOut; // New
 void main(void) { 
     DestinationColor = SourceColor; 
     gl_Position = Projection * Modelview * Position;
+    //gl_Position = Position;
     TexCoordOut = TexCoordIn; // New
 }

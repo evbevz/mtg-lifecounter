@@ -18,7 +18,7 @@ struct PlayerData
     int     life;
 };
 
-@interface ViewController : GLKViewController
+@interface ViewController : UIViewController
 {
     float   x_scale;
     float   y_scale;

@@ -244,7 +244,8 @@ const GLubyte Indices[] = {
     glUniformMatrix4fv(_projectionUniform, 1, 0, projection.glMatrix);
     
     CC3GLMatrix *modelView = [CC3GLMatrix matrix];
-    [modelView populateFromTranslation:CC3VectorMake(sin(CACurrentMediaTime()), 0, -7)];
+    //[modelView populateFromTranslation:CC3VectorMake(sin(CACurrentMediaTime()), 0, -7)];
+    [modelView populateFromTranslation:CC3VectorMake(0, 0, -7)];
     _currentRotation += displayLink.duration * 90;
     [modelView rotateBy:CC3VectorMake(_currentRotation, _currentRotation, 0)];
     glUniformMatrix4fv(_modelViewUniform, 1, 0, modelView.glMatrix);

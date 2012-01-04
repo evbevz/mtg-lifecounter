@@ -44,7 +44,6 @@
 		04906ADC148D2DFB000D51BE /* GaramondPremrPro-Smbd.otf in Resources */ = {isa = PBXBuildFile; fileRef = 04906ADB148D2DFB000D51BE /* GaramondPremrPro-Smbd.otf */; };
 		04B24A93143C8DA400549F8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A92143C8DA400549F8C /* UIKit.framework */; };
 		04B24A95143C8DA400549F8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A94143C8DA400549F8C /* Foundation.framework */; };
-		04B24A99143C8DA400549F8C /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A98143C8DA400549F8C /* GLKit.framework */; };
 		04B24A9B143C8DA400549F8C /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A9A143C8DA400549F8C /* OpenGLES.framework */; };
 		04B24AA1143C8DA400549F8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04B24A9F143C8DA400549F8C /* InfoPlist.strings */; };
 		04B24AA3143C8DA400549F8C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B24AA2143C8DA400549F8C /* main.m */; };
@@ -121,7 +120,6 @@
 		04B24A8E143C8DA400549F8C /* MTG LifeCounter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MTG LifeCounter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04B24A92143C8DA400549F8C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		04B24A94143C8DA400549F8C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		04B24A98143C8DA400549F8C /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		04B24A9A143C8DA400549F8C /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		04B24A9E143C8DA400549F8C /* MTG LifeCounter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MTG LifeCounter-Info.plist"; sourceTree = "<group>"; };
 		04B24AA0143C8DA400549F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -155,7 +153,6 @@
 				04BE2B28148E496A00A7469B /* CoreGraphics.framework in Frameworks */,
 				04B24A93143C8DA400549F8C /* UIKit.framework in Frameworks */,
 				04B24A95143C8DA400549F8C /* Foundation.framework in Frameworks */,
-				04B24A99143C8DA400549F8C /* GLKit.framework in Frameworks */,
 				04B24A9B143C8DA400549F8C /* OpenGLES.framework in Frameworks */,
 				04BE2B26148E47B600A7469B /* QuartzCore.framework in Frameworks */,
 			);
@@ -281,7 +278,6 @@
 				04BE2B23148E470700A7469B /* QuartzCore.framework */,
 				04B24A92143C8DA400549F8C /* UIKit.framework */,
 				04B24A94143C8DA400549F8C /* Foundation.framework */,
-				04B24A98143C8DA400549F8C /* GLKit.framework */,
 				04B24A9A143C8DA400549F8C /* OpenGLES.framework */,
 				04B24ABB143C8DA400549F8C /* SenTestingKit.framework */,
 				04BE2B25148E47B600A7469B /* QuartzCore.framework */,
