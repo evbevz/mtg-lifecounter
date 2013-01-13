@@ -32,6 +32,8 @@ struct PlayerData
     UIButton    *btn20_dec;
     CardView    *card;
     UIButton    *btn[PLAYER_BUTTONS_CNT];
+    UIImage     *marbles[PLAYER_BUTTONS_CNT];
+    UIImage     *bubble;
     struct PlayerData   players[PLAYER_BUTTONS_CNT];
     int         current_player;
     

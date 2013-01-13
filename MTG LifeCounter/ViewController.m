@@ -124,9 +124,13 @@
     [poison_dec addTarget:self action:@selector(poisonButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:poison_dec];
 
-    //bubbles
+    //bubbles & marbles
+    marbles[0] = [UIImage imageNamed:@"MarbleBlue.png"];
+    marbles[1] = [UIImage imageNamed:@"MarbleGreen.png"];
+    marbles[2] = [UIImage imageNamed:@"MarbleRed.png"];
+    marbles[3] = [UIImage imageNamed:@"MarbleBlack.png"];
     float bubblesBase = card.frame.origin.x / 1.75;
-    img = [UIImage imageNamed:@"Bubble.png"];
+    bubble = [UIImage imageNamed:@"Bubble.png"];
     width = img.size.width * MAX_SCALE;
     height = img.size.height * MAX_SCALE;
     float top = card.frame.origin.y;
@@ -134,8 +138,9 @@
     {
         btn[i] = [UIButton buttonWithType:UIButtonTypeCustom];
         btn[i].frame = CGRectMake(bubblesBase - width/2, top, width, height);
-        [btn[i] setImage:img forState:UIControlStateNormal];        
-        [btn[i] addTarget:self action:@selector(playerButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
+        //[btn[i] setImage:img forState:UIControlStateNormal];
+        [btn[i] setImage:marbles[i] forState:UIControlStateNormal];
+       [btn[i] addTarget:self action:@selector(playerButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
         top += (card.frame.size.height - poison_img.frame.size.height*0.9)/PLAYER_BUTTONS_CNT;
         
         [self.view addSubview:btn[i]];
@@ -266,7 +271,7 @@
 
 - (void)selectPlayer:(int)i
 {
-    
+    [btn[current_player] setImage:bubble forState:UIControlStateNormal];
     [self flipCard:i];
     current_player = i;
     poison_val = players[i].poison;

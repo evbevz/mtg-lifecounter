@@ -14,10 +14,6 @@
 		0484CF8814B3085500C90495 /* OpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0484CF8714B3085400C90495 /* OpenGLView.m */; };
 		0484CF8B14B3086A00C90495 /* SimpleFragment.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 0484CF8914B3086A00C90495 /* SimpleFragment.glsl */; };
 		0484CF8C14B3086A00C90495 /* SimpleVertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 0484CF8A14B3086A00C90495 /* SimpleVertex.glsl */; };
-		0484CF9914B3095600C90495 /* CC3Foundation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0484CF9014B3095600C90495 /* CC3Foundation.m */; };
-		0484CF9A14B3095600C90495 /* CC3GLMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = 0484CF9214B3095600C90495 /* CC3GLMatrix.m */; };
-		0484CF9B14B3095600C90495 /* CC3Kazmath.c in Sources */ = {isa = PBXBuildFile; fileRef = 0484CF9314B3095600C90495 /* CC3Kazmath.c */; };
-		0484CF9C14B3095600C90495 /* CC3Math.m in Sources */ = {isa = PBXBuildFile; fileRef = 0484CF9714B3095600C90495 /* CC3Math.m */; };
 		04906AA71487E6B5000D51BE /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AA61487E6B5000D51BE /* Background.png */; };
 		04906AAA1487EB1D000D51BE /* Field.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AA91487EB1D000D51BE /* Field.png */; };
 		04906AB01487F332000D51BE /* Btn20Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AAF1487F332000D51BE /* Btn20Back.png */; };
@@ -60,6 +56,9 @@
 		04BE2B26148E47B600A7469B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04BE2B25148E47B600A7469B /* QuartzCore.framework */; };
 		04BE2B28148E496A00A7469B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04BE2B27148E496A00A7469B /* CoreGraphics.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		04BE2B2F148E527000A7469B /* ThrowDiceEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 04BE2B2E148E527000A7469B /* ThrowDiceEngine.m */; };
+		849210BE16A34CBB007025C2 /* MarbleBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 849210BD16A34CBB007025C2 /* MarbleBlack.png */; };
+		849210C216A34CCA007025C2 /* MarbleGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 849210C016A34CCA007025C2 /* MarbleGreen.png */; };
+		849210C316A34CCA007025C2 /* MarbleRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 849210C116A34CCA007025C2 /* MarbleRed.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,16 +81,6 @@
 		0484CF8714B3085400C90495 /* OpenGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenGLView.m; sourceTree = "<group>"; };
 		0484CF8914B3086A00C90495 /* SimpleFragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SimpleFragment.glsl; path = "MTG LifeCounter/Shaders/SimpleFragment.glsl"; sourceTree = "<group>"; };
 		0484CF8A14B3086A00C90495 /* SimpleVertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SimpleVertex.glsl; path = "MTG LifeCounter/Shaders/SimpleVertex.glsl"; sourceTree = "<group>"; };
-		0484CF8F14B3095600C90495 /* CC3Foundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Foundation.h; sourceTree = "<group>"; };
-		0484CF9014B3095600C90495 /* CC3Foundation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CC3Foundation.m; sourceTree = "<group>"; };
-		0484CF9114B3095600C90495 /* CC3GLMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3GLMatrix.h; sourceTree = "<group>"; };
-		0484CF9214B3095600C90495 /* CC3GLMatrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CC3GLMatrix.m; sourceTree = "<group>"; };
-		0484CF9314B3095600C90495 /* CC3Kazmath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CC3Kazmath.c; sourceTree = "<group>"; };
-		0484CF9414B3095600C90495 /* CC3Kazmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Kazmath.h; sourceTree = "<group>"; };
-		0484CF9514B3095600C90495 /* CC3Logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Logging.h; sourceTree = "<group>"; };
-		0484CF9614B3095600C90495 /* CC3Math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Math.h; sourceTree = "<group>"; };
-		0484CF9714B3095600C90495 /* CC3Math.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CC3Math.m; sourceTree = "<group>"; };
-		0484CF9814B3095600C90495 /* ccTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccTypes.h; sourceTree = "<group>"; };
 		04906AA61487E6B5000D51BE /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background.png; path = Resources/img/Background.png; sourceTree = "<group>"; };
 		04906AA91487EB1D000D51BE /* Field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Field.png; path = Resources/img/Field.png; sourceTree = "<group>"; };
 		04906AAF1487F332000D51BE /* Btn20Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Btn20Back.png; path = Resources/img/Btn20Back.png; sourceTree = "<group>"; };
@@ -143,6 +132,9 @@
 		04BE2B27148E496A00A7469B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		04BE2B2D148E527000A7469B /* ThrowDiceEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThrowDiceEngine.h; sourceTree = "<group>"; };
 		04BE2B2E148E527000A7469B /* ThrowDiceEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThrowDiceEngine.m; sourceTree = "<group>"; };
+		849210BD16A34CBB007025C2 /* MarbleBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MarbleBlack.png; path = Resources/img/MarbleBlack.png; sourceTree = "<group>"; };
+		849210C016A34CCA007025C2 /* MarbleGreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MarbleGreen.png; path = Resources/img/MarbleGreen.png; sourceTree = "<group>"; };
+		849210C116A34CCA007025C2 /* MarbleRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MarbleRed.png; path = Resources/img/MarbleRed.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,11 +175,14 @@
 		0432315F143CBC70007968AF /* img */ = {
 			isa = PBXGroup;
 			children = (
+				849210C016A34CCA007025C2 /* MarbleGreen.png */,
+				849210C116A34CCA007025C2 /* MarbleRed.png */,
+				849210BD16A34CBB007025C2 /* MarbleBlack.png */,
+				04906AB5148BB2C0000D51BE /* MarbleBlue.png */,
 				0484CF8014A3646C00C90495 /* tile_floor.png */,
 				0484CF7314A25DCA00C90495 /* dice_1-64.png */,
 				0484CF7014A24BBA00C90495 /* Dice_1.png */,
 				04906ABA148CBB25000D51BE /* Poison */,
-				04906AB5148BB2C0000D51BE /* MarbleBlue.png */,
 				04B83BCF148E0C2800F0843E /* Bubble.png */,
 				04906AB11487F51F000D51BE /* Btn-20.png */,
 				04906AB21487F51F000D51BE /* Btn+20.png */,
@@ -207,23 +202,6 @@
 				0484CF8914B3086A00C90495 /* SimpleFragment.glsl */,
 			);
 			name = Shaders;
-			sourceTree = "<group>";
-		};
-		0484CF8E14B3095600C90495 /* CC3Math */ = {
-			isa = PBXGroup;
-			children = (
-				0484CF8F14B3095600C90495 /* CC3Foundation.h */,
-				0484CF9014B3095600C90495 /* CC3Foundation.m */,
-				0484CF9114B3095600C90495 /* CC3GLMatrix.h */,
-				0484CF9214B3095600C90495 /* CC3GLMatrix.m */,
-				0484CF9314B3095600C90495 /* CC3Kazmath.c */,
-				0484CF9414B3095600C90495 /* CC3Kazmath.h */,
-				0484CF9514B3095600C90495 /* CC3Logging.h */,
-				0484CF9614B3095600C90495 /* CC3Math.h */,
-				0484CF9714B3095600C90495 /* CC3Math.m */,
-				0484CF9814B3095600C90495 /* ccTypes.h */,
-			);
-			path = CC3Math;
 			sourceTree = "<group>";
 		};
 		04906ABA148CBB25000D51BE /* Poison */ = {
@@ -252,7 +230,6 @@
 		04B24A83143C8DA300549F8C = {
 			isa = PBXGroup;
 			children = (
-				0484CF8E14B3095600C90495 /* CC3Math */,
 				0484CF8D14B3089E00C90495 /* Shaders */,
 				0432315E143CBC61007968AF /* Resources */,
 				04B24A9C143C8DA400549F8C /* MTG LifeCounter */,
@@ -437,6 +414,9 @@
 				0484CF8114A3646D00C90495 /* tile_floor.png in Resources */,
 				0484CF8B14B3086A00C90495 /* SimpleFragment.glsl in Resources */,
 				0484CF8C14B3086A00C90495 /* SimpleVertex.glsl in Resources */,
+				849210BE16A34CBB007025C2 /* MarbleBlack.png in Resources */,
+				849210C216A34CCA007025C2 /* MarbleGreen.png in Resources */,
+				849210C316A34CCA007025C2 /* MarbleRed.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -478,10 +458,6 @@
 				04906AB9148BBA73000D51BE /* ContentView.m in Sources */,
 				04BE2B2F148E527000A7469B /* ThrowDiceEngine.m in Sources */,
 				0484CF8814B3085500C90495 /* OpenGLView.m in Sources */,
-				0484CF9914B3095600C90495 /* CC3Foundation.m in Sources */,
-				0484CF9A14B3095600C90495 /* CC3GLMatrix.m in Sources */,
-				0484CF9B14B3095600C90495 /* CC3Kazmath.c in Sources */,
-				0484CF9C14B3095600C90495 /* CC3Math.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,6 +560,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -602,6 +579,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

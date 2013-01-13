@@ -7,7 +7,7 @@
 //
 
 #import "OpenGLView.h"
-#import "CC3GLMatrix.h"
+//#import "CC3GLMatrix.h"
 
 @implementation OpenGLView
 
@@ -237,6 +237,7 @@ const GLubyte Indices[] = {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
+    /*
     
     CC3GLMatrix *projection = [CC3GLMatrix matrix];
     float h = 4.0f * self.frame.size.height / self.frame.size.width;
@@ -249,7 +250,7 @@ const GLubyte Indices[] = {
     _currentRotation += displayLink.duration * 90;
     [modelView rotateBy:CC3VectorMake(_currentRotation, _currentRotation, 0)];
     glUniformMatrix4fv(_modelViewUniform, 1, 0, modelView.glMatrix);
-    
+    */
     // 1
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
     
