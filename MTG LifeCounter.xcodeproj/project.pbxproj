@@ -59,6 +59,7 @@
 		849210BE16A34CBB007025C2 /* MarbleBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 849210BD16A34CBB007025C2 /* MarbleBlack.png */; };
 		849210C216A34CCA007025C2 /* MarbleGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 849210C016A34CCA007025C2 /* MarbleGreen.png */; };
 		849210C316A34CCA007025C2 /* MarbleRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 849210C116A34CCA007025C2 /* MarbleRed.png */; };
+		84C9895B16A71CB900E57DBD /* MarbleWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C9895A16A71CB900E57DBD /* MarbleWhite.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -135,6 +136,7 @@
 		849210BD16A34CBB007025C2 /* MarbleBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MarbleBlack.png; path = Resources/img/MarbleBlack.png; sourceTree = "<group>"; };
 		849210C016A34CCA007025C2 /* MarbleGreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MarbleGreen.png; path = Resources/img/MarbleGreen.png; sourceTree = "<group>"; };
 		849210C116A34CCA007025C2 /* MarbleRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MarbleRed.png; path = Resources/img/MarbleRed.png; sourceTree = "<group>"; };
+		84C9895A16A71CB900E57DBD /* MarbleWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MarbleWhite.png; path = Resources/img/MarbleWhite.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +177,7 @@
 		0432315F143CBC70007968AF /* img */ = {
 			isa = PBXGroup;
 			children = (
+				84C9895A16A71CB900E57DBD /* MarbleWhite.png */,
 				849210C016A34CCA007025C2 /* MarbleGreen.png */,
 				849210C116A34CCA007025C2 /* MarbleRed.png */,
 				849210BD16A34CBB007025C2 /* MarbleBlack.png */,
@@ -417,6 +420,7 @@
 				849210BE16A34CBB007025C2 /* MarbleBlack.png in Resources */,
 				849210C216A34CCA007025C2 /* MarbleGreen.png in Resources */,
 				849210C316A34CCA007025C2 /* MarbleRed.png in Resources */,
+				84C9895B16A71CB900E57DBD /* MarbleWhite.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

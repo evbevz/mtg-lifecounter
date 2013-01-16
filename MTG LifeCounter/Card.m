@@ -43,13 +43,6 @@
         font = [UIFont systemFontOfSize:20.0];
     }
     
-    // Marble
-    //marble = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"MarbleBlue.png"]];
-    //CGPoint coords = card.getTopLeftCellCenter;
-    //marble_x = coords.x + card.frame.origin.x - marble.image.size.width * y_scale / 2;
-    //marble_y = coords.y + card.frame.origin.y - marble.image.size.height * y_scale / 2;
-    //marble.frame = CGRectMake(marble_x, marble_y, marble.image.size.width * y_scale, marble.image.size.height * y_scale);
-    //[self.view addSubview:marble];
 
     return self;
 }
@@ -144,6 +137,28 @@
     float cellHeight = (self.frame.size.height - 2*margin)/5;
     return CGPointMake(margin + cellWidth/2, margin + cellHeight/2);
 }
+
+- (void) showMarble:(UIImageView*)marbleView withValue:(int)lifeAmount
+{
+    if (marble != NULL) {
+        [marble removeFromSuperview];
+    }
+    marble = marbleView;
+    
+    if(marble != NULL)
+    {
+        float cellWidth = (self.frame.size.width - 2*margin)/4;
+        float cellHeight = (self.frame.size.height - 2*margin)/5;
+        int col = (lifeBase + 20 - lifeAmount) % 4;
+        int row = (lifeBase + 20 - lifeAmount) / 4;
+    
+        marble.frame = CGRectMake(0, 0, marble.frame.size.width, marble.frame.size.height);
+        marble.center = CGPointMake([self getTopLeftCellCenter].x + cellWidth * col, [self getTopLeftCellCenter].y + cellHeight * row);
+    
+        [self addSubview:marble];
+    }
+}
+
 
 #pragma mark ContentView
 - (void)contentView:(ContentView*)view didMoveTouch:(UITouch*)touch

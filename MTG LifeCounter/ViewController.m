@@ -125,30 +125,45 @@
     [self.view addSubview:poison_dec];
 
     //bubbles & marbles
-    marbles[0] = [UIImage imageNamed:@"MarbleBlue.png"];
-    marbles[1] = [UIImage imageNamed:@"MarbleGreen.png"];
-    marbles[2] = [UIImage imageNamed:@"MarbleRed.png"];
-    marbles[3] = [UIImage imageNamed:@"MarbleBlack.png"];
+    marble_img[0] = [UIImage imageNamed:@"MarbleBlue.png"];
+    marble_img[1] = [UIImage imageNamed:@"MarbleGreen.png"];
+    marble_img[2] = [UIImage imageNamed:@"MarbleRed.png"];
+    marble_img[3] = [UIImage imageNamed:@"MarbleWhite.png"];
     float bubblesBase = card.frame.origin.x / 1.75;
     bubble = [UIImage imageNamed:@"Bubble.png"];
-    width = img.size.width * MAX_SCALE;
-    height = img.size.height * MAX_SCALE;
+    width = bubble.size.width * MAX_SCALE;
+    height = bubble.size.height * MAX_SCALE;
     float top = card.frame.origin.y;
     for(int i = 0; i < PLAYER_BUTTONS_CNT; ++i)
     {
+        // marble place
+        UIImageView *marble_place = [[UIImageView alloc] initWithImage:bubble];
+        marble_place.frame = CGRectMake(bubblesBase - width/2, top, width, height);
+        [self.view addSubview:marble_place];
+        
+        // marble button        
         btn[i] = [UIButton buttonWithType:UIButtonTypeCustom];
         btn[i].frame = CGRectMake(bubblesBase - width/2, top, width, height);
-        //[btn[i] setImage:img forState:UIControlStateNormal];
-        [btn[i] setImage:marbles[i] forState:UIControlStateNormal];
-       [btn[i] addTarget:self action:@selector(playerButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
-        top += (card.frame.size.height - poison_img.frame.size.height*0.9)/PLAYER_BUTTONS_CNT;
+        [btn[i] setImage:marble_img[i] forState:UIControlStateNormal];
+        CGFloat edge_top = (marble_img[i].size.height - bubble.size.height)/2 * MAX_SCALE;
+        CGFloat edge_left = (marble_img[i].size.width - bubble.size.width)/2 * MAX_SCALE;
+        btn[i].imageEdgeInsets = UIEdgeInsetsMake(-edge_top,-edge_left,-edge_top,-edge_left);
+        [btn[i] addTarget:self action:@selector(playerButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
+        //btn[i].alpha = 0.5;
         
         [self.view addSubview:btn[i]];
         
+        // marble
+        marbles[i] = [[UIImageView alloc] initWithImage:marble_img[i]];
+        marbles[i].frame = CGRectMake(0,0,marble_img[i].size.width * MAX_SCALE, marble_img[i].size.height * MAX_SCALE);
+        //marbles[i].alpha = 0.5;
+        
+        top += (card.frame.size.height - poison_img.frame.size.height*0.9)/PLAYER_BUTTONS_CNT;
         players[i].poison = 0;
         players[i].life = 20;
     }
     
+    canChangePlayer = true;
 
     // Dice GL
     
@@ -194,6 +209,9 @@
 
 - (void)playerButtonTouched:(UIButton*)button
 {
+    if(!canChangePlayer)
+        return;
+    
     for (int i = 0; i < PLAYER_BUTTONS_CNT; ++i) {
         if (btn[i] == button) 
         {
@@ -244,17 +262,22 @@
 {
 	NSLog(@"showCardForButton");
     
-    [UIView beginAnimations:@"animationId" context:nil];
+    canChangePlayer = false;
+    [UIView beginAnimations:@"flipCard" context:(void*)toPlayer];
     [UIView setAnimationDuration:CARD_ROTATE_DURATION];
     [UIView setAnimationDelegate:self];
-    //[UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
+    [UIView setAnimationDidStopSelector:@selector(flipCardAnimationDidStop:finished:context:)];
     [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft
                            forView:card cache:YES];
-    //[button setImage:image forState:UIControlStateNormal];
-	//[button setBackgroundImage:backImage forState:UIControlStateNormal];
+    btn[toPlayer].alpha = 0;
+    if (toPlayer != current_player) {
+        btn[current_player].alpha = 1;
+    }
+    
     card.lifeBase = (players[toPlayer].life - 1) / 20 * 20;
     [card setNeedsDisplay];
     NSLog(@"New lifebase = %d", card.lifeBase);
+    
     [UIView commitAnimations];
 	
     /*
@@ -268,12 +291,39 @@
      _rotateEnabled = NO;
      */
 }
+- (void)flipCardAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
+{
+	//NSLog(@"animationDidStop");
+    
+	if(animationID == @"flipCard")
+    {
+        canChangePlayer = true;
+        
+        int toPlayer = (int)context;
+        btn[toPlayer].hidden = true;
+        btn[toPlayer].alpha = 1;
+        current_player = toPlayer;
+        
+        marbles[toPlayer].alpha = 0;
+        [card showMarble:marbles[toPlayer] withValue:players[toPlayer].life];
+        
+        [UIView beginAnimations:@"showMarble" context:(void*)toPlayer];
+        [UIView setAnimationDuration:CARD_ROTATE_DURATION / 2];
+        [UIView setAnimationDelegate:self];
+        marbles[toPlayer].alpha = 1;
+        [UIView commitAnimations];
+  }
+}
 
 - (void)selectPlayer:(int)i
 {
-    [btn[current_player] setImage:bubble forState:UIControlStateNormal];
+    if (i != current_player) {
+        btn[current_player].alpha = 0;
+        btn[current_player].hidden = false;
+    }
+    [card showMarble:NULL withValue:1];
     [self flipCard:i];
-    current_player = i;
+    
     poison_val = players[i].poison;
     [self showPoison];
     

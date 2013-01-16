@@ -27,6 +27,7 @@
 }
 
 - (CGPoint) getTopLeftCellCenter;
+- (void)    showMarble:(UIImageView*)marbleView withValue:(int)lifeAmount;
 
 @property(nonatomic, retain) UIColor    *linesColor;
 @property(nonatomic, retain) UIImage    *backgroundImage;
