@@ -30,6 +30,7 @@
 @synthesize lifeBase;
 @synthesize fontColor;
 @synthesize fontBorderColor;
+@synthesize parent;
 
 
 - (id)initWithFrame:(CGRect)frame
@@ -41,6 +42,9 @@
         linesColor = [UIColor blackColor];
         fontColor = [UIColor blackColor];
         font = [UIFont systemFontOfSize:20.0];
+        marble_tracking = false;
+        self.delegate = self;
+        parent = nil;
     }
     
 
@@ -161,13 +165,47 @@
 
 
 #pragma mark ContentView
+
+- (void)contentView:(ContentView*)view didBeganTouch:(UITouch*)touch
+{
+    if(!marble_tracking && marble != nil && CGRectContainsPoint(marble.frame, [touch locationInView:self]))
+    {
+        NSLog(@"marble touch began");
+        marble_tracking = YES;
+        marble_position = marble.center;
+    }
+}
+
+- (void)contentView:(ContentView*)view didEndTouch:(UITouch*)touch
+{
+    if(marble_tracking && marble != nil)
+    {
+        NSLog(@"marble touch ended");
+        marble_tracking = NO;
+        marble.center = [touch locationInView:self];
+        
+        if(self.parent != nil)
+        {
+            float cellWidth = (self.frame.size.width - 2*margin)/4;
+            float cellHeight = (self.frame.size.height - 2*margin)/5;
+            int col = (marble.center.x - margin) / cellWidth;
+            int row = (marble.center.y - margin) / cellHeight;
+            int lifeAmount = lifeBase + (4 * (5 - row)) - col;
+            
+            //marble.frame = CGRectMake(0, 0, marble.frame.size.width, marble.frame.size.height);
+            //marble.center = CGPointMake([self getTopLeftCellCenter].x + cellWidth * col, [self getTopLeftCellCenter].y + cellHeight * row);
+            [self.parent setPlayerLifeAmount:lifeAmount];
+        }
+    }
+}
+
 - (void)contentView:(ContentView*)view didMoveTouch:(UITouch*)touch
 {
-    //CGPoint point = [touch locationInView:self];
-    //self.floatItem.center = point;
-    
-	//if(!_reverseAction)
-	//	[self scrollFarmIfNeeded];
+    if(marble_tracking && marble != nil)
+    {
+        NSLog(@"marble touch ended");
+        marble.center = [touch locationInView:self];
+    }
 }
 
 

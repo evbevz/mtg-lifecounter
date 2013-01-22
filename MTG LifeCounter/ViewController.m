@@ -65,6 +65,7 @@
     card.fontColor = CardNumbersColor;
     card.fontBorderColor = CardNumbersBorderColor;
     card.backgroundColor = [UIColor clearColor];
+    card.parent = self;
     [self.view addSubview:card];
     
     float bottomBaseLine = card.frame.origin.y + card.frame.size.height + ([UIScreen mainScreen].bounds.size.height - (card.frame.origin.y + card.frame.size.height)) / 2.3;
@@ -327,6 +328,11 @@
     poison_val = players[i].poison;
     [self showPoison];
     
+}
+
+- (void)setPlayerLifeAmount:(int)amount
+{
+    players[current_player].life = amount;
 }
 
 #pragma mark - ViewController touches methods

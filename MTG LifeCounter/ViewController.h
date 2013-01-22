@@ -52,5 +52,6 @@ struct PlayerData
 
 -(void)showPoison;
 -(void)throwDice;
+-(void)setPlayerLifeAmount:(int)amount;
 
 @end

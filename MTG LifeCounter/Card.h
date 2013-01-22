@@ -24,6 +24,11 @@
     float   marble_y;
     
     UIImageView *marble;
+    bool        marble_tracking;
+    CGPoint     marble_position;
+    
+    __unsafe_unretained id     parent;
+    
 }
 
 - (CGPoint) getTopLeftCellCenter;
@@ -36,5 +41,12 @@
 @property(nonatomic, retain) UIColor    *fontColor;
 @property(nonatomic, retain) UIColor    *fontBorderColor;
 @property(nonatomic, readwrite) int lifeBase;
+@property(nonatomic, assign) id     parent;
+
+@end
+
+@protocol ViewControllerDelegate
+
+-(void)setPlayerLifeAmount:(int)amount;
 
 @end
