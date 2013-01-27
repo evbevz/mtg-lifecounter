@@ -10,7 +10,7 @@
 #import <GLKit/GLKit.h>
 #import "Card.h"
 
-#define PLAYER_BUTTONS_CNT      4
+#define PLAYER_BUTTONS_CNT      3
 
 struct PlayerData
 {
@@ -32,7 +32,7 @@ struct PlayerData
     UIButton    *btn20_dec;
     CardView    *card;
     UIButton    *btn[PLAYER_BUTTONS_CNT];
-    UIImage     *marble_img[PLAYER_BUTTONS_CNT];
+    UIImage     *marble_img[5];
     UIImageView *marbles[PLAYER_BUTTONS_CNT];
     UIImage     *bubble;
     struct PlayerData   players[PLAYER_BUTTONS_CNT];

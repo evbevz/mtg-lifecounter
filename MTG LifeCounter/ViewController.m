@@ -130,11 +130,12 @@
     marble_img[1] = [UIImage imageNamed:@"MarbleGreen.png"];
     marble_img[2] = [UIImage imageNamed:@"MarbleRed.png"];
     marble_img[3] = [UIImage imageNamed:@"MarbleWhite.png"];
+    marble_img[4] = [UIImage imageNamed:@"MarbleBlack.png"];
     float bubblesBase = card.frame.origin.x / 1.75;
     bubble = [UIImage imageNamed:@"Bubble.png"];
     width = bubble.size.width * MAX_SCALE;
     height = bubble.size.height * MAX_SCALE;
-    float top = card.frame.origin.y;
+    float top = card.frame.origin.y ;
     for(int i = 0; i < PLAYER_BUTTONS_CNT; ++i)
     {
         // marble place
