@@ -45,6 +45,7 @@
         marble_tracking = false;
         self.delegate = self;
         parent = nil;
+                
     }
     
 
@@ -57,6 +58,10 @@
 - (void)drawRect:(CGRect)rect
 {
     NSLog(@"CardView:drawRect");
+    
+    cellWidth = (rect.size.width - 2*margin) / 4;
+    cellHeight = (rect.size.height - 2*margin) /5;
+    activeRadius = MIN(cellHeight, cellWidth) / 2 * 0.8;
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
@@ -84,14 +89,14 @@
     
     for(int lines = 1; lines < 5; ++lines)
     {
-        p[0] = CGPointMake(margin, margin + lines * (rect.size.height - 2*margin) / 5);
+        p[0] = CGPointMake(margin, margin + lines * cellHeight);
         p[1] = CGPointMake(rect.size.width - margin, p[0].y);
         CGContextStrokeLineSegments(context, p, 2);
     }
 
     for(int lines = 1; lines < 4; ++lines)
     {
-        p[0] = CGPointMake(margin + lines * (rect.size.width - 2*margin) / 4, margin);
+        p[0] = CGPointMake(margin + lines * cellWidth, margin);
         p[1] = CGPointMake(p[0].x, rect.size.height - margin);
         CGContextStrokeLineSegments(context, p, 2);
     }
@@ -105,13 +110,14 @@
     CGContextSetTextMatrix(context, CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0));
     CGContextSetFillColorWithColor(context, fontColor.CGColor);
     CGContextSetStrokeColorWithColor(context,fontBorderColor.CGColor);
-    float cellWidth = (rect.size.width - 2*margin)/4;
-    float cellHeight = (rect.size.height - 2*margin)/5;
     
     char txt[4];
     for(int life = lifeBase + 20; life > lifeBase; --life)
     {
         sprintf(txt, "%d", life);
+        
+        float cellWidth = (rect.size.width - 2*margin)/4;
+        float cellHeight = (rect.size.height - 2*margin)/5;
         
         int col = (lifeBase + 20 - life) % 4;
         int row = (lifeBase + 20 - life) / 4;
@@ -137,8 +143,6 @@
 
 - (CGPoint) getTopLeftCellCenter
 {
-    float cellWidth = (self.frame.size.width - 2*margin)/4;
-    float cellHeight = (self.frame.size.height - 2*margin)/5;
     return CGPointMake(margin + cellWidth/2, margin + cellHeight/2);
 }
 
@@ -151,8 +155,6 @@
     
     if(marble != NULL)
     {
-        float cellWidth = (self.frame.size.width - 2*margin)/4;
-        float cellHeight = (self.frame.size.height - 2*margin)/5;
         int col = (lifeBase + 20 - lifeAmount) % 4;
         int row = (lifeBase + 20 - lifeAmount) / 4;
     
@@ -168,11 +170,12 @@
 
 - (void)contentView:(ContentView*)view didBeganTouch:(UITouch*)touch
 {
-    if(!marble_tracking && marble != nil && CGRectContainsPoint(marble.frame, [touch locationInView:self]))
+    CGPoint pos = [touch locationInView:self];
+    if(!marble_tracking && marble != nil && (sqrt(pow(marble.center.x - pos.x, 2) + pow(marble.center.y - pos.y, 2))) <= activeRadius)
     {
         NSLog(@"marble touch began");
         marble_tracking = YES;
-        marble_position = marble.center;
+        moveOffset = CGPointMake(pos.x - marble.center.x, pos.y - marble.center.y);
     }
 }
 
@@ -182,18 +185,13 @@
     {
         NSLog(@"marble touch ended");
         marble_tracking = NO;
-        marble.center = [touch locationInView:self];
         
         if(self.parent != nil)
         {
-            float cellWidth = (self.frame.size.width - 2*margin)/4;
-            float cellHeight = (self.frame.size.height - 2*margin)/5;
             int col = (marble.center.x - margin) / cellWidth;
             int row = (marble.center.y - margin) / cellHeight;
             int lifeAmount = lifeBase + (4 * (5 - row)) - col;
             
-            //marble.frame = CGRectMake(0, 0, marble.frame.size.width, marble.frame.size.height);
-            //marble.center = CGPointMake([self getTopLeftCellCenter].x + cellWidth * col, [self getTopLeftCellCenter].y + cellHeight * row);
             [self.parent setPlayerLifeAmount:lifeAmount];
         }
     }
@@ -203,8 +201,26 @@
 {
     if(marble_tracking && marble != nil)
     {
-        NSLog(@"marble touch ended");
-        marble.center = [touch locationInView:self];
+        NSLog(@"marble touch move");
+        CGPoint pos = [touch locationInView:self];
+        CGPoint marblePos = marble.center;
+        
+        
+        if(pos.x - moveOffset.x - cellWidth/3 < margin)
+            marblePos = CGPointMake(margin + cellWidth/3, marblePos.y);
+        else if(pos.x - moveOffset.x + cellWidth/3 > self.frame.size.width - margin)
+            marblePos = CGPointMake(self.frame.size.width - margin - cellWidth/3, marblePos.y);
+        else
+            marblePos = CGPointMake(pos.x - moveOffset.x, marblePos.y);
+
+        if(pos.y - moveOffset.y - cellHeight/4 < margin)
+            marblePos = CGPointMake(marblePos.x, margin + cellHeight/4);
+        else if(pos.y - moveOffset.y + cellHeight/4 > self.frame.size.height - margin)
+            marblePos = CGPointMake(marblePos.x, self.frame.size.height - margin - cellHeight/4);
+        else
+            marblePos = CGPointMake(marblePos.x, pos.y - moveOffset.y);
+        
+        marble.center = marblePos;
     }
 }
 

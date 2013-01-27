@@ -17,15 +17,14 @@
     UIImage *backgroundImage;
     float   margin;
     UIFont  *font;
+    float   cellWidth, cellHeight;
+    float   activeRadius;
+    CGPoint moveOffset;
     
     int     lifeBase;
-
-    float   marble_x;
-    float   marble_y;
     
     UIImageView *marble;
     bool        marble_tracking;
-    CGPoint     marble_position;
     
     __unsafe_unretained id     parent;
     
