@@ -229,7 +229,7 @@
         card.lifeBase -= 20;
         players[current_player].life -= 20;
     }
-    if(button == btn20_inc)
+    if(button == btn20_inc && card.lifeBase < 1980)
     {
         card.lifeBase += 20;
         players[current_player].life += 20;

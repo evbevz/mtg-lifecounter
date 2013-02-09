@@ -105,13 +105,27 @@
 
 - (void)drawLabels:(CGRect)rect :(CGContextRef)context
 {
+    float y_offset = 1;
+    float x_offset = 1;
+    
+    y_offset = 0.85;
     CGContextSelectFont(context, font.fontName.UTF8String, font.lineHeight, kCGEncodingMacRoman);
+    if(lifeBase >= 80)
+    {
+        y_offset = 0.8;
+        CGContextSelectFont(context, font.fontName.UTF8String, font.lineHeight * 0.9, kCGEncodingMacRoman);
+    }
+    if(lifeBase >= 980)
+    {
+        y_offset = 0.8;
+        CGContextSelectFont(context, font.fontName.UTF8String, font.lineHeight * 0.8, kCGEncodingMacRoman);
+    }
     CGContextSetTextDrawingMode(context, kCGTextFill);
     CGContextSetTextMatrix(context, CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0));
     CGContextSetFillColorWithColor(context, fontColor.CGColor);
     CGContextSetStrokeColorWithColor(context,fontBorderColor.CGColor);
     
-    char txt[4];
+    char txt[5];
     for(int life = lifeBase + 20; life > lifeBase; --life)
     {
         sprintf(txt, "%d", life);
@@ -126,10 +140,21 @@
         NSString *str = [[NSString alloc] initWithUTF8String:txt];
         CGSize txtSize = [str sizeWithFont:font];
         
+        if(life > 9)
+            x_offset = 1.2;
+        if(life > 80)
+            x_offset = 1.05;
+        if(life > 99)
+            x_offset = 1.1;
+        if(life > 980)
+            x_offset = 0.95;
+        if(life > 999)
+            x_offset = 1;
+        
         CGContextSetTextDrawingMode(context, kCGTextFill);
         CGContextShowTextAtPoint(context, 
-                                 margin + col * cellWidth + cellWidth/2 - txtSize.width/2, 
-                                 margin + row * cellHeight + (cellHeight + txtSize.height)/2*0.9, 
+                                 margin + col * cellWidth + cellWidth/2 - txtSize.width/2*x_offset,
+                                 margin + row * cellHeight + (cellHeight + txtSize.height)/2*y_offset,
                                  txt, strlen(txt));
         
         //CGContextSetTextDrawingMode(context, kCGTextStroke);
