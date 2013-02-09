@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "04B24A8D143C8DA400549F8C"
-               BuildableName = "MTG LifeCounter.app"
-               BlueprintName = "MTG LifeCounter"
+               BuildableName = "lifecounter.app"
+               BlueprintName = "lifecounter"
                ReferencedContainer = "container:MTG LifeCounter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -43,8 +43,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "04B24A8D143C8DA400549F8C"
-            BuildableName = "MTG LifeCounter.app"
-            BlueprintName = "MTG LifeCounter"
+            BuildableName = "lifecounter.app"
+            BlueprintName = "lifecounter"
             ReferencedContainer = "container:MTG LifeCounter.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "04B24A8D143C8DA400549F8C"
-            BuildableName = "MTG LifeCounter.app"
-            BlueprintName = "MTG LifeCounter"
+            BuildableName = "lifecounter.app"
+            BlueprintName = "lifecounter"
             ReferencedContainer = "container:MTG LifeCounter.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -80,8 +80,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "04B24A8D143C8DA400549F8C"
-            BuildableName = "MTG LifeCounter.app"
-            BlueprintName = "MTG LifeCounter"
+            BuildableName = "lifecounter.app"
+            BlueprintName = "lifecounter"
             ReferencedContainer = "container:MTG LifeCounter.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

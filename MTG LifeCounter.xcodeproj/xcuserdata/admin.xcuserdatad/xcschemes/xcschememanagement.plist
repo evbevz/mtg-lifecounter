@@ -4,10 +4,20 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>MTG LifeCounter copy.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>MTG LifeCounter.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
+		</dict>
+		<key>lifecounter.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -18,6 +28,16 @@
 			<true/>
 		</dict>
 		<key>04B24AB9143C8DA400549F8C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8409BAB416B8329E007A76BF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8409BAD816B83486007A76BF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
