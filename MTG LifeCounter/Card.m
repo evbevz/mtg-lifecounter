@@ -211,14 +211,24 @@
         NSLog(@"marble touch ended");
         marble_tracking = NO;
         
+        int col = (marble.center.x - margin) / cellWidth;
+        int row = (marble.center.y - margin) / cellHeight;
+        int lifeAmount = lifeBase + (4 * (5 - row)) - col;       
+
         if(self.parent != nil)
         {
-            int col = (marble.center.x - margin) / cellWidth;
-            int row = (marble.center.y - margin) / cellHeight;
-            int lifeAmount = lifeBase + (4 * (5 - row)) - col;
-            
             [self.parent setPlayerLifeAmount:lifeAmount];
         }
+        
+        // Animation
+        [UIView beginAnimations:@"flipCard" context:(void*)0];
+        [UIView setAnimationDuration:0.6];
+        [UIView setAnimationDelegate:self];
+        
+        marble.center = CGPointMake([self getTopLeftCellCenter].x + cellWidth * col, [self getTopLeftCellCenter].y + cellHeight * row);
+        
+        [UIView commitAnimations];
+        
     }
 }
 
