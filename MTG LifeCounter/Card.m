@@ -221,8 +221,12 @@
         }
         
         // Animation
+        float distance = sqrt(pow([self getTopLeftCellCenter].x + cellWidth * col - marble.center.x, 2) +
+        pow([self getTopLeftCellCenter].y + cellHeight * row - marble.center.y, 2));
+        float velocity = cellWidth/2; // px/s
+        
         [UIView beginAnimations:@"flipCard" context:(void*)0];
-        [UIView setAnimationDuration:0.6];
+        [UIView setAnimationDuration:(distance/velocity + 0.2)];
         [UIView setAnimationDelegate:self];
         
         marble.center = CGPointMake([self getTopLeftCellCenter].x + cellWidth * col, [self getTopLeftCellCenter].y + cellHeight * row);

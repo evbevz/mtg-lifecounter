@@ -337,7 +337,7 @@
 }
 
 #pragma mark - ViewController touches methods
-
+/*
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	NSLog(@"touchBegan/ dice_in_animation: %d", (int)dice_in_animation);
@@ -419,9 +419,10 @@
     
     [self throwDice];
 }
-
+*/
 -(void) throwDice
 {
+    /*
     ThrowDiceEngine *engine = [ThrowDiceEngine alloc];
     engine.field = CGRectMake(self.view.frame.origin.x + dice_size/2, self.view.frame.origin.y + dice_size/2, self.view.frame.size.width - dice_size, self.view.frame.size.height - dice_size);
     engine.startPoint = dice_throw_start;
@@ -466,7 +467,7 @@
         dice_in_animation = YES;
         [UIView commitAnimations];
     }
-	
+	*/
     /*
      if (_sound)
      {
@@ -480,6 +481,7 @@
 
 }
 
+/*
 - (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
 {
 	NSLog(@"animationDidStop");
@@ -508,7 +510,7 @@
         
     }
 }
-
+*/
 
 
 /*

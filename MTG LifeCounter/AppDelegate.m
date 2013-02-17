@@ -23,6 +23,8 @@
     self.window.rootViewController = self.viewController;
     
     [self.window makeKeyAndVisible];
+    
+    application.idleTimerDisabled = YES;
    
     return YES;
 }
