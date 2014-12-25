@@ -19,10 +19,11 @@
     GLuint _colorSlot;
     GLuint _projectionUniform;
     GLuint _modelViewUniform;
-    float _currentRotation;
+    float _currentRotationX;
+    float _currentRotationY;
+    float _currentRotationZ;
     GLuint _depthRenderBuffer;
-    GLuint _floorTexture;
-    GLuint _fishTexture;
+    GLuint _texture1;
     GLuint _texCoordSlot;
     GLuint _textureUniform;}
 

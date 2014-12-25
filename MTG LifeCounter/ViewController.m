@@ -297,7 +297,7 @@
 {
 	//NSLog(@"animationDidStop");
     
-	if(animationID == @"flipCard")
+	if([animationID isEqual: @"flipCard"])
     {
         canChangePlayer = true;
         
@@ -337,7 +337,7 @@
 }
 
 #pragma mark - ViewController touches methods
-/*
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	NSLog(@"touchBegan/ dice_in_animation: %d", (int)dice_in_animation);
@@ -419,10 +419,10 @@
     
     [self throwDice];
 }
-*/
+
 -(void) throwDice
 {
-    /*
+    
     ThrowDiceEngine *engine = [ThrowDiceEngine alloc];
     engine.field = CGRectMake(self.view.frame.origin.x + dice_size/2, self.view.frame.origin.y + dice_size/2, self.view.frame.size.width - dice_size, self.view.frame.size.height - dice_size);
     engine.startPoint = dice_throw_start;
@@ -467,7 +467,7 @@
         dice_in_animation = YES;
         [UIView commitAnimations];
     }
-	*/
+	
     /*
      if (_sound)
      {
@@ -481,11 +481,11 @@
 
 }
 
-/*
+
 - (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
 {
 	NSLog(@"animationDidStop");
-	if(animationID == @"ThrowDice")
+	if([animationID isEqual: @"ThrowDice"])
     {
         NSMutableArray *path = (__bridge_transfer NSMutableArray*)context;
         
@@ -510,17 +510,17 @@
         
     }
 }
-*/
+
 
 
 /*
 - (void)update
 {
-    //NSLog(@"update");
+    NSLog(@"update");
     float aspect = fabsf(glView.bounds.size.width / glView.bounds.size.height);
     GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
     
-    self.effect.transform.projectionMatrix = projectionMatrix;
+    //self.effect.transform.projectionMatrix = projectionMatrix;
     
     GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -3.3f);
     //baseModelViewMatrix = GLKMatrix4Rotate(baseModelViewMatrix, _rotation, 0.0f, 1.0f, 0.0f);

@@ -7,7 +7,7 @@
 //
 
 #import "OpenGLView.h"
-//#import "CC3GLMatrix.h"
+#import "CC3GLMatrix.h"
 
 @implementation OpenGLView
 
@@ -30,15 +30,39 @@ const GLubyte Indices[] = {
 };*/
 
 // Add texture coordinates to Vertices as follows
+#define EDGE 64.0/512
+
 const Vertex Vertices[] = {
-    {{1, -1, 0}, {1, 0, 0, 1}, {1, 0}},
-    {{1, 1, 0}, {1, 0, 0, 1}, {1, 1}},
-    {{-1, 1, 0}, {0, 1, 0, 1}, {0, 1}},
-    {{-1, -1, 0}, {0, 1, 0, 1}, {0, 0}},
-    {{1, -1, -1}, {1, 0, 0, 1}, {1, 0}},
-    {{1, 1, -1}, {1, 0, 0, 1}, {1, 1}},
-    {{-1, 1, -1}, {0, 1, 0, 1}, {0, 1}},
-    {{-1, -1, -1}, {0, 1, 0, 1}, {0, 0}}
+    // Front - 6
+    {{1, -1, 1}, {1, 1, 1, 1}, {EDGE, 0}},
+    {{1, 1, 1}, {1, 1, 1, 1}, {EDGE, EDGE}},
+    {{-1, 1, 1}, {1, 1, 1, 1}, {0, EDGE}},
+    {{-1, -1, 1}, {1, 1, 1, 1}, {0, 0}},
+    // Back - 1
+    {{1, 1, -1}, {1, 0, 0, 1}, {EDGE, EDGE*5}},
+    {{-1, -1, -1}, {0, 1, 0, 1}, {0, EDGE*6}},
+    {{1, -1, -1}, {0, 0, 1, 1}, {EDGE, EDGE*6}},
+    {{-1, 1, -1}, {0, 0, 0, 1}, {0, EDGE*5}},
+    // Left - 2
+    {{-1, -1, 1}, {1, 0, 0, 1}, {0, EDGE*5}},
+    {{-1, 1, 1}, {0, 1, 0, 1}, {0, EDGE*4}},
+    {{-1, 1, -1}, {0, 0, 1, 1}, {EDGE, EDGE*4}},
+    {{-1, -1, -1}, {0, 0, 0, 1}, {EDGE, EDGE*5}},
+    // Right - 5
+    {{1, -1, -1}, {1, 0, 0, 1}, {EDGE, EDGE*2}},
+    {{1, 1, -1}, {0, 1, 0, 1}, {EDGE, EDGE}},
+    {{1, 1, 1}, {0, 0, 1, 1}, {0, EDGE}},
+    {{1, -1, 1}, {0, 0, 0, 1}, {0, EDGE*2}},
+    // Top - 4
+    {{1, 1, 1}, {1, 0, 0, 1}, {0, EDGE*2}},
+    {{1, 1, -1}, {0, 1, 0, 1}, {EDGE, EDGE*2}},
+    {{-1, 1, -1}, {0, 0, 1, 1}, {EDGE, EDGE*3}},
+    {{-1, 1, 1}, {0, 0, 0, 1}, {0, EDGE*3}},
+    // Bottom - 3
+    {{1, -1, -1}, {1, 0, 0, 1}, {0, EDGE*3}},
+    {{1, -1, 1}, {0, 1, 0, 1}, {EDGE, EDGE*3}},
+    {{-1, -1, 1}, {0, 0, 1, 1}, {EDGE, EDGE*4}},
+    {{-1, -1, -1}, {0, 0, 0, 1}, {0, EDGE*4}}
 };
 
 const GLubyte Indices[] = {
@@ -46,20 +70,20 @@ const GLubyte Indices[] = {
     0, 1, 2,
     2, 3, 0,
     // Back
-    4, 6, 5,
-    4, 7, 6,
+    4, 5, 6,
+    4, 5, 7,
     // Left
-    2, 7, 3,
-    7, 6, 2,
+    8, 9, 10,
+    10, 11, 8,
     // Right
-    0, 4, 1,
-    4, 1, 5,
+    12, 13, 14,
+    14, 15, 12,
     // Top
-    6, 2, 1, 
-    1, 6, 5,
+    16, 17, 18,
+    18, 19, 16,
     // Bottom
-    0, 3, 7,
-    0, 7, 4    
+    20, 21, 22,
+    22, 23, 20
 };
 
 + (Class)layerClass {
@@ -237,31 +261,41 @@ const GLubyte Indices[] = {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
-    /*
     
+    // add projection
     CC3GLMatrix *projection = [CC3GLMatrix matrix];
     float h = 4.0f * self.frame.size.height / self.frame.size.width;
-    [projection populateFromFrustumLeft:-2 andRight:2 andBottom:-h/2 andTop:h/2 andNear:4 andFar:10];
+    [projection populateFromFrustumLeft:-2 andRight:2 andBottom:-h/2 andTop:h/2 andNear:25 andFar:29];
     glUniformMatrix4fv(_projectionUniform, 1, 0, projection.glMatrix);
+    //glUniformMatrix4fv(_projectionUniform, 1, 0, identity_matrix);
     
     CC3GLMatrix *modelView = [CC3GLMatrix matrix];
-    //[modelView populateFromTranslation:CC3VectorMake(sin(CACurrentMediaTime()), 0, -7)];
-    [modelView populateFromTranslation:CC3VectorMake(0, 0, -7)];
-    _currentRotation += displayLink.duration * 90;
-    [modelView rotateBy:CC3VectorMake(_currentRotation, _currentRotation, 0)];
+    
+    // move
+    [modelView populateFromTranslation:CC3VectorMake(0, 0, -27)];
+    
+    // add rotation
+    _currentRotationX += displayLink.duration * 90;
+    _currentRotationY += displayLink.duration * 30;
+    _currentRotationZ += displayLink.duration * 10;
+    [modelView rotateBy:CC3VectorMake(_currentRotationX, _currentRotationY, _currentRotationZ)];
+
+
+    //glUniformMatrix4fv(_modelViewUniform, 1, 0, identity_matrix);
     glUniformMatrix4fv(_modelViewUniform, 1, 0, modelView.glMatrix);
-    */
+    
     // 1
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
     
     // 2
+    
     glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
     glVertexAttribPointer(_colorSlot, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
     
     glVertexAttribPointer(_texCoordSlot, 2, GL_FLOAT, GL_FALSE, 
                           sizeof(Vertex), (GLvoid*) (sizeof(float) * 7));    
     glActiveTexture(GL_TEXTURE0); 
-    glBindTexture(GL_TEXTURE_2D, _floorTexture);
+    glBindTexture(GL_TEXTURE_2D, _texture1);
     glUniform1i(_textureUniform, 0);
     
     // 3
@@ -287,10 +321,10 @@ const GLubyte Indices[] = {
         [self setupFrameBuffer];     
         [self compileShaders];
         [self setupVBOs];
-        [self setupDisplayLink];        
+        [self setupDisplayLink]; // render in loop, not only in init 
     }
-    _floorTexture = [self setupTexture:@"dice_1-64.png"];
-    _fishTexture = [self setupTexture:@"tile_floor.png"];
+    _texture1 = [self setupTexture:@"dice.png"];
+    _currentRotationX = _currentRotationY = _currentRotationZ = 0;
     return self;
 }
 

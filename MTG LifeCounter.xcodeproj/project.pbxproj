@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		043231621443480E007968AF /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 043231611443480E007968AF /* Card.m */; };
-		0484CF7114A24BBA00C90495 /* Dice_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 0484CF7014A24BBA00C90495 /* Dice_1.png */; };
-		0484CF7414A25DCA00C90495 /* dice_1-64.png in Resources */ = {isa = PBXBuildFile; fileRef = 0484CF7314A25DCA00C90495 /* dice_1-64.png */; };
 		0484CF8114A3646D00C90495 /* tile_floor.png in Resources */ = {isa = PBXBuildFile; fileRef = 0484CF8014A3646C00C90495 /* tile_floor.png */; };
 		0484CF8814B3085500C90495 /* OpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0484CF8714B3085400C90495 /* OpenGLView.m */; };
 		0484CF8B14B3086A00C90495 /* SimpleFragment.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 0484CF8914B3086A00C90495 /* SimpleFragment.glsl */; };
@@ -44,8 +42,6 @@
 		04B24AA1143C8DA400549F8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04B24A9F143C8DA400549F8C /* InfoPlist.strings */; };
 		04B24AA3143C8DA400549F8C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B24AA2143C8DA400549F8C /* main.m */; };
 		04B24AA7143C8DA400549F8C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B24AA6143C8DA400549F8C /* AppDelegate.m */; };
-		04B24AAF143C8DA400549F8C /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 04B24AAE143C8DA400549F8C /* Shader.fsh */; };
-		04B24AB1143C8DA400549F8C /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 04B24AB0143C8DA400549F8C /* Shader.vsh */; };
 		04B24AB4143C8DA400549F8C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B24AB3143C8DA400549F8C /* ViewController.m */; };
 		04B24ABC143C8DA400549F8C /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24ABB143C8DA400549F8C /* SenTestingKit.framework */; };
 		04B24ABD143C8DA400549F8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A92143C8DA400549F8C /* UIKit.framework */; };
@@ -56,6 +52,11 @@
 		04BE2B26148E47B600A7469B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04BE2B25148E47B600A7469B /* QuartzCore.framework */; };
 		04BE2B28148E496A00A7469B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04BE2B27148E496A00A7469B /* CoreGraphics.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		04BE2B2F148E527000A7469B /* ThrowDiceEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 04BE2B2E148E527000A7469B /* ThrowDiceEngine.m */; };
+		848CA6A51A4C0DA500323A88 /* dice.png in Resources */ = {isa = PBXBuildFile; fileRef = 848CA6A41A4C0DA500323A88 /* dice.png */; };
+		8490201A1A4BDB5700441126 /* CC3Foundation.m in Sources */ = {isa = PBXBuildFile; fileRef = 849020111A4BDB5700441126 /* CC3Foundation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		8490201B1A4BDB5700441126 /* CC3GLMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = 849020131A4BDB5700441126 /* CC3GLMatrix.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		8490201C1A4BDB5700441126 /* CC3Kazmath.c in Sources */ = {isa = PBXBuildFile; fileRef = 849020141A4BDB5700441126 /* CC3Kazmath.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		8490201D1A4BDB5700441126 /* CC3Math.m in Sources */ = {isa = PBXBuildFile; fileRef = 849020181A4BDB5700441126 /* CC3Math.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		849210BE16A34CBB007025C2 /* MarbleBlack.png in Resources */ = {isa = PBXBuildFile; fileRef = 849210BD16A34CBB007025C2 /* MarbleBlack.png */; };
 		849210C216A34CCA007025C2 /* MarbleGreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 849210C016A34CCA007025C2 /* MarbleGreen.png */; };
 		849210C316A34CCA007025C2 /* MarbleRed.png in Resources */ = {isa = PBXBuildFile; fileRef = 849210C116A34CCA007025C2 /* MarbleRed.png */; };
@@ -68,7 +69,6 @@
 		84C37BA916D1702200CB2951 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C37BA816D1702200CB2951 /* Default-Landscape~ipad.png */; };
 		84C37BAB16D1703000CB2951 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C37BAA16D1703000CB2951 /* Default-Landscape@2x~ipad.png */; };
 		84C37BAD16D178A200CB2951 /* icon_72_72.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C37BAC16D178A200CB2951 /* icon_72_72.png */; };
-		84C4018916D17D3700B81569 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C4018816D17D3700B81569 /* Default-568h@2x.png */; };
 		84C9895B16A71CB900E57DBD /* MarbleWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C9895A16A71CB900E57DBD /* MarbleWhite.png */; };
 /* End PBXBuildFile section */
 
@@ -85,8 +85,6 @@
 /* Begin PBXFileReference section */
 		043231601443480E007968AF /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
 		043231611443480E007968AF /* Card.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Card.m; sourceTree = "<group>"; };
-		0484CF7014A24BBA00C90495 /* Dice_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Dice_1.png; path = Resources/img/Dice_1.png; sourceTree = "<group>"; };
-		0484CF7314A25DCA00C90495 /* dice_1-64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "dice_1-64.png"; path = "Resources/img/dice_1-64.png"; sourceTree = "<group>"; };
 		0484CF8014A3646C00C90495 /* tile_floor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile_floor.png; path = Resources/img/tile_floor.png; sourceTree = "<group>"; };
 		0484CF8614B3085400C90495 /* OpenGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLView.h; sourceTree = "<group>"; };
 		0484CF8714B3085400C90495 /* OpenGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenGLView.m; sourceTree = "<group>"; };
@@ -127,8 +125,6 @@
 		04B24AA4143C8DA400549F8C /* MTG LifeCounter-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MTG LifeCounter-Prefix.pch"; sourceTree = "<group>"; };
 		04B24AA5143C8DA400549F8C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		04B24AA6143C8DA400549F8C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		04B24AAE143C8DA400549F8C /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = "MTG LifeCounter/Shaders/Shader.fsh"; sourceTree = "<group>"; };
-		04B24AB0143C8DA400549F8C /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = "MTG LifeCounter/Shaders/Shader.vsh"; sourceTree = "<group>"; };
 		04B24AB2143C8DA400549F8C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		04B24AB3143C8DA400549F8C /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		04B24ABA143C8DA400549F8C /* MTG LifeCounterTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MTG LifeCounterTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -144,6 +140,17 @@
 		04BE2B2D148E527000A7469B /* ThrowDiceEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThrowDiceEngine.h; sourceTree = "<group>"; };
 		04BE2B2E148E527000A7469B /* ThrowDiceEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThrowDiceEngine.m; sourceTree = "<group>"; };
 		8409BB1116B83486007A76BF /* MTG LifeCounter copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MTG LifeCounter copy-Info.plist"; path = "/Users/admin/Documents/lifecounter_new/MTG LifeCounter copy-Info.plist"; sourceTree = "<absolute>"; };
+		848CA6A41A4C0DA500323A88 /* dice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice.png; sourceTree = "<group>"; };
+		849020101A4BDB5700441126 /* CC3Foundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Foundation.h; sourceTree = "<group>"; };
+		849020111A4BDB5700441126 /* CC3Foundation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CC3Foundation.m; sourceTree = "<group>"; };
+		849020121A4BDB5700441126 /* CC3GLMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3GLMatrix.h; sourceTree = "<group>"; };
+		849020131A4BDB5700441126 /* CC3GLMatrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CC3GLMatrix.m; sourceTree = "<group>"; };
+		849020141A4BDB5700441126 /* CC3Kazmath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = CC3Kazmath.c; sourceTree = "<group>"; };
+		849020151A4BDB5700441126 /* CC3Kazmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Kazmath.h; sourceTree = "<group>"; };
+		849020161A4BDB5700441126 /* CC3Logging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Logging.h; sourceTree = "<group>"; };
+		849020171A4BDB5700441126 /* CC3Math.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Math.h; sourceTree = "<group>"; };
+		849020181A4BDB5700441126 /* CC3Math.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CC3Math.m; sourceTree = "<group>"; };
+		849020191A4BDB5700441126 /* ccTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ccTypes.h; sourceTree = "<group>"; };
 		849210BD16A34CBB007025C2 /* MarbleBlack.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MarbleBlack.png; path = Resources/img/MarbleBlack.png; sourceTree = "<group>"; };
 		849210C016A34CCA007025C2 /* MarbleGreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MarbleGreen.png; path = Resources/img/MarbleGreen.png; sourceTree = "<group>"; };
 		849210C116A34CCA007025C2 /* MarbleRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MarbleRed.png; path = Resources/img/MarbleRed.png; sourceTree = "<group>"; };
@@ -191,6 +198,7 @@
 			children = (
 				04906ADB148D2DFB000D51BE /* GaramondPremrPro-Smbd.otf */,
 				0432315F143CBC70007968AF /* img */,
+				84BB36ED172589F70022BAC9 /* Deployment Images */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -198,14 +206,13 @@
 		0432315F143CBC70007968AF /* img */ = {
 			isa = PBXGroup;
 			children = (
+				848CA6A41A4C0DA500323A88 /* dice.png */,
 				84C9895A16A71CB900E57DBD /* MarbleWhite.png */,
 				849210C016A34CCA007025C2 /* MarbleGreen.png */,
 				849210C116A34CCA007025C2 /* MarbleRed.png */,
 				849210BD16A34CBB007025C2 /* MarbleBlack.png */,
 				04906AB5148BB2C0000D51BE /* MarbleBlue.png */,
 				0484CF8014A3646C00C90495 /* tile_floor.png */,
-				0484CF7314A25DCA00C90495 /* dice_1-64.png */,
-				0484CF7014A24BBA00C90495 /* Dice_1.png */,
 				04906ABA148CBB25000D51BE /* Poison */,
 				04B83BCF148E0C2800F0843E /* Bubble.png */,
 				04906AB11487F51F000D51BE /* Btn-20.png */,
@@ -220,8 +227,6 @@
 		0484CF8D14B3089E00C90495 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				04B24AAE143C8DA400549F8C /* Shader.fsh */,
-				04B24AB0143C8DA400549F8C /* Shader.vsh */,
 				0484CF8A14B3086A00C90495 /* SimpleVertex.glsl */,
 				0484CF8914B3086A00C90495 /* SimpleFragment.glsl */,
 			);
@@ -254,16 +259,7 @@
 		04B24A83143C8DA300549F8C = {
 			isa = PBXGroup;
 			children = (
-				84C4018816D17D3700B81569 /* Default-568h@2x.png */,
-				84C37BAC16D178A200CB2951 /* icon_72_72.png */,
-				84C37BAA16D1703000CB2951 /* Default-Landscape@2x~ipad.png */,
-				84C37BA816D1702200CB2951 /* Default-Landscape~ipad.png */,
-				84C37BA616D1700600CB2951 /* Default-Portrait@2x~ipad.png */,
-				84C37BA416D16FE000CB2951 /* Default-Portrait~ipad.png */,
-				84BC7C6416CAAA3500308BB6 /* Default@2x.png */,
-				84BC7C6216CAAA2800308BB6 /* Default.png */,
-				84BC7C6016CAAA1B00308BB6 /* icon_114_114.png */,
-				84BC7C5D16CAAA0D00308BB6 /* icon_57_57.png */,
+				8490200F1A4BDB5700441126 /* Cocos3DMathLib */,
 				0484CF8D14B3089E00C90495 /* Shaders */,
 				0432315E143CBC61007968AF /* Resources */,
 				04B24A9C143C8DA400549F8C /* MTG LifeCounter */,
@@ -347,6 +343,40 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		8490200F1A4BDB5700441126 /* Cocos3DMathLib */ = {
+			isa = PBXGroup;
+			children = (
+				849020101A4BDB5700441126 /* CC3Foundation.h */,
+				849020111A4BDB5700441126 /* CC3Foundation.m */,
+				849020121A4BDB5700441126 /* CC3GLMatrix.h */,
+				849020131A4BDB5700441126 /* CC3GLMatrix.m */,
+				849020141A4BDB5700441126 /* CC3Kazmath.c */,
+				849020151A4BDB5700441126 /* CC3Kazmath.h */,
+				849020161A4BDB5700441126 /* CC3Logging.h */,
+				849020171A4BDB5700441126 /* CC3Math.h */,
+				849020181A4BDB5700441126 /* CC3Math.m */,
+				849020191A4BDB5700441126 /* ccTypes.h */,
+			);
+			path = Cocos3DMathLib;
+			sourceTree = "<group>";
+		};
+		84BB36ED172589F70022BAC9 /* Deployment Images */ = {
+			isa = PBXGroup;
+			children = (
+				84BC7C6016CAAA1B00308BB6 /* icon_114_114.png */,
+				84BC7C5D16CAAA0D00308BB6 /* icon_57_57.png */,
+				84C37BAC16D178A200CB2951 /* icon_72_72.png */,
+				84C37BAA16D1703000CB2951 /* Default-Landscape@2x~ipad.png */,
+				84C37BA816D1702200CB2951 /* Default-Landscape~ipad.png */,
+				84C37BA616D1700600CB2951 /* Default-Portrait@2x~ipad.png */,
+				84C37BA416D16FE000CB2951 /* Default-Portrait~ipad.png */,
+				84BC7C6416CAAA3500308BB6 /* Default@2x.png */,
+				84BC7C6216CAAA2800308BB6 /* Default.png */,
+				84C4018816D17D3700B81569 /* Default-568h@2x.png */,
+			);
+			name = "Deployment Images";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -418,8 +448,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				04B24AA1143C8DA400549F8C /* InfoPlist.strings in Resources */,
-				04B24AAF143C8DA400549F8C /* Shader.fsh in Resources */,
-				04B24AB1143C8DA400549F8C /* Shader.vsh in Resources */,
 				04906AA71487E6B5000D51BE /* Background.png in Resources */,
 				04906AAA1487EB1D000D51BE /* Field.png in Resources */,
 				04906AB01487F332000D51BE /* Btn20Back.png in Resources */,
@@ -444,8 +472,6 @@
 				04906ADA148CBB3E000D51BE /* PoisonBtnsBack.png in Resources */,
 				04906ADC148D2DFB000D51BE /* GaramondPremrPro-Smbd.otf in Resources */,
 				04B83BD0148E0C2800F0843E /* Bubble.png in Resources */,
-				0484CF7114A24BBA00C90495 /* Dice_1.png in Resources */,
-				0484CF7414A25DCA00C90495 /* dice_1-64.png in Resources */,
 				0484CF8114A3646D00C90495 /* tile_floor.png in Resources */,
 				0484CF8B14B3086A00C90495 /* SimpleFragment.glsl in Resources */,
 				0484CF8C14B3086A00C90495 /* SimpleVertex.glsl in Resources */,
@@ -462,7 +488,7 @@
 				84C37BA916D1702200CB2951 /* Default-Landscape~ipad.png in Resources */,
 				84C37BAB16D1703000CB2951 /* Default-Landscape@2x~ipad.png in Resources */,
 				84C37BAD16D178A200CB2951 /* icon_72_72.png in Resources */,
-				84C4018916D17D3700B81569 /* Default-568h@2x.png in Resources */,
+				848CA6A51A4C0DA500323A88 /* dice.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,6 +530,10 @@
 				04906AB9148BBA73000D51BE /* ContentView.m in Sources */,
 				04BE2B2F148E527000A7469B /* ThrowDiceEngine.m in Sources */,
 				0484CF8814B3085500C90495 /* OpenGLView.m in Sources */,
+				8490201A1A4BDB5700441126 /* CC3Foundation.m in Sources */,
+				8490201B1A4BDB5700441126 /* CC3GLMatrix.m in Sources */,
+				8490201C1A4BDB5700441126 /* CC3Kazmath.c in Sources */,
+				8490201D1A4BDB5700441126 /* CC3Math.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -631,7 +661,7 @@
 				INFOPLIST_FILE = "MTG LifeCounter/MTG LifeCounter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "7A397904-180C-454F-B5E5-325D3D28F593";
+				PROVISIONING_PROFILE = "7521CC54-4CC9-4374-B0FE-D6CA2F4043A6";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
