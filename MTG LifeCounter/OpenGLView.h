@@ -25,6 +25,13 @@
     GLuint _depthRenderBuffer;
     GLuint _texture1;
     GLuint _texCoordSlot;
-    GLuint _textureUniform;}
+    GLuint _textureUniform;
+    float dx0, dy0, V0, X0, Y0;
+    float v, x, y;
+    CFTimeInterval _throwStartTime;
+}
+
+-(void) throwDice:(float)v0 withX0:(float)x0 withY0:(float)y0;
+-(void) moveDice:(float)xpos withY:(float)ypos;
 
 @end

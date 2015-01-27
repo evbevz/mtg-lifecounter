@@ -1,4 +1,4 @@
-varying lowp vec4 DestinationColor;
+//varying lowp vec4 DestinationColor;
  
 varying lowp vec2 TexCoordOut; // New
 uniform sampler2D Texture; // New

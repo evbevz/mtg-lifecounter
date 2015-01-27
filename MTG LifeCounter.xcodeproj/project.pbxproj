@@ -51,7 +51,6 @@
 		04B83BD0148E0C2800F0843E /* Bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 04B83BCF148E0C2800F0843E /* Bubble.png */; };
 		04BE2B26148E47B600A7469B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04BE2B25148E47B600A7469B /* QuartzCore.framework */; };
 		04BE2B28148E496A00A7469B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04BE2B27148E496A00A7469B /* CoreGraphics.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		04BE2B2F148E527000A7469B /* ThrowDiceEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 04BE2B2E148E527000A7469B /* ThrowDiceEngine.m */; };
 		848CA6A51A4C0DA500323A88 /* dice.png in Resources */ = {isa = PBXBuildFile; fileRef = 848CA6A41A4C0DA500323A88 /* dice.png */; };
 		8490201A1A4BDB5700441126 /* CC3Foundation.m in Sources */ = {isa = PBXBuildFile; fileRef = 849020111A4BDB5700441126 /* CC3Foundation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8490201B1A4BDB5700441126 /* CC3GLMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = 849020131A4BDB5700441126 /* CC3GLMatrix.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -137,8 +136,6 @@
 		04BE2B23148E470700A7469B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		04BE2B25148E47B600A7469B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		04BE2B27148E496A00A7469B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		04BE2B2D148E527000A7469B /* ThrowDiceEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThrowDiceEngine.h; sourceTree = "<group>"; };
-		04BE2B2E148E527000A7469B /* ThrowDiceEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThrowDiceEngine.m; sourceTree = "<group>"; };
 		8409BB1116B83486007A76BF /* MTG LifeCounter copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MTG LifeCounter copy-Info.plist"; path = "/Users/admin/Documents/lifecounter_new/MTG LifeCounter copy-Info.plist"; sourceTree = "<absolute>"; };
 		848CA6A41A4C0DA500323A88 /* dice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice.png; sourceTree = "<group>"; };
 		849020101A4BDB5700441126 /* CC3Foundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Foundation.h; sourceTree = "<group>"; };
@@ -307,8 +304,6 @@
 				04B24A9D143C8DA400549F8C /* Supporting Files */,
 				043231601443480E007968AF /* Card.h */,
 				043231611443480E007968AF /* Card.m */,
-				04BE2B2D148E527000A7469B /* ThrowDiceEngine.h */,
-				04BE2B2E148E527000A7469B /* ThrowDiceEngine.m */,
 			);
 			path = "MTG LifeCounter";
 			sourceTree = "<group>";
@@ -528,7 +523,6 @@
 				04B24AB4143C8DA400549F8C /* ViewController.m in Sources */,
 				043231621443480E007968AF /* Card.m in Sources */,
 				04906AB9148BBA73000D51BE /* ContentView.m in Sources */,
-				04BE2B2F148E527000A7469B /* ThrowDiceEngine.m in Sources */,
 				0484CF8814B3085500C90495 /* OpenGLView.m in Sources */,
 				8490201A1A4BDB5700441126 /* CC3Foundation.m in Sources */,
 				8490201B1A4BDB5700441126 /* CC3GLMatrix.m in Sources */,

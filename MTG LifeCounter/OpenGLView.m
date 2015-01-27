@@ -13,7 +13,6 @@
 
 typedef struct {
     float Position[3];
-    float Color[4];
     float TexCoord[2]; // New
 } Vertex;
 
@@ -34,35 +33,35 @@ const GLubyte Indices[] = {
 
 const Vertex Vertices[] = {
     // Front - 6
-    {{1, -1, 1}, {1, 1, 1, 1}, {EDGE, 0}},
-    {{1, 1, 1}, {1, 1, 1, 1}, {EDGE, EDGE}},
-    {{-1, 1, 1}, {1, 1, 1, 1}, {0, EDGE}},
-    {{-1, -1, 1}, {1, 1, 1, 1}, {0, 0}},
+    {{1, -1, 1}, {EDGE, 0}},
+    {{1, 1, 1},  {EDGE, EDGE}},
+    {{-1, 1, 1}, {0, EDGE}},
+    {{-1, -1, 1}, {0, 0}},
     // Back - 1
-    {{1, 1, -1}, {1, 0, 0, 1}, {EDGE, EDGE*5}},
-    {{-1, -1, -1}, {0, 1, 0, 1}, {0, EDGE*6}},
-    {{1, -1, -1}, {0, 0, 1, 1}, {EDGE, EDGE*6}},
-    {{-1, 1, -1}, {0, 0, 0, 1}, {0, EDGE*5}},
+    {{1, 1, -1}, {EDGE, EDGE*5}},
+    {{-1, -1, -1}, {0, EDGE*6}},
+    {{1, -1, -1}, {EDGE, EDGE*6}},
+    {{-1, 1, -1}, {0, EDGE*5}},
     // Left - 2
-    {{-1, -1, 1}, {1, 0, 0, 1}, {0, EDGE*5}},
-    {{-1, 1, 1}, {0, 1, 0, 1}, {0, EDGE*4}},
-    {{-1, 1, -1}, {0, 0, 1, 1}, {EDGE, EDGE*4}},
-    {{-1, -1, -1}, {0, 0, 0, 1}, {EDGE, EDGE*5}},
+    {{-1, -1, 1}, {0, EDGE*5}},
+    {{-1, 1, 1}, {0, EDGE*4}},
+    {{-1, 1, -1}, {EDGE, EDGE*4}},
+    {{-1, -1, -1}, {EDGE, EDGE*5}},
     // Right - 5
-    {{1, -1, -1}, {1, 0, 0, 1}, {EDGE, EDGE*2}},
-    {{1, 1, -1}, {0, 1, 0, 1}, {EDGE, EDGE}},
-    {{1, 1, 1}, {0, 0, 1, 1}, {0, EDGE}},
-    {{1, -1, 1}, {0, 0, 0, 1}, {0, EDGE*2}},
+    {{1, -1, -1}, {EDGE, EDGE*2}},
+    {{1, 1, -1}, {EDGE, EDGE}},
+    {{1, 1, 1}, {0, EDGE}},
+    {{1, -1, 1}, {0, EDGE*2}},
     // Top - 4
-    {{1, 1, 1}, {1, 0, 0, 1}, {0, EDGE*2}},
-    {{1, 1, -1}, {0, 1, 0, 1}, {EDGE, EDGE*2}},
-    {{-1, 1, -1}, {0, 0, 1, 1}, {EDGE, EDGE*3}},
-    {{-1, 1, 1}, {0, 0, 0, 1}, {0, EDGE*3}},
+    {{1, 1, 1}, {0, EDGE*2}},
+    {{1, 1, -1}, {EDGE, EDGE*2}},
+    {{-1, 1, -1}, {EDGE, EDGE*3}},
+    {{-1, 1, 1}, {0, EDGE*3}},
     // Bottom - 3
-    {{1, -1, -1}, {1, 0, 0, 1}, {0, EDGE*3}},
-    {{1, -1, 1}, {0, 1, 0, 1}, {EDGE, EDGE*3}},
-    {{-1, -1, 1}, {0, 0, 1, 1}, {EDGE, EDGE*4}},
-    {{-1, -1, -1}, {0, 0, 0, 1}, {0, EDGE*4}}
+    {{1, -1, -1}, {0, EDGE*3}},
+    {{1, -1, 1}, {EDGE, EDGE*3}},
+    {{-1, -1, 1}, {EDGE, EDGE*4}},
+    {{-1, -1, -1}, {0, EDGE*4}}
 };
 
 const GLubyte Indices[] = {
@@ -229,9 +228,9 @@ const GLubyte Indices[] = {
     
     // 5
     _positionSlot = glGetAttribLocation(programHandle, "Position");
-    _colorSlot = glGetAttribLocation(programHandle, "SourceColor");
+    //_colorSlot = glGetAttribLocation(programHandle, "SourceColor");
     glEnableVertexAttribArray(_positionSlot);
-    glEnableVertexAttribArray(_colorSlot);
+    //glEnableVertexAttribArray(_colorSlot);
     
     _projectionUniform = glGetUniformLocation(programHandle, "Projection");
     _modelViewUniform = glGetUniformLocation(programHandle, "Modelview");
@@ -256,23 +255,71 @@ const GLubyte Indices[] = {
     
 }
 
+#define NEAR 40.0
+#define FAR 60.0
+#define PV_WIDTH 10.0
+#define ACCELERATION -5
+#define SHIFT_Z 57.0
+
 - (void)render:(CADisplayLink*)displayLink {
     
+    float PV_HEIGTH = PV_WIDTH * self.frame.size.height / self.frame.size.width;
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     
     // add projection
     CC3GLMatrix *projection = [CC3GLMatrix matrix];
-    float h = 4.0f * self.frame.size.height / self.frame.size.width;
-    [projection populateFromFrustumLeft:-2 andRight:2 andBottom:-h/2 andTop:h/2 andNear:25 andFar:29];
+    [projection populateFromFrustumLeft:-PV_WIDTH/2 andRight:PV_WIDTH/2 andBottom:-PV_HEIGTH/2 andTop:PV_HEIGTH/2 andNear:NEAR andFar:FAR];
     glUniformMatrix4fv(_projectionUniform, 1, 0, projection.glMatrix);
-    //glUniformMatrix4fv(_projectionUniform, 1, 0, identity_matrix);
     
     CC3GLMatrix *modelView = [CC3GLMatrix matrix];
     
     // move
-    [modelView populateFromTranslation:CC3VectorMake(0, 0, -27)];
+    if(v && (dx0 != 0 || dy0 != 0))
+    {
+        float t = displayLink.timestamp - _throwStartTime;
+        float S = V0 * t + ACCELERATION * t * t / 2;
+        float k = sqrtf(S * S / (dx0 * dx0 + dy0 * dy0));
+        x = X0 + k*dx0;
+        y = Y0 + k*dy0;
+        v = MAX(0, V0 + ACCELERATION * t);
+    }
+    [modelView populateFromTranslation:CC3VectorMake(x, y, -SHIFT_Z)];
+    
+    // test for field walls
+    if(x + 1 > (SHIFT_Z-1)/NEAR*PV_WIDTH/2)
+    {
+        dx0 = -ABS(dx0);
+        V0 = v;
+        X0 = x;
+        Y0 = y;
+        _throwStartTime = displayLink.timestamp;
+    }
+    if(x - 1 < -(SHIFT_Z-1)/NEAR*PV_WIDTH/2)
+    {
+        dx0 = ABS(dx0);
+        V0 = v;
+        X0 = x;
+        Y0 = y;
+        _throwStartTime = displayLink.timestamp;
+    }
+    if(y + 1 > (SHIFT_Z-1)/NEAR*PV_HEIGTH/2)
+    {
+        dy0 = -ABS(dy0);
+        V0 = v;
+        X0 = x;
+        Y0 = y;
+        _throwStartTime = displayLink.timestamp;
+    }
+    if(y - 1 < -(SHIFT_Z-1)/NEAR*PV_HEIGTH/2)
+    {
+        dy0 = ABS(dy0);
+        V0 = v;
+        X0 = x;
+        Y0 = y;
+        _throwStartTime = displayLink.timestamp;
+    }
     
     // add rotation
     _currentRotationX += displayLink.duration * 90;
@@ -290,10 +337,9 @@ const GLubyte Indices[] = {
     // 2
     
     glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-    glVertexAttribPointer(_colorSlot, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
     
     glVertexAttribPointer(_texCoordSlot, 2, GL_FLOAT, GL_FALSE, 
-                          sizeof(Vertex), (GLvoid*) (sizeof(float) * 7));    
+                          sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
     glActiveTexture(GL_TEXTURE0); 
     glBindTexture(GL_TEXTURE_2D, _texture1);
     glUniform1i(_textureUniform, 0);
@@ -325,12 +371,32 @@ const GLubyte Indices[] = {
     }
     _texture1 = [self setupTexture:@"dice.png"];
     _currentRotationX = _currentRotationY = _currentRotationZ = 0;
+    dx0 = dy0 = V0 = x = y = v = X0 = Y0 = 0;
     return self;
 }
 
 - (void)dealloc
 {
     _context = nil;
+}
+
+-(void) throwDice:(float)v0 withX0:(float)x0 withY0:(float)y0
+{
+    dx0 = x0;
+    dy0 = y0;
+    V0 = v0;
+    v = v0;
+    _throwStartTime = CACurrentMediaTime();
+    NSLog(@"Dice throw: %g:%g velocity:%g", x0, y0, v0);
+}
+
+-(void) moveDice:(float)xpos withY:(float)ypos
+{
+    float PV_HEIGTH = PV_WIDTH * self.frame.size.height / self.frame.size.width;
+    x = X0 = (xpos - self.bounds.size.width/2)/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
+    y = Y0 = -(ypos - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*FAR/NEAR;
+    V0 = v = 0;
+    NSLog(@"Dice move: %g:%g", xpos, ypos);
 }
 
 @end

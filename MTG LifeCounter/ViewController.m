@@ -9,7 +9,6 @@
 #import "ViewController.h"
 #import "ContentView.h"
 #import <QuartzCore/CABase.h>
-#import "ThrowDiceEngine.h"
 #import <QuartzCore/QuartzCore.h>
 #import "OpenGLView.h"
 
@@ -25,8 +24,8 @@
 
 
 @interface ViewController () {
-    UIView*     glView;
-        
+    OpenGLView*     glView;
+    int             diceTouchCounter;
 }
 
 - (void)selectPlayer:(int)i;
@@ -45,11 +44,9 @@
 	x_scale = [UIScreen mainScreen].bounds.size.width / 768;
     
     current_player = 0;
-    dice_in_animation = NO;
     
     UIImageView *main = [[UIImageView alloc] initWithFrame:self.view.frame];
     main.image = [UIImage imageNamed:@"Background.png"];
-    glView = self.view;
     self.view = main;
     [self.view setUserInteractionEnabled:true];
     
@@ -168,12 +165,7 @@
     canChangePlayer = true;
 
     // Dice GL
-    
-    dice_size = 110.0 * MAX_SCALE;
-    float margin = 30;
-    dice_position = CGPointMake([UIScreen mainScreen].bounds.size.width - dice_size/2 - margin * x_scale, [UIScreen mainScreen].bounds.size.height - dice_size/2 - margin * y_scale);
-    
-    glView = [[OpenGLView alloc] initWithFrame:CGRectMake(dice_position.x - dice_size/2, dice_position.y - dice_size/2, dice_size, dice_size)];
+    glView = [[OpenGLView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:glView];
     glView.backgroundColor = [UIColor clearColor];
 }
@@ -340,15 +332,6 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	NSLog(@"touchBegan/ dice_in_animation: %d", (int)dice_in_animation);
-    //if(dice_in_animation)
-    //{
-        NSLog(@"remove animation");
-        [self.view.layer removeAllAnimations]; 
-        dice_in_animation = false;
-    //}
-    
-   
     UITouch* touch = [touches anyObject];
     if(CGRectContainsPoint(glView.frame, [touch locationInView:self.view]))
     {
@@ -356,12 +339,7 @@
         dice_throw_start = [touch locationInView:self.view];
         dice_throw_time = CACurrentMediaTime();
         dice_locked = YES;
-        
-        if(dice_in_animation)
-        {
-            NSLog(@"remove animation");
-            [self.view.layer removeAllAnimations]; 
-        }
+        diceTouchCounter = 0;
     }
 }
 
@@ -376,12 +354,14 @@
 {
     NSLog(@"touchEnded");
     
-    //UITouch* touch = [touches anyObject];
-    //dice_throw_end = [touch locationInView:self.view];
-    //dice_throw_time = CACurrentMediaTime() - dice_throw_time;
+    UITouch* touch = [touches anyObject];
+    dice_throw_end = [touch locationInView:self.view];
+    dice_throw_time = CACurrentMediaTime() - dice_throw_time;
     NSLog(@"time: %f", dice_throw_time);
     dice_locked = NO;
-    [self throwDice];
+    //[self throwDice];
+    [glView throwDice:10 withX0:(dice_throw_end.x-dice_throw_start.x) withY0:(dice_throw_start.y-dice_throw_end.y)];
+    
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -390,12 +370,20 @@
     if(dice_locked)
     {
         UITouch* touch = [touches anyObject];
-        dice_position = [touch locationInView:self.view];
-        glView.frame = CGRectMake(dice_position.x - dice_size/2, dice_position.y - dice_size/2, dice_size, dice_size);
+        [glView moveDice:[touch locationInView:self.view].x withY:[touch locationInView:self.view].y];
+
+        dice_throw_end = [touch locationInView:self.view];
+
+        diceTouchCounter++;
+        if(diceTouchCounter < 5)
+            return;
+        diceTouchCounter = 0;
+
+        //dice_position = [touch locationInView:self.view];
+        //glView.frame = CGRectMake(dice_position.x - dice_size/2, dice_position.y - dice_size/2, dice_size, dice_size);
         dice_throw_time = CACurrentMediaTime() - dice_previous_move_time;
         dice_previous_move_time = CACurrentMediaTime();
         dice_throw_start = [touch previousLocationInView:self.view];
-        dice_throw_end = [touch locationInView:self.view];
         NSLog(@"touchMoved, time: %g", dice_throw_time);
     }
 }
@@ -413,170 +401,11 @@
 -(void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {
     NSLog(@"Shake ended");
-    dice_throw_start = glView.frame.origin;
-    dice_throw_end = CGPointMake((self.view.frame.size.width - dice_size) * ((double)rand()/RAND_MAX), (self.view.frame.size.height - dice_size) * ((double)rand()/RAND_MAX));
-    dice_throw_time = 0.2;
+    //dice_throw_start = glView.frame.origin;
+    //dice_throw_end = CGPointMake((self.view.frame.size.width - dice_size) * ((double)rand()/RAND_MAX), (self.view.frame.size.height - dice_size) * ((double)rand()/RAND_MAX));
+    //dice_throw_time = 0.2;
     
-    [self throwDice];
+    //[glView throwDice:10 withX0:(dice_throw_end.x-dice_throw_start.x) withY0:(dice_throw_start.y-dice_throw_end.y)];
 }
-
--(void) throwDice
-{
-    
-    ThrowDiceEngine *engine = [ThrowDiceEngine alloc];
-    engine.field = CGRectMake(self.view.frame.origin.x + dice_size/2, self.view.frame.origin.y + dice_size/2, self.view.frame.size.width - dice_size, self.view.frame.size.height - dice_size);
-    engine.startPoint = dice_throw_start;
-    engine.endPoint = dice_throw_end;
-    engine.initialVelocity = MIN(400, sqrtf(powf(dice_throw_end.x - dice_throw_start.x, 2) + powf(dice_throw_end.y - dice_throw_start.y, 2))/dice_throw_time);
-    engine.velocityFading = 0.5;
-    
-    // end point must be inside field
-    if(engine.endPoint.x < engine.field.origin.x)
-        engine.endPoint = CGPointMake(engine.field.origin.x, engine.endPoint.y);
-    if(engine.endPoint.x > engine.field.origin.x + engine.field.size.width)
-        engine.endPoint = CGPointMake(engine.field.origin.x + engine.field.size.width, engine.endPoint.y); 
-    if(engine.endPoint.y < engine.field.origin.y)
-        engine.endPoint = CGPointMake(engine.endPoint.x, engine.field.origin.y);
-    if(engine.endPoint.y > engine.field.origin.y + engine.field.size.height)
-        engine.endPoint = CGPointMake(engine.endPoint.x, engine.field.origin.y + engine.field.size.height); 
-   
-    
-    NSLog(@"Start point: [%f,%f] \t End point: [%f,%f]", dice_throw_start.x, dice_throw_start.y, dice_throw_end.x, dice_throw_end.y);
-    
-    NSMutableArray *path = [engine GetPath];
-    
-    NSLog(@"Init velocity: %f. \tPath objects: %d", engine.initialVelocity, [path count]);
-    
-    //for (NSMutableDictionary* point in path) {
-    //    NSLog(@"path: [%f, %f], %f sec", ((NSNumber*)[point valueForKey:@"x"]).floatValue, ((NSNumber*)[point valueForKey:@"y"]).floatValue, ((NSNumber*)[point valueForKey:@"duration"]).floatValue);
-    //}
-
-    if(path && [path count])
-    {
-        NSMutableDictionary *point = [path objectAtIndex:0];
-        [path removeObject:point];
-        
-        NSLog(@"path: [%f, %f], %f sec", ((NSNumber*)[point valueForKey:@"x"]).floatValue, ((NSNumber*)[point valueForKey:@"y"]).floatValue, ((NSNumber*)[point valueForKey:@"duration"]).floatValue);
-        
-        [UIView beginAnimations:@"ThrowDice" context:(__bridge_retained void*)path];
-        [UIView setAnimationDuration:MIN(2.0, (double)((NSNumber*)[point valueForKey:@"duration"]).floatValue)];
-        [UIView setAnimationDelegate:self];
-        [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
-        [UIView setAnimationCurve:([path count] > 0 ? UIViewAnimationCurveLinear : UIViewAnimationCurveEaseOut)];
-        glView.frame = CGRectMake(((NSNumber*)[point valueForKey:@"x"]).floatValue - dice_size/2,((NSNumber*)[point valueForKey:@"y"]).floatValue - dice_size/2, dice_size, dice_size);
-        dice_in_animation = YES;
-        [UIView commitAnimations];
-    }
-	
-    /*
-     if (_sound)
-     {
-     NSURL* soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"Cards_turning.wav"																				 ofType:nil]];
-     self.player = [[[AVAudioPlayer alloc] initWithContentsOfURL:soundURL error:nil] autorelease];
-     [self.player play];
-     }
-     
-     _rotateEnabled = NO;
-     */
-
-}
-
-
-- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
-{
-	NSLog(@"animationDidStop");
-	if([animationID isEqual: @"ThrowDice"])
-    {
-        NSMutableArray *path = (__bridge_transfer NSMutableArray*)context;
-        
-        if([path count] == 0)
-        {
-            dice_in_animation = NO;
-            return;
-        }
-        
-        NSMutableDictionary *point = [path objectAtIndex:0];
-        [path removeObject:point];
-        
-        NSLog(@"path: [%f, %f], %f sec", ((NSNumber*)[point valueForKey:@"x"]).floatValue, ((NSNumber*)[point valueForKey:@"y"]).floatValue, ((NSNumber*)[point valueForKey:@"duration"]).floatValue);
- 
-        [UIView beginAnimations:@"ThrowDice" context:(__bridge_retained void*)path];
-        [UIView setAnimationDuration:MIN(2.0, (double)((NSNumber*)[point valueForKey:@"duration"]).floatValue)];
-        [UIView setAnimationDelegate:self];
-        [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
-        [UIView setAnimationCurve:([path count] > 0 ? UIViewAnimationCurveLinear : UIViewAnimationCurveEaseOut)];
-        glView.frame = CGRectMake(((NSNumber*)[point valueForKey:@"x"]).floatValue - dice_size/2,((NSNumber*)[point valueForKey:@"y"]).floatValue - dice_size/2, dice_size, dice_size);
-        [UIView commitAnimations];
-        
-    }
-}
-
-
-
-/*
-- (void)update
-{
-    NSLog(@"update");
-    float aspect = fabsf(glView.bounds.size.width / glView.bounds.size.height);
-    GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(65.0f), aspect, 0.1f, 100.0f);
-    
-    //self.effect.transform.projectionMatrix = projectionMatrix;
-    
-    GLKMatrix4 baseModelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -3.3f);
-    //baseModelViewMatrix = GLKMatrix4Rotate(baseModelViewMatrix, _rotation, 0.0f, 1.0f, 0.0f);
-    
-    // Compute the model view matrix for the object rendered with GLKit
-    GLKMatrix4 modelViewMatrix;
-    //modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, -1.5f);
-    //modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, _rotation, 1.0f, 1.0f, 1.0f);
-    //modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
-    
-    //self.effect.transform.modelviewMatrix = modelViewMatrix;
-    
-    // Compute the model view matrix for the object rendered with ES2
-    modelViewMatrix = GLKMatrix4MakeTranslation(0.0f, 0.0f, 1.5f);
-    modelViewMatrix = GLKMatrix4Rotate(modelViewMatrix, _rotation, 1.0f, 0.0f, 0.0f);
-    modelViewMatrix = GLKMatrix4Multiply(baseModelViewMatrix, modelViewMatrix);
-    
-    _normalMatrix = GLKMatrix3InvertAndTranspose(GLKMatrix4GetMatrix3(modelViewMatrix), NULL);
-    
-    _modelViewProjectionMatrix = GLKMatrix4Multiply(projectionMatrix, modelViewMatrix);
-    
-    _rotation += self.timeSinceLastUpdate * 1.5f;
-    
-    [glView setNeedsDisplay];
-}
-
-- (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
-{
-    //NSLog(@"drawRect");
-    
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-    glBindVertexArrayOES(_vertexArray);
-    
-    // Render the object with GLKit
-    //[self.effect prepareToDraw];
-    
-    //glDrawArrays(GL_TRIANGLES, 0, 36);
-    
-    // Render the object again with ES2
-    glUseProgram(_program);
-    
-    glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _modelViewProjectionMatrix.m);
-    glUniformMatrix3fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _normalMatrix.m);
-    
-    
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture);
-    glUniform1i(uniforms[UNIFORM_TEXTURE], 0);
-    
-    glDrawArrays(GL_TRIANGLES, 0, 36);
-    
-}
-*/
-
-
 
 @end
