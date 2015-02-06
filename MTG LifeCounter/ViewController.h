@@ -39,12 +39,6 @@ struct PlayerData
     int         current_player;
     bool        canChangePlayer;
     
-    CGPoint     dice_throw_start;
-    CGPoint     dice_throw_end;
-    double      dice_throw_time;
-    double      dice_previous_move_time;
-    Boolean     dice_locked;
-    
 }
 
 -(void)showPoison;

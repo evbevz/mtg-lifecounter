@@ -25,7 +25,6 @@
 
 @interface ViewController () {
     OpenGLView*     glView;
-    int             diceTouchCounter;
 }
 
 - (void)selectPlayer:(int)i;
@@ -328,65 +327,8 @@
     players[current_player].life = amount;
 }
 
-#pragma mark - ViewController touches methods
+#pragma mark - ViewController motion methods
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch* touch = [touches anyObject];
-    if(CGRectContainsPoint(glView.frame, [touch locationInView:self.view]))
-    {
-        NSLog(@"dice touch began");
-        dice_throw_start = [touch locationInView:self.view];
-        dice_throw_time = CACurrentMediaTime();
-        dice_locked = YES;
-        diceTouchCounter = 0;
-    }
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    NSLog(@"touchCancelled");
-    
-    dice_locked = NO;
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    NSLog(@"touchEnded");
-    
-    UITouch* touch = [touches anyObject];
-    dice_throw_end = [touch locationInView:self.view];
-    dice_throw_time = CACurrentMediaTime() - dice_throw_time;
-    NSLog(@"time: %f", dice_throw_time);
-    dice_locked = NO;
-    //[self throwDice];
-    [glView throwDice:10 withX0:(dice_throw_end.x-dice_throw_start.x) withY0:(dice_throw_start.y-dice_throw_end.y)];
-    
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    
-    if(dice_locked)
-    {
-        UITouch* touch = [touches anyObject];
-        [glView moveDice:[touch locationInView:self.view].x withY:[touch locationInView:self.view].y];
-
-        dice_throw_end = [touch locationInView:self.view];
-
-        diceTouchCounter++;
-        if(diceTouchCounter < 5)
-            return;
-        diceTouchCounter = 0;
-
-        //dice_position = [touch locationInView:self.view];
-        //glView.frame = CGRectMake(dice_position.x - dice_size/2, dice_position.y - dice_size/2, dice_size, dice_size);
-        dice_throw_time = CACurrentMediaTime() - dice_previous_move_time;
-        dice_previous_move_time = CACurrentMediaTime();
-        dice_throw_start = [touch previousLocationInView:self.view];
-        NSLog(@"touchMoved, time: %g", dice_throw_time);
-    }
-}
 
 -(void) motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event
 {

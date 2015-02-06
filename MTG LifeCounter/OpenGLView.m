@@ -11,6 +11,8 @@
 
 @implementation OpenGLView
 
+#pragma mark - Dice data
+
 typedef struct {
     float Position[3];
     float TexCoord[2]; // New
@@ -84,6 +86,8 @@ const GLubyte Indices[] = {
     20, 21, 22,
     22, 23, 20
 };
+
+#pragma mark - Setup OpenGL
 
 + (Class)layerClass {
     return [CAEAGLLayer class];
@@ -255,10 +259,12 @@ const GLubyte Indices[] = {
     
 }
 
+#pragma mark - Render
+
 #define NEAR 40.0
 #define FAR 60.0
 #define PV_WIDTH 10.0
-#define ACCELERATION -5
+#define ACCELERATION -10
 #define SHIFT_Z 57.0
 
 - (void)render:(CADisplayLink*)displayLink {
@@ -279,11 +285,11 @@ const GLubyte Indices[] = {
     if(v && (dx0 != 0 || dy0 != 0))
     {
         float t = displayLink.timestamp - _throwStartTime;
-        float S = V0 * t + ACCELERATION * t * t / 2;
+        float S = V0 * t + ACCELERATION * (V0/20) * t * t / 2;
         float k = sqrtf(S * S / (dx0 * dx0 + dy0 * dy0));
         x = X0 + k*dx0;
         y = Y0 + k*dy0;
-        v = MAX(0, V0 + ACCELERATION * t);
+        v = MAX(0, V0 + ACCELERATION * (V0/20) * t);
     }
     [modelView populateFromTranslation:CC3VectorMake(x, y, -SHIFT_Z)];
     
@@ -350,6 +356,8 @@ const GLubyte Indices[] = {
     [_context presentRenderbuffer:GL_RENDERBUFFER];
 }
 
+#pragma mark - View Functional
+
 - (void)setupDisplayLink {
     CADisplayLink* displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(render:)];
     [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];    
@@ -380,23 +388,108 @@ const GLubyte Indices[] = {
     _context = nil;
 }
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+    
+    return [self diceTouched:point] ? self : nil;
+}
+
 -(void) throwDice:(float)v0 withX0:(float)x0 withY0:(float)y0
 {
     dx0 = x0;
     dy0 = y0;
-    V0 = v0;
-    v = v0;
+    V0 = v0 / sqrt(abs(30 - v0));
+    v = V0;
     _throwStartTime = CACurrentMediaTime();
     NSLog(@"Dice throw: %g:%g velocity:%g", x0, y0, v0);
 }
 
--(void) moveDice:(float)xpos withY:(float)ypos
+-(void) moveDice:(CGSize)delta
+{
+    // translate to scene coords
+    float PV_HEIGTH = PV_WIDTH * self.frame.size.height / self.frame.size.width;
+    float dx = delta.width/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
+    float dy = -delta.height/self.bounds.size.height*PV_HEIGTH*FAR/NEAR;
+    
+    x += dx; X0 = x;
+    y += dy; Y0 = y;
+    V0 = v = 0;
+}
+
+-(BOOL) diceTouched:(CGPoint)pos
 {
     float PV_HEIGTH = PV_WIDTH * self.frame.size.height / self.frame.size.width;
-    x = X0 = (xpos - self.bounds.size.width/2)/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
-    y = Y0 = -(ypos - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*FAR/NEAR;
-    V0 = v = 0;
-    NSLog(@"Dice move: %g:%g", xpos, ypos);
+    CGPoint posInScene;
+    posInScene.x = (pos.x - self.bounds.size.width/2)/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
+    posInScene.y = -(pos.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*FAR/NEAR;
+    float distance = sqrtf(powf(posInScene.x - x, 2) + powf(posInScene.y - y, 2));
+    //NSLog(@"Touch distance: %g", distance);
+    return distance < 1.4;
+}
+
+# pragma mark - Touches Events
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch* touch = [touches anyObject];
+    if([self diceTouched:[touch locationInView:self]])
+    {
+        //NSLog(@"dice touch began");
+        dice_throw_start = [touch locationInView:self];
+        dice_previous_move_time = CACurrentMediaTime();
+        dice_locked = YES;
+        diceTouchCounter = 0;
+    }
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    //NSLog(@"touchCancelled");
+    
+    dice_locked = NO;
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    //NSLog(@"touchEnded");
+    
+    if(dice_locked)
+    {
+        UITouch* touch = [touches anyObject];
+        dice_throw_end = [touch locationInView:self];
+        dice_throw_time = CACurrentMediaTime();
+        NSLog(@"time: %f", dice_throw_time);
+        dice_locked = NO;
+        
+        if(dice_throw_time - dice_previous_move_time < 0.3)
+        {
+            float dx = (dice_throw_end.x-dice_throw_start.x);
+            float dy = (dice_throw_start.y-dice_throw_end.y);
+            float dl = sqrt(powf(dx,2) + powf(dy, 2));
+            if(dl != 0)
+                [self throwDice:dl/(dice_throw_time - dice_previous_move_time) withX0:dx withY0:dy];
+        }
+    }
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if(dice_locked)
+    {
+        UITouch* touch = [touches anyObject];
+        CGSize shift = CGSizeMake([touch locationInView:self].x - [touch previousLocationInView:self].x, [touch locationInView:self].y - [touch previousLocationInView:self].y);
+        [self moveDice:shift];
+        
+        dice_throw_end = [touch locationInView:self];
+        
+        diceTouchCounter++;
+        if(diceTouchCounter < 5)
+            return;
+        diceTouchCounter = 0;
+        
+        dice_previous_move_time = CACurrentMediaTime();
+        dice_throw_start = [touch previousLocationInView:self];
+        //NSLog(@"touchMoved: [%g,%g]", shift.width, shift.height);
+    }
 }
 
 @end

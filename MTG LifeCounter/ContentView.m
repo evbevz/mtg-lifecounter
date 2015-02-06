@@ -9,8 +9,6 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-	NSLog(@"touchBegan");
-    
     UITouch* touch = [touches anyObject];
     if ([self.delegate respondsToSelector:@selector(contentView:didBeganTouch:)])
     {
@@ -20,8 +18,6 @@
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSLog(@"touchCancelled");
-
     UITouch* touch = [touches anyObject];
     if ([self.delegate respondsToSelector:@selector(contentView:didCancelTouch:)])
     {
@@ -31,8 +27,6 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    NSLog(@"touchEnded");
-
     UITouch* touch = [touches anyObject];
     if ([self.delegate respondsToSelector:@selector(contentView:didEndTouch:)])
     {
@@ -42,8 +36,6 @@
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    //NSLog(@"touchMoved");
-
     UITouch* touch = [touches anyObject];
     if ([self.delegate respondsToSelector:@selector(contentView:didMoveTouch:)])
     {

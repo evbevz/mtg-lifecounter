@@ -29,9 +29,18 @@
     float dx0, dy0, V0, X0, Y0;
     float v, x, y;
     CFTimeInterval _throwStartTime;
+    
+    CGPoint     dice_throw_start;
+    CGPoint     dice_throw_end;
+    double      dice_throw_time;
+    double      dice_previous_move_time;
+    Boolean     dice_locked;
+    int         diceTouchCounter;
+
 }
 
 -(void) throwDice:(float)v0 withX0:(float)x0 withY0:(float)y0;
--(void) moveDice:(float)xpos withY:(float)ypos;
+-(void) moveDice:(CGSize)delta;
+-(BOOL) diceTouched:(CGPoint)pos;
 
 @end
