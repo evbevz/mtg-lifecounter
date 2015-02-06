@@ -7,7 +7,6 @@
 //
 
 #import "OpenGLView.h"
-#import "CC3GLMatrix.h"
 
 @implementation OpenGLView
 
@@ -266,6 +265,7 @@ const GLubyte Indices[] = {
 #define PV_WIDTH 10.0
 #define ACCELERATION -10
 #define SHIFT_Z 57.0
+#define DWZ_MAX 2
 
 - (void)render:(CADisplayLink*)displayLink {
     
@@ -279,18 +279,23 @@ const GLubyte Indices[] = {
     [projection populateFromFrustumLeft:-PV_WIDTH/2 andRight:PV_WIDTH/2 andBottom:-PV_HEIGTH/2 andTop:PV_HEIGTH/2 andNear:NEAR andFar:FAR];
     glUniformMatrix4fv(_projectionUniform, 1, 0, projection.glMatrix);
     
-    CC3GLMatrix *modelView = [CC3GLMatrix matrix];
+    if(modelView == NULL)
+        modelView = [CC3GLMatrix matrix];
+    
+    float t = displayLink.timestamp - _throwStartTime;
     
     // move
     if(v && (dx0 != 0 || dy0 != 0))
     {
-        float t = displayLink.timestamp - _throwStartTime;
         float S = V0 * t + ACCELERATION * (V0/20) * t * t / 2;
-        float k = sqrtf(S * S / (dx0 * dx0 + dy0 * dy0));
+        float k = S > 0 ? sqrtf(S * S / (dx0 * dx0 + dy0 * dy0)) : 0;
         x = X0 + k*dx0;
         y = Y0 + k*dy0;
         v = MAX(0, V0 + ACCELERATION * (V0/20) * t);
-    }
+        
+        _Wy = k * dx0 / (2 * 3.14) * 260;
+        _Wx = - k * dy0 / (2 * 3.14) * 260;
+    }	
     [modelView populateFromTranslation:CC3VectorMake(x, y, -SHIFT_Z)];
     
     // test for field walls
@@ -328,11 +333,13 @@ const GLubyte Indices[] = {
     }
     
     // add rotation
-    _currentRotationX += displayLink.duration * 90;
-    _currentRotationY += displayLink.duration * 30;
-    _currentRotationZ += displayLink.duration * 10;
+    _currentRotationX = _Wx;
+    _currentRotationY = _Wy;
+    _currentRotationZ += _dWz * t *v;
+    //CC3Vector rotateVector = CC3VectorMake(_currentRotationX, _currentRotationY, _currentRotationZ);
     [modelView rotateBy:CC3VectorMake(_currentRotationX, _currentRotationY, _currentRotationZ)];
-
+    //[modelView rotateBy:CC3VectorDifference(rotateVector, savedState)];
+    //savedState = rotateVector;
 
     //glUniformMatrix4fv(_modelViewUniform, 1, 0, identity_matrix);
     glUniformMatrix4fv(_modelViewUniform, 1, 0, modelView.glMatrix);
@@ -380,6 +387,8 @@ const GLubyte Indices[] = {
     _texture1 = [self setupTexture:@"dice.png"];
     _currentRotationX = _currentRotationY = _currentRotationZ = 0;
     dx0 = dy0 = V0 = x = y = v = X0 = Y0 = 0;
+    modelView = NULL;
+    savedState = CC3VectorMake(0, 0, 0);
     return self;
 }
 
@@ -399,6 +408,8 @@ const GLubyte Indices[] = {
     dy0 = y0;
     V0 = v0 / sqrt(abs(30 - v0));
     v = V0;
+    _dWz = RandomDoubleBetween(-DWZ_MAX, DWZ_MAX);
+    
     _throwStartTime = CACurrentMediaTime();
     NSLog(@"Dice throw: %g:%g velocity:%g", x0, y0, v0);
 }

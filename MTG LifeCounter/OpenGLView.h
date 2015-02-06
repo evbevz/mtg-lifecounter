@@ -10,6 +10,8 @@
 #import <QuartzCore/QuartzCore.h>
 #include <OpenGLES/ES2/gl.h>
 #include <OpenGLES/ES2/glext.h>
+#import "CC3GLMatrix.h"
+
 
 @interface OpenGLView : UIView {
     CAEAGLLayer* _eaglLayer;
@@ -19,9 +21,12 @@
     GLuint _colorSlot;
     GLuint _projectionUniform;
     GLuint _modelViewUniform;
+    
     float _currentRotationX;
     float _currentRotationY;
     float _currentRotationZ;
+    float _Wx, _Wy, _Wz, _dWz;
+    
     GLuint _depthRenderBuffer;
     GLuint _texture1;
     GLuint _texCoordSlot;
@@ -36,6 +41,9 @@
     double      dice_previous_move_time;
     Boolean     dice_locked;
     int         diceTouchCounter;
+    
+    CC3GLMatrix *modelView;
+    CC3Vector   savedState;
 
 }
 
