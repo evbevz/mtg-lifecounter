@@ -279,8 +279,8 @@ const GLubyte Indices[] = {
     [projection populateFromFrustumLeft:-PV_WIDTH/2 andRight:PV_WIDTH/2 andBottom:-PV_HEIGTH/2 andTop:PV_HEIGTH/2 andNear:NEAR andFar:FAR];
     glUniformMatrix4fv(_projectionUniform, 1, 0, projection.glMatrix);
     
-    if(modelView == NULL)
-        modelView = [CC3GLMatrix matrix];
+    CC3GLMatrix *modelView = [CC3GLMatrix matrix];
+    float _Wx, _Wy;
     
     float t = displayLink.timestamp - _throwStartTime;
     
@@ -289,13 +289,12 @@ const GLubyte Indices[] = {
     {
         float S = V0 * t + ACCELERATION * (V0/20) * t * t / 2;
         float k = S > 0 ? sqrtf(S * S / (dx0 * dx0 + dy0 * dy0)) : 0;
+        _Wy = (X0 + k*dx0 - x)*RadiansToDegreesFactor;
+        _Wx = -(Y0 + k*dy0 - y)*RadiansToDegreesFactor;
         x = X0 + k*dx0;
         y = Y0 + k*dy0;
         v = MAX(0, V0 + ACCELERATION * (V0/20) * t);
-        
-        _Wy = k * dx0 / (2 * 3.14) * 260;
-        _Wx = - k * dy0 / (2 * 3.14) * 260;
-    }	
+    }
     [modelView populateFromTranslation:CC3VectorMake(x, y, -SHIFT_Z)];
     
     // test for field walls
@@ -332,12 +331,27 @@ const GLubyte Indices[] = {
         _throwStartTime = displayLink.timestamp;
     }
     
-    // add rotation
-    _currentRotationX = _Wx;
-    _currentRotationY = _Wy;
-    _currentRotationZ += _dWz * t *v;
-    //CC3Vector rotateVector = CC3VectorMake(_currentRotationX, _currentRotationY, _currentRotationZ);
-    [modelView rotateBy:CC3VectorMake(_currentRotationX, _currentRotationY, _currentRotationZ)];
+    // make current rotation matrix
+    CC3GLMatrix *rotateMatrix = [CC3GLMatrix matrix];
+    [rotateMatrix populateIdentity];
+
+    if(v)
+    {
+        // add rotation
+        CC3Vector rotateVector = CC3VectorMake(_Wx, _Wy, 0);
+        [rotateMatrix populateFromRotation:rotateVector];
+    }
+    
+    // apply saved rotation state to current rotation and save result
+    if (savedRotation == NULL)
+    {
+        savedRotation = [CC3GLMatrix matrix];
+        [savedRotation populateIdentity];
+    }
+    [rotateMatrix multiplyByMatrix:savedRotation];
+    [savedRotation populateFrom:rotateMatrix];
+    
+    [modelView multiplyByMatrix:rotateMatrix];
     //[modelView rotateBy:CC3VectorDifference(rotateVector, savedState)];
     //savedState = rotateVector;
 
@@ -385,10 +399,8 @@ const GLubyte Indices[] = {
         [self setupDisplayLink]; // render in loop, not only in init 
     }
     _texture1 = [self setupTexture:@"dice.png"];
-    _currentRotationX = _currentRotationY = _currentRotationZ = 0;
     dx0 = dy0 = V0 = x = y = v = X0 = Y0 = 0;
-    modelView = NULL;
-    savedState = CC3VectorMake(0, 0, 0);
+    savedRotation = NULL;
     return self;
 }
 
@@ -408,7 +420,6 @@ const GLubyte Indices[] = {
     dy0 = y0;
     V0 = v0 / sqrt(abs(30 - v0));
     v = V0;
-    _dWz = RandomDoubleBetween(-DWZ_MAX, DWZ_MAX);
     
     _throwStartTime = CACurrentMediaTime();
     NSLog(@"Dice throw: %g:%g velocity:%g", x0, y0, v0);

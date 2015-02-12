@@ -21,12 +21,7 @@
     GLuint _colorSlot;
     GLuint _projectionUniform;
     GLuint _modelViewUniform;
-    
-    float _currentRotationX;
-    float _currentRotationY;
-    float _currentRotationZ;
-    float _Wx, _Wy, _Wz, _dWz;
-    
+        
     GLuint _depthRenderBuffer;
     GLuint _texture1;
     GLuint _texCoordSlot;
@@ -42,8 +37,7 @@
     Boolean     dice_locked;
     int         diceTouchCounter;
     
-    CC3GLMatrix *modelView;
-    CC3Vector   savedState;
+    CC3GLMatrix *savedRotation;
 
 }
 
