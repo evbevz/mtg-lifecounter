@@ -23,11 +23,11 @@
     GLuint _modelViewUniform;
         
     GLuint _depthRenderBuffer;
-    GLuint _texture1;
+    GLuint _texture;
     GLuint _texCoordSlot;
     GLuint _textureUniform;
-    float dx0, dy0, V0, X0, Y0;
-    float v, x, y;
+    float Vx, Vy, X0, Y0;
+    float x, y;
     CFTimeInterval _throwStartTime;
     
     CGPoint     dice_throw_start;
@@ -38,7 +38,6 @@
     int         diceTouchCounter;
     
     CC3GLMatrix *savedRotation;
-
 }
 
 -(void) throwDice:(float)v0 withX0:(float)x0 withY0:(float)y0;

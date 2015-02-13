@@ -263,10 +263,9 @@ const GLubyte Indices[] = {
 #define NEAR 40.0
 #define FAR 60.0
 #define PV_WIDTH 10.0
-#define ACCELERATION -10
 #define SHIFT_Z 57.0
-#define DWZ_MAX 2
 
+#define ACCELERATION -10
 - (void)render:(CADisplayLink*)displayLink {
     
     float PV_HEIGTH = PV_WIDTH * self.frame.size.height / self.frame.size.width;
@@ -282,60 +281,93 @@ const GLubyte Indices[] = {
     CC3GLMatrix *modelView = [CC3GLMatrix matrix];
     float _Wx, _Wy;
     
-    float t = displayLink.timestamp - _throwStartTime;
+    float t = displayLink.duration;
     
     // move
-    if(v && (dx0 != 0 || dy0 != 0))
+    if(Vx || Vy)
     {
-        float S = V0 * t + ACCELERATION * (V0/20) * t * t / 2;
-        float k = S > 0 ? sqrtf(S * S / (dx0 * dx0 + dy0 * dy0)) : 0;
-        _Wy = (X0 + k*dx0 - x)*RadiansToDegreesFactor;
-        _Wx = -(Y0 + k*dy0 - y)*RadiansToDegreesFactor;
-        x = X0 + k*dx0;
-        y = Y0 + k*dy0;
-        v = MAX(0, V0 + ACCELERATION * (V0/20) * t);
+        // modify velocity
+        float V = sqrtf(Vx*Vx + Vy*Vy);
+        Vx = Vx > 0? MAX(0, Vx + ACCELERATION * Vx / V * t) : MIN(0, Vx + ACCELERATION * Vx / V * t);
+        Vy = Vy > 0? MAX(0, Vy + ACCELERATION * Vy / V * t) : MIN(0, Vy + ACCELERATION * Vy / V * t);
+
+        // add cube angle correction
+        CC3Vector planeNormal = [self findLowestPlane];
+        Vx += planeNormal.x * 0.7;
+        Vy += planeNormal.y * 0.7;
+        
+        _Wy = (Vx * t)*RadiansToDegreesFactor;
+        _Wx = -(Vy * t)*RadiansToDegreesFactor;
+
+        x += Vx*t;
+        y += Vy*t;
+
+        // stop
+        if(ABS(Vx) < 0.15) Vx = 0;
+        if(ABS(Vy) < 0.15) Vy = 0;
+        
+        // if cube is stoped not horizontal, add velocity
+        if(!Vx && !Vy)
+        {
+            if(ABS(planeNormal.x) > 0.1 || ABS(planeNormal.y) > 0.1)
+            {
+                Vx += planeNormal.x * 4;
+                Vy += planeNormal.y * 4;
+                
+                NSLog(@"Add velocity. Vx: %g, Vy: %g", Vx, Vy);
+            }
+            
+            if(ABS(planeNormal.x) < 0.1)
+                _Wy = planeNormal.x * RadiansToDegreesFactor;
+
+            if(ABS(planeNormal.y) < 0.1)
+                _Wx = - planeNormal.y * RadiansToDegreesFactor;
+        }
+    }
+    else
+    {
+        CC3Vector planeNormal = [self findLowestPlane];
+        if(planeNormal.x || planeNormal.y)
+        {
+            _Wy = planeNormal.x * RadiansToDegreesFactor;
+            _Wx = - planeNormal.y * RadiansToDegreesFactor;
+            NSLog(@"PlaneNormal: [%g, %g, %g]. Make horizontal.", planeNormal.x, planeNormal.y, planeNormal.z);
+        }
+        else
+        {
+        _Wx = 0;
+        _Wy = 0;
+        }
     }
     [modelView populateFromTranslation:CC3VectorMake(x, y, -SHIFT_Z)];
     
     // test for field walls
     if(x + 1 > (SHIFT_Z-1)/NEAR*PV_WIDTH/2)
     {
-        dx0 = -ABS(dx0);
-        V0 = v;
-        X0 = x;
-        Y0 = y;
-        _throwStartTime = displayLink.timestamp;
+        x = (SHIFT_Z-1)/NEAR*PV_WIDTH/2 - 1;
+        Vx = -Vx;
     }
     if(x - 1 < -(SHIFT_Z-1)/NEAR*PV_WIDTH/2)
     {
-        dx0 = ABS(dx0);
-        V0 = v;
-        X0 = x;
-        Y0 = y;
-        _throwStartTime = displayLink.timestamp;
+        x = -(SHIFT_Z-1)/NEAR*PV_WIDTH/2 + 1;
+        Vx = -Vx;
     }
     if(y + 1 > (SHIFT_Z-1)/NEAR*PV_HEIGTH/2)
     {
-        dy0 = -ABS(dy0);
-        V0 = v;
-        X0 = x;
-        Y0 = y;
-        _throwStartTime = displayLink.timestamp;
+        y = (SHIFT_Z-1)/NEAR*PV_HEIGTH/2 - 1;
+        Vy = -Vy;
     }
     if(y - 1 < -(SHIFT_Z-1)/NEAR*PV_HEIGTH/2)
     {
-        dy0 = ABS(dy0);
-        V0 = v;
-        X0 = x;
-        Y0 = y;
-        _throwStartTime = displayLink.timestamp;
+        y = -(SHIFT_Z-1)/NEAR*PV_HEIGTH/2 + 1;
+        Vy = -Vy;
     }
     
     // make current rotation matrix
     CC3GLMatrix *rotateMatrix = [CC3GLMatrix matrix];
     [rotateMatrix populateIdentity];
 
-    if(v)
+    if(_Wx || _Wy)
     {
         // add rotation
         CC3Vector rotateVector = CC3VectorMake(_Wx, _Wy, 0);
@@ -351,30 +383,51 @@ const GLubyte Indices[] = {
     [rotateMatrix multiplyByMatrix:savedRotation];
     [savedRotation populateFrom:rotateMatrix];
     
+    // rotate model
     [modelView multiplyByMatrix:rotateMatrix];
-    //[modelView rotateBy:CC3VectorDifference(rotateVector, savedState)];
-    //savedState = rotateVector;
-
-    //glUniformMatrix4fv(_modelViewUniform, 1, 0, identity_matrix);
+       
     glUniformMatrix4fv(_modelViewUniform, 1, 0, modelView.glMatrix);
     
-    // 1
     glViewport(0, 0, self.frame.size.width, self.frame.size.height);
     
-    // 2
-    
     glVertexAttribPointer(_positionSlot, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-    
-    glVertexAttribPointer(_texCoordSlot, 2, GL_FLOAT, GL_FALSE, 
-                          sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
+    glVertexAttribPointer(_texCoordSlot, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*) (sizeof(float) * 3));
     glActiveTexture(GL_TEXTURE0); 
-    glBindTexture(GL_TEXTURE_2D, _texture1);
+    glBindTexture(GL_TEXTURE_2D, _texture);
     glUniform1i(_textureUniform, 0);
     
-    // 3
     glDrawElements(GL_TRIANGLES, sizeof(Indices)/sizeof(Indices[0]), GL_UNSIGNED_BYTE, 0);
     
     [_context presentRenderbuffer:GL_RENDERBUFFER];
+}
+
+#pragma mark - GL calculations
+
+- (CC3Vector)findLowestPlane
+{
+    CC3Vector lowest = CC3VectorMake(0, 0, -1);
+    if(savedRotation != NULL)
+    {
+        CC3Vector up = [savedRotation extractUpDirection];
+        CC3Vector forward = [savedRotation extractForwardDirection];
+        CC3Vector right = [savedRotation extractRightDirection];
+        
+        lowest = up;
+        if(forward.z < lowest.z)
+            lowest = forward;
+        if(right.z < lowest.z)
+            lowest = right;
+        
+        // check inverted
+        if(-up.z < lowest.z)
+            lowest = CC3VectorNegate(up);
+        if(-forward.z < lowest.z)
+            lowest = CC3VectorNegate(forward);
+        if(-right.z < lowest.z)
+            lowest = CC3VectorNegate(right);
+        
+    }
+    return lowest;
 }
 
 #pragma mark - View Functional
@@ -398,8 +451,8 @@ const GLubyte Indices[] = {
         [self setupVBOs];
         [self setupDisplayLink]; // render in loop, not only in init 
     }
-    _texture1 = [self setupTexture:@"dice.png"];
-    dx0 = dy0 = V0 = x = y = v = X0 = Y0 = 0;
+    _texture = [self setupTexture:@"dice.png"];
+    Vx = Vy = x = y = X0 = Y0 = 0;
     savedRotation = NULL;
     return self;
 }
@@ -414,15 +467,14 @@ const GLubyte Indices[] = {
     return [self diceTouched:point] ? self : nil;
 }
 
--(void) throwDice:(float)v0 withX0:(float)x0 withY0:(float)y0
+-(void) throwDice:(float)time withX0:(float)x0 withY0:(float)y0
 {
-    dx0 = x0;
-    dy0 = y0;
-    V0 = v0 / sqrt(abs(30 - v0));
-    v = V0;
+    float velocity = sqrtf(powf(x0,2) + powf(y0, 2))/time;
+    Vx = x0 / time / MAX(1, sqrtf(ABS(30.0 - velocity)));
+    Vy = y0 / time / MAX(1, sqrtf(ABS(30.0 - velocity)));
     
     _throwStartTime = CACurrentMediaTime();
-    NSLog(@"Dice throw: %g:%g velocity:%g", x0, y0, v0);
+    NSLog(@"Dice throw: %g:%g time: %g", x0, y0, time);
 }
 
 -(void) moveDice:(CGSize)delta
@@ -434,7 +486,6 @@ const GLubyte Indices[] = {
     
     x += dx; X0 = x;
     y += dy; Y0 = y;
-    V0 = v = 0;
 }
 
 -(BOOL) diceTouched:(CGPoint)pos
@@ -488,7 +539,7 @@ const GLubyte Indices[] = {
             float dy = (dice_throw_start.y-dice_throw_end.y);
             float dl = sqrt(powf(dx,2) + powf(dy, 2));
             if(dl != 0)
-                [self throwDice:dl/(dice_throw_time - dice_previous_move_time) withX0:dx withY0:dy];
+                [self throwDice:MAX(dice_throw_time - dice_previous_move_time, 0.01) withX0:dx withY0:dy];
         }
     }
 }
