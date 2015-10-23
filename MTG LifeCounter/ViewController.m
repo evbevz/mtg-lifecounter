@@ -9,8 +9,7 @@
 #import "ViewController.h"
 #import "ContentView.h"
 #import <QuartzCore/CABase.h>
-#import <QuartzCore/QuartzCore.h>
-#import "OpenGLView.h"
+#import "DiceView.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 #define CARD_ROTATE_DURATION    0.4
@@ -24,7 +23,7 @@
 
 
 @interface ViewController () {
-    OpenGLView*     glView;
+    DiceView*     glView;
 }
 
 - (void)selectPlayer:(int)i;
@@ -164,7 +163,7 @@
     canChangePlayer = true;
 
     // Dice GL
-    glView = [[OpenGLView alloc] initWithFrame:self.view.bounds];
+    glView = [[DiceView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:glView];
     glView.backgroundColor = [UIColor clearColor];
 }

@@ -43,14 +43,19 @@
 		04B24AA3143C8DA400549F8C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B24AA2143C8DA400549F8C /* main.m */; };
 		04B24AA7143C8DA400549F8C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B24AA6143C8DA400549F8C /* AppDelegate.m */; };
 		04B24AB4143C8DA400549F8C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B24AB3143C8DA400549F8C /* ViewController.m */; };
-		04B24ABC143C8DA400549F8C /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24ABB143C8DA400549F8C /* SenTestingKit.framework */; };
 		04B24ABD143C8DA400549F8C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A92143C8DA400549F8C /* UIKit.framework */; };
 		04B24ABE143C8DA400549F8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B24A94143C8DA400549F8C /* Foundation.framework */; };
 		04B24AC6143C8DA400549F8C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04B24AC4143C8DA400549F8C /* InfoPlist.strings */; };
 		04B24AC9143C8DA400549F8C /* MTG_LifeCounterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B24AC8143C8DA400549F8C /* MTG_LifeCounterTests.m */; };
 		04B83BD0148E0C2800F0843E /* Bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 04B83BCF148E0C2800F0843E /* Bubble.png */; };
-		04BE2B26148E47B600A7469B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04BE2B25148E47B600A7469B /* QuartzCore.framework */; };
 		04BE2B28148E496A00A7469B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04BE2B27148E496A00A7469B /* CoreGraphics.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		59F1BDE81BDA764300901C99 /* DiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 59F1BDE71BDA764300901C99 /* DiceView.m */; settings = {ASSET_TAGS = (); }; };
+		59F1BDEA1BDA849500901C99 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59F1BDE91BDA849500901C99 /* GLKit.framework */; };
+		59F855F91BC014C600D53C80 /* Cube.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 59F855F51BC014C600D53C80 /* Cube.fsh */; settings = {ASSET_TAGS = (); }; };
+		59F855FA1BC014C600D53C80 /* Cube.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 59F855F61BC014C600D53C80 /* Cube.vsh */; settings = {ASSET_TAGS = (); }; };
+		59F855FB1BC014C600D53C80 /* CubeShader.m in Sources */ = {isa = PBXBuildFile; fileRef = 59F855F81BC014C600D53C80 /* CubeShader.m */; settings = {ASSET_TAGS = (); }; };
+		59F855FE1BC014EC00D53C80 /* Shader.m in Sources */ = {isa = PBXBuildFile; fileRef = 59F855FD1BC014EC00D53C80 /* Shader.m */; settings = {ASSET_TAGS = (); }; };
+		59F856021BC01F8000D53C80 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04BE2B23148E470700A7469B /* QuartzCore.framework */; };
 		848CA6A51A4C0DA500323A88 /* dice.png in Resources */ = {isa = PBXBuildFile; fileRef = 848CA6A41A4C0DA500323A88 /* dice.png */; };
 		8490201A1A4BDB5700441126 /* CC3Foundation.m in Sources */ = {isa = PBXBuildFile; fileRef = 849020111A4BDB5700441126 /* CC3Foundation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8490201B1A4BDB5700441126 /* CC3GLMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = 849020131A4BDB5700441126 /* CC3GLMatrix.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -127,15 +132,24 @@
 		04B24AB2143C8DA400549F8C /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		04B24AB3143C8DA400549F8C /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		04B24ABA143C8DA400549F8C /* MTG LifeCounterTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "MTG LifeCounterTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		04B24ABB143C8DA400549F8C /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		04B24AC3143C8DA400549F8C /* MTG LifeCounterTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MTG LifeCounterTests-Info.plist"; sourceTree = "<group>"; };
 		04B24AC5143C8DA400549F8C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		04B24AC7143C8DA400549F8C /* MTG_LifeCounterTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MTG_LifeCounterTests.h; sourceTree = "<group>"; };
 		04B24AC8143C8DA400549F8C /* MTG_LifeCounterTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MTG_LifeCounterTests.m; sourceTree = "<group>"; };
 		04B83BCF148E0C2800F0843E /* Bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Bubble.png; path = Resources/img/Bubble.png; sourceTree = "<group>"; };
 		04BE2B23148E470700A7469B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		04BE2B25148E47B600A7469B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		04BE2B27148E496A00A7469B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		59F1BDE61BDA764300901C99 /* DiceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiceView.h; sourceTree = "<group>"; };
+		59F1BDE71BDA764300901C99 /* DiceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiceView.m; sourceTree = "<group>"; };
+		59F1BDE91BDA849500901C99 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		59F855F51BC014C600D53C80 /* Cube.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Cube.fsh; path = "MTG LifeCounter/Cube.fsh"; sourceTree = "<group>"; };
+		59F855F61BC014C600D53C80 /* Cube.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = Cube.vsh; path = "MTG LifeCounter/Cube.vsh"; sourceTree = "<group>"; };
+		59F855F71BC014C600D53C80 /* CubeShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CubeShader.h; path = "MTG LifeCounter/CubeShader.h"; sourceTree = "<group>"; };
+		59F855F81BC014C600D53C80 /* CubeShader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CubeShader.m; path = "MTG LifeCounter/CubeShader.m"; sourceTree = "<group>"; };
+		59F855FC1BC014EC00D53C80 /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Shader.h; path = "MTG LifeCounter/Shader.h"; sourceTree = "<group>"; };
+		59F855FD1BC014EC00D53C80 /* Shader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Shader.m; path = "MTG LifeCounter/Shader.m"; sourceTree = "<group>"; };
+		59F855FF1BC0151300D53C80 /* CUBE_MTL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CUBE_MTL.h; path = "MTG LifeCounter/CUBE_MTL.h"; sourceTree = "<group>"; };
+		59F856001BC0151300D53C80 /* CUBE_OBJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CUBE_OBJ.h; path = "MTG LifeCounter/CUBE_OBJ.h"; sourceTree = "<group>"; };
 		8409BB1116B83486007A76BF /* MTG LifeCounter copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "MTG LifeCounter copy-Info.plist"; path = "/Users/admin/Documents/lifecounter_new/MTG LifeCounter copy-Info.plist"; sourceTree = "<absolute>"; };
 		848CA6A41A4C0DA500323A88 /* dice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice.png; sourceTree = "<group>"; };
 		849020101A4BDB5700441126 /* CC3Foundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CC3Foundation.h; sourceTree = "<group>"; };
@@ -169,11 +183,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59F1BDEA1BDA849500901C99 /* GLKit.framework in Frameworks */,
+				59F856021BC01F8000D53C80 /* QuartzCore.framework in Frameworks */,
 				04BE2B28148E496A00A7469B /* CoreGraphics.framework in Frameworks */,
 				04B24A93143C8DA400549F8C /* UIKit.framework in Frameworks */,
 				04B24A95143C8DA400549F8C /* Foundation.framework in Frameworks */,
 				04B24A9B143C8DA400549F8C /* OpenGLES.framework in Frameworks */,
-				04BE2B26148E47B600A7469B /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,7 +196,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04B24ABC143C8DA400549F8C /* SenTestingKit.framework in Frameworks */,
 				04B24ABD143C8DA400549F8C /* UIKit.framework in Frameworks */,
 				04B24ABE143C8DA400549F8C /* Foundation.framework in Frameworks */,
 			);
@@ -226,6 +240,12 @@
 			children = (
 				0484CF8A14B3086A00C90495 /* SimpleVertex.glsl */,
 				0484CF8914B3086A00C90495 /* SimpleFragment.glsl */,
+				59F855FC1BC014EC00D53C80 /* Shader.h */,
+				59F855FD1BC014EC00D53C80 /* Shader.m */,
+				59F855F51BC014C600D53C80 /* Cube.fsh */,
+				59F855F61BC014C600D53C80 /* Cube.vsh */,
+				59F855F71BC014C600D53C80 /* CubeShader.h */,
+				59F855F81BC014C600D53C80 /* CubeShader.m */,
 			);
 			name = Shaders;
 			sourceTree = "<group>";
@@ -256,6 +276,7 @@
 		04B24A83143C8DA300549F8C = {
 			isa = PBXGroup;
 			children = (
+				59F856011BC015C200D53C80 /* model */,
 				8490200F1A4BDB5700441126 /* Cocos3DMathLib */,
 				0484CF8D14B3089E00C90495 /* Shaders */,
 				0432315E143CBC61007968AF /* Resources */,
@@ -279,13 +300,12 @@
 		04B24A91143C8DA400549F8C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				59F1BDE91BDA849500901C99 /* GLKit.framework */,
+				04B24A9A143C8DA400549F8C /* OpenGLES.framework */,
 				04BE2B27148E496A00A7469B /* CoreGraphics.framework */,
 				04BE2B23148E470700A7469B /* QuartzCore.framework */,
 				04B24A92143C8DA400549F8C /* UIKit.framework */,
 				04B24A94143C8DA400549F8C /* Foundation.framework */,
-				04B24A9A143C8DA400549F8C /* OpenGLES.framework */,
-				04B24ABB143C8DA400549F8C /* SenTestingKit.framework */,
-				04BE2B25148E47B600A7469B /* QuartzCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -304,6 +324,8 @@
 				04B24A9D143C8DA400549F8C /* Supporting Files */,
 				043231601443480E007968AF /* Card.h */,
 				043231611443480E007968AF /* Card.m */,
+				59F1BDE61BDA764300901C99 /* DiceView.h */,
+				59F1BDE71BDA764300901C99 /* DiceView.m */,
 			);
 			path = "MTG LifeCounter";
 			sourceTree = "<group>";
@@ -336,6 +358,15 @@
 				04B24AC4143C8DA400549F8C /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		59F856011BC015C200D53C80 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				59F855FF1BC0151300D53C80 /* CUBE_MTL.h */,
+				59F856001BC0151300D53C80 /* CUBE_OBJ.h */,
+			);
+			name = model;
 			sourceTree = "<group>";
 		};
 		8490200F1A4BDB5700441126 /* Cocos3DMathLib */ = {
@@ -409,7 +440,7 @@
 			name = "MTG LifeCounterTests";
 			productName = "MTG LifeCounterTests";
 			productReference = 04B24ABA143C8DA400549F8C /* MTG LifeCounterTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -417,6 +448,7 @@
 		04B24A85143C8DA300549F8C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastTestingUpgradeCheck = 0700;
 				LastUpgradeCheck = 0420;
 			};
 			buildConfigurationList = 04B24A88143C8DA300549F8C /* Build configuration list for PBXProject "MTG LifeCounter" */;
@@ -447,6 +479,7 @@
 				04906AAA1487EB1D000D51BE /* Field.png in Resources */,
 				04906AB01487F332000D51BE /* Btn20Back.png in Resources */,
 				04906AB31487F51F000D51BE /* Btn-20.png in Resources */,
+				59F855F91BC014C600D53C80 /* Cube.fsh in Resources */,
 				04906AB41487F51F000D51BE /* Btn+20.png in Resources */,
 				04906AB6148BB2C0000D51BE /* MarbleBlue.png in Resources */,
 				04906ACB148CBB3E000D51BE /* Poison_0.png in Resources */,
@@ -469,6 +502,7 @@
 				04B83BD0148E0C2800F0843E /* Bubble.png in Resources */,
 				0484CF8114A3646D00C90495 /* tile_floor.png in Resources */,
 				0484CF8B14B3086A00C90495 /* SimpleFragment.glsl in Resources */,
+				59F855FA1BC014C600D53C80 /* Cube.vsh in Resources */,
 				0484CF8C14B3086A00C90495 /* SimpleVertex.glsl in Resources */,
 				849210BE16A34CBB007025C2 /* MarbleBlack.png in Resources */,
 				849210C216A34CCA007025C2 /* MarbleGreen.png in Resources */,
@@ -518,15 +552,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59F1BDE81BDA764300901C99 /* DiceView.m in Sources */,
 				04B24AA3143C8DA400549F8C /* main.m in Sources */,
 				04B24AA7143C8DA400549F8C /* AppDelegate.m in Sources */,
 				04B24AB4143C8DA400549F8C /* ViewController.m in Sources */,
 				043231621443480E007968AF /* Card.m in Sources */,
+				59F855FB1BC014C600D53C80 /* CubeShader.m in Sources */,
 				04906AB9148BBA73000D51BE /* ContentView.m in Sources */,
 				0484CF8814B3085500C90495 /* OpenGLView.m in Sources */,
 				8490201A1A4BDB5700441126 /* CC3Foundation.m in Sources */,
 				8490201B1A4BDB5700441126 /* CC3GLMatrix.m in Sources */,
 				8490201C1A4BDB5700441126 /* CC3Kazmath.c in Sources */,
+				59F855FE1BC014EC00D53C80 /* Shader.m in Sources */,
 				8490201D1A4BDB5700441126 /* CC3Math.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -622,6 +659,7 @@
 		04B24ACD143C8DA400549F8C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -643,6 +681,7 @@
 		04B24ACE143C8DA400549F8C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: EVGENY BEVZ";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
