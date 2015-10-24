@@ -23,7 +23,7 @@
 
 @interface DiceView ()
 {
-    float Vx, Vy, X0, Y0;
+    float Vx, Vy;
     float x, y;
     CFTimeInterval _throwStartTime;
     
@@ -36,6 +36,7 @@
     
     CC3GLMatrix *savedRotation;
     float       interval;
+    CGPoint     diceDefaultPlace;
 }
 
 @property (strong, nonatomic) CubeShader* cubeShader;
@@ -62,7 +63,7 @@
     glEnable(GL_DEPTH_TEST);
     
     [self loadShader];
-    Vx = Vy = x = y = X0 = Y0 = 0;
+    Vx = Vy = x = y = 0;
     savedRotation = NULL;
     
     CADisplayLink* displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(render:)];
@@ -298,8 +299,28 @@
     float dx = delta.width/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
     float dy = -delta.height/self.bounds.size.height*PV_HEIGTH*FAR/NEAR;
     
-    x += dx; X0 = x;
-    y += dy; Y0 = y;
+    x += dx;
+    y += dy;
+}
+
+-(void) moveDiceTo:(CGPoint)pos
+{
+    // translate to scene coords
+    float PV_HEIGTH = PV_WIDTH * self.frame.size.height / self.frame.size.width;
+    x = (pos.x - self.bounds.size.width/2)/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
+    y = -(pos.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*FAR/NEAR;
+}
+
+-(void) moveDiceToDefaultPlace
+{
+    [self moveDiceTo:diceDefaultPlace];
+}
+
+
+-(void) setDiceDefaultPlace:(CGPoint)pos
+{
+    diceDefaultPlace = pos;
+    [self moveDiceTo:diceDefaultPlace];
 }
 
 -(BOOL) diceTouched:(CGPoint)pos

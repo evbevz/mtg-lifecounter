@@ -21,6 +21,12 @@
 #define MIN_SCALE               MIN(x_scale, y_scale)
 #define MAX_SCALE               MAX(x_scale, y_scale)
 
+#define DICE_POS_X_OFFSET         40
+#define DICE_POS_Y_OFFSET         50
+#define DICE_AREA_SIZE            50
+#define DICE_AREA_X_OFFSET        10
+#define DICE_AREA_Y_OFFSET        15
+
 
 @interface ViewController () {
     DiceView*     glView;
@@ -162,10 +168,18 @@
     
     canChangePlayer = true;
 
+    // Dice default pos area
+    UIButton *dicePosArea = [UIButton buttonWithType:UIButtonTypeCustom];
+    dicePosArea.frame = CGRectMake(self.view.bounds.size.width - DICE_AREA_X_OFFSET - DICE_AREA_SIZE, self.view.bounds.size.height - DICE_AREA_Y_OFFSET - DICE_AREA_SIZE, DICE_AREA_SIZE, DICE_AREA_SIZE);
+    [dicePosArea addTarget:self action:@selector(diceAreaTouched:) forControlEvents:UIControlEventTouchUpInside];
+    //dicePosArea.backgroundColor = CardNumbersColor;
+    [self.view addSubview:dicePosArea];
+    
     // Dice GL
     glView = [[DiceView alloc] initWithFrame:self.view.bounds];
     [self.view addSubview:glView];
     glView.backgroundColor = [UIColor clearColor];
+    [glView setDiceDefaultPlace:CGPointMake(glView.bounds.size.width - DICE_POS_X_OFFSET, glView.bounds.size.height - DICE_POS_Y_OFFSET)];
 }
 
 - (void)viewDidUnload
@@ -198,6 +212,8 @@
 {
     [self becomeFirstResponder];
 }
+
+#pragma mark -Touches
 
 - (void)playerButtonTouched:(UIButton*)button
 {
@@ -244,6 +260,14 @@
     players[current_player].poison = poison_val;
 
 }
+
+- (void)diceAreaTouched:(UIButton*)button
+{
+    [glView moveDiceToDefaultPlace];
+    [glView throwDice:1 withX0:0 withY0:0];
+}
+
+#pragma mark - Display events
 
 - (void) showPoison
 {
