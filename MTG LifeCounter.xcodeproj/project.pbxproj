@@ -9,9 +9,6 @@
 /* Begin PBXBuildFile section */
 		043231621443480E007968AF /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 043231611443480E007968AF /* Card.m */; };
 		0484CF8114A3646D00C90495 /* tile_floor.png in Resources */ = {isa = PBXBuildFile; fileRef = 0484CF8014A3646C00C90495 /* tile_floor.png */; };
-		0484CF8814B3085500C90495 /* OpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0484CF8714B3085400C90495 /* OpenGLView.m */; };
-		0484CF8B14B3086A00C90495 /* SimpleFragment.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 0484CF8914B3086A00C90495 /* SimpleFragment.glsl */; };
-		0484CF8C14B3086A00C90495 /* SimpleVertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 0484CF8A14B3086A00C90495 /* SimpleVertex.glsl */; };
 		04906AA71487E6B5000D51BE /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AA61487E6B5000D51BE /* Background.png */; };
 		04906AAA1487EB1D000D51BE /* Field.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AA91487EB1D000D51BE /* Field.png */; };
 		04906AB01487F332000D51BE /* Btn20Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AAF1487F332000D51BE /* Btn20Back.png */; };
@@ -90,10 +87,6 @@
 		043231601443480E007968AF /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
 		043231611443480E007968AF /* Card.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Card.m; sourceTree = "<group>"; };
 		0484CF8014A3646C00C90495 /* tile_floor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tile_floor.png; path = Resources/img/tile_floor.png; sourceTree = "<group>"; };
-		0484CF8614B3085400C90495 /* OpenGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLView.h; sourceTree = "<group>"; };
-		0484CF8714B3085400C90495 /* OpenGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenGLView.m; sourceTree = "<group>"; };
-		0484CF8914B3086A00C90495 /* SimpleFragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SimpleFragment.glsl; path = "MTG LifeCounter/Shaders/SimpleFragment.glsl"; sourceTree = "<group>"; };
-		0484CF8A14B3086A00C90495 /* SimpleVertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = SimpleVertex.glsl; path = "MTG LifeCounter/Shaders/SimpleVertex.glsl"; sourceTree = "<group>"; };
 		04906AA61487E6B5000D51BE /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background.png; path = Resources/img/Background.png; sourceTree = "<group>"; };
 		04906AA91487EB1D000D51BE /* Field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Field.png; path = Resources/img/Field.png; sourceTree = "<group>"; };
 		04906AAF1487F332000D51BE /* Btn20Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Btn20Back.png; path = Resources/img/Btn20Back.png; sourceTree = "<group>"; };
@@ -238,8 +231,6 @@
 		0484CF8D14B3089E00C90495 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				0484CF8A14B3086A00C90495 /* SimpleVertex.glsl */,
-				0484CF8914B3086A00C90495 /* SimpleFragment.glsl */,
 				59F855FC1BC014EC00D53C80 /* Shader.h */,
 				59F855FD1BC014EC00D53C80 /* Shader.m */,
 				59F855F51BC014C600D53C80 /* Cube.fsh */,
@@ -313,8 +304,6 @@
 		04B24A9C143C8DA400549F8C /* MTG LifeCounter */ = {
 			isa = PBXGroup;
 			children = (
-				0484CF8614B3085400C90495 /* OpenGLView.h */,
-				0484CF8714B3085400C90495 /* OpenGLView.m */,
 				04906AB7148BBA73000D51BE /* ContentView.h */,
 				04906AB8148BBA73000D51BE /* ContentView.m */,
 				04B24AA5143C8DA400549F8C /* AppDelegate.h */,
@@ -501,9 +490,7 @@
 				04906ADC148D2DFB000D51BE /* GaramondPremrPro-Smbd.otf in Resources */,
 				04B83BD0148E0C2800F0843E /* Bubble.png in Resources */,
 				0484CF8114A3646D00C90495 /* tile_floor.png in Resources */,
-				0484CF8B14B3086A00C90495 /* SimpleFragment.glsl in Resources */,
 				59F855FA1BC014C600D53C80 /* Cube.vsh in Resources */,
-				0484CF8C14B3086A00C90495 /* SimpleVertex.glsl in Resources */,
 				849210BE16A34CBB007025C2 /* MarbleBlack.png in Resources */,
 				849210C216A34CCA007025C2 /* MarbleGreen.png in Resources */,
 				849210C316A34CCA007025C2 /* MarbleRed.png in Resources */,
@@ -559,7 +546,6 @@
 				043231621443480E007968AF /* Card.m in Sources */,
 				59F855FB1BC014C600D53C80 /* CubeShader.m in Sources */,
 				04906AB9148BBA73000D51BE /* ContentView.m in Sources */,
-				0484CF8814B3085500C90495 /* OpenGLView.m in Sources */,
 				8490201A1A4BDB5700441126 /* CC3Foundation.m in Sources */,
 				8490201B1A4BDB5700441126 /* CC3GLMatrix.m in Sources */,
 				8490201C1A4BDB5700441126 /* CC3Kazmath.c in Sources */,

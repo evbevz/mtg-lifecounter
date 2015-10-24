@@ -20,7 +20,7 @@ static const char* PhongFSH = STRINGIFY
      highp vec3 id = vec3(1.0);
      highp vec3 is = vec3(1.0);
      
-     highp vec3 L = normalize(vec3(1.0,1.0,1.0));
+     highp vec3 L = normalize(vec3(1.0,10.0,-10.0));
      highp vec3 N = normalize(vNormal);
      highp vec3 V = normalize(vec3(0.0, 0.0, 1.0));
      highp vec3 R = reflect(L, N);

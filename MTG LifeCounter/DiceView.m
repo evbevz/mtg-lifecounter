@@ -16,6 +16,7 @@
 #define FAR 60.0
 #define PV_WIDTH 10.0
 #define SHIFT_Z 57.0
+#define SCALE_FACTOR 2
 
 #define ACCELERATION -10
 
@@ -175,6 +176,7 @@
     }
     CC3GLMatrix *modelView = [CC3GLMatrix matrix];
     [modelView populateFromTranslation:CC3VectorMake(x, y, -SHIFT_Z)];
+    [modelView scaleBy:CC3VectorMake(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR)];
     
     // test for field walls - invert future velocity
     if(x + 1 > (SHIFT_Z-1)/NEAR*PV_WIDTH/2)
@@ -232,7 +234,6 @@
 }
 
 - (void)render:(CADisplayLink*)displayLink{
-    NSLog(@"render");
     interval = displayLink.duration;
     [self setNeedsDisplay];
 }
@@ -308,7 +309,7 @@
     posInScene.x = (pos.x - self.bounds.size.width/2)/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
     posInScene.y = -(pos.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*FAR/NEAR;
     float distance = sqrtf(powf(posInScene.x - x, 2) + powf(posInScene.y - y, 2));
-    NSLog(@"Touch distance: %g", distance);
+    //NSLog(@"Touch distance: %g", distance);
     return distance < 1.4;
 }
 
