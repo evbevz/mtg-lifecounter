@@ -16,9 +16,11 @@
 #define FAR 60.0
 #define PV_WIDTH 10.0
 #define SHIFT_Z 57.0
-#define SCALE_FACTOR 2
+#define SCALE_FACTOR 1.5
 
 #define ACCELERATION -10
+#define MAX_ROLL_DURATION 3.0               // sec
+#define MAX_DURATION_CORRECTION_WEIGHT 0.1
 
 
 @interface DiceView ()
@@ -122,10 +124,16 @@
     // move
     if(Vx || Vy)
     {
-        // modify velocity
+        // modify velocity - linear acceleration
         float V = sqrtf(Vx*Vx + Vy*Vy);
         Vx = Vx > 0? MAX(0, Vx + ACCELERATION * Vx / V * t) : MIN(0, Vx + ACCELERATION * Vx / V * t);
         Vy = Vy > 0? MAX(0, Vy + ACCELERATION * Vy / V * t) : MIN(0, Vy + ACCELERATION * Vy / V * t);
+        
+        // velocity - apply max roll duration limit
+        float roll_time = MIN(CACurrentMediaTime() - _throwStartTime, MAX_ROLL_DURATION);
+        float correction = pow((MAX_ROLL_DURATION - roll_time) / MAX_ROLL_DURATION, MAX_DURATION_CORRECTION_WEIGHT);
+        Vx = Vx * correction;
+        Vy = Vy * correction;
         
         // add cube angle correction
         CC3Vector planeNormal = [self findLowestPlane];
