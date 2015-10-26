@@ -22,6 +22,8 @@
 #define MAX_ROLL_DURATION 3.0               // sec
 #define MAX_DURATION_CORRECTION_WEIGHT 0.1
 
+#define DICE_VELOCITY_STOP_THRESHOLD 1.5   // pix/sec
+#define DICE_EDGE_ANGLE_CORRECTION_WEIGHT 1.7
 
 @interface DiceView ()
 {
@@ -124,10 +126,15 @@
     // move
     if(Vx || Vy)
     {
+        CC3Vector planeNormal = [self findLowestPlane];
+
+        // make acceleration dependent from lower plane orientation
+        float acceleration = ACCELERATION / MAX(0.05, sqrt(pow(planeNormal.x, 2) + pow(planeNormal.y, 2)));
+        
         // modify velocity - linear acceleration
         float V = sqrtf(Vx*Vx + Vy*Vy);
-        Vx = Vx > 0? MAX(0, Vx + ACCELERATION * Vx / V * t) : MIN(0, Vx + ACCELERATION * Vx / V * t);
-        Vy = Vy > 0? MAX(0, Vy + ACCELERATION * Vy / V * t) : MIN(0, Vy + ACCELERATION * Vy / V * t);
+        Vx = Vx > 0? MAX(0, Vx + acceleration * Vx / V * t) : MIN(0, Vx + acceleration * Vx / V * t);
+        Vy = Vy > 0? MAX(0, Vy + acceleration * Vy / V * t) : MIN(0, Vy + acceleration * Vy / V * t);
         
         // velocity - apply max roll duration limit
         float roll_time = MIN(CACurrentMediaTime() - _throwStartTime, MAX_ROLL_DURATION);
@@ -136,9 +143,8 @@
         Vy = Vy * correction;
         
         // add cube angle correction
-        CC3Vector planeNormal = [self findLowestPlane];
-        Vx += planeNormal.x * 0.7;
-        Vy += planeNormal.y * 0.7;
+        Vx += planeNormal.x * DICE_EDGE_ANGLE_CORRECTION_WEIGHT;
+        Vy += planeNormal.y * DICE_EDGE_ANGLE_CORRECTION_WEIGHT;
         
         _Wy = (Vx * t)*RadiansToDegreesFactor;
         _Wx = -(Vy * t)*RadiansToDegreesFactor;
@@ -147,18 +153,18 @@
         y += Vy*t;
         
         // stop
-        if(ABS(Vx) < 0.15) Vx = 0;
-        if(ABS(Vy) < 0.15) Vy = 0;
+        if(ABS(Vx) < DICE_VELOCITY_STOP_THRESHOLD) Vx = 0;
+        if(ABS(Vy) < DICE_VELOCITY_STOP_THRESHOLD) Vy = 0;
         
         // if cube is stoped not horizontal, add velocity
         if(!Vx && !Vy)
         {
             if(ABS(planeNormal.x) > 0.1 || ABS(planeNormal.y) > 0.1)
             {
-                Vx += planeNormal.x * 4;
-                Vy += planeNormal.y * 4;
+                    Vx += planeNormal.x * (0.7 - ABS(planeNormal.x)) * 40;
+                    Vy += planeNormal.y * (0.7 - ABS(planeNormal.y)) * 40;
                 
-                NSLog(@"Add velocity. Vx: %g, Vy: %g", Vx, Vy);
+                NSLog(@"Add velocity. Normal (%g, %g). Vx: %g, Vy: %g", planeNormal.x, planeNormal.y, Vx, Vy);
             }
             
             if(ABS(planeNormal.x) < 0.1)
@@ -173,8 +179,8 @@
         CC3Vector planeNormal = [self findLowestPlane];
         if(planeNormal.x || planeNormal.y)
         {
-            _Wy = planeNormal.x * RadiansToDegreesFactor;
-            _Wx = - planeNormal.y * RadiansToDegreesFactor;
+            _Wy = asin(planeNormal.x) * RadiansToDegreesFactor;
+            _Wx = -asin(planeNormal.y) * RadiansToDegreesFactor;
             NSLog(@"PlaneNormal: [%g, %g, %g]. Make horizontal.", planeNormal.x, planeNormal.y, planeNormal.z);
         }
         else
