@@ -25,6 +25,10 @@
 #define DICE_VELOCITY_STOP_THRESHOLD 1.5   // pix/sec
 #define DICE_EDGE_ANGLE_CORRECTION_WEIGHT 1.7
 
+#define MARBLES 5
+
+#define DRAW_DATA 1
+
 @interface DiceView ()
 {
     float Vx, Vy;
@@ -41,6 +45,9 @@
     CC3GLMatrix *savedRotation;
     float       interval;
     CGPoint     diceDefaultPlace;
+    
+    float       marbleRadius;
+    CGPoint     marblesCoords[MARBLES];
 }
 
 @property (strong, nonatomic) CubeShader* cubeShader;
@@ -69,6 +76,10 @@
     [self loadShader];
     Vx = Vy = x = y = 0;
     savedRotation = NULL;
+    marbleRadius = 0;
+    for (unsigned int i = 0; i < MARBLES; ++i) {
+        marblesCoords[i] = CGPointMake(NAN, NAN);
+    }
     
     CADisplayLink* displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(render:)];
     [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
@@ -83,6 +94,50 @@
 }
 
 #pragma mark - Render
+
+- (CGPoint)testMarblesHit:(float)time
+{
+    CGPoint res = CGPointMake(NAN, NAN);
+    
+    
+    if(sqrt(Vx*time*Vx*time + Vy*time*Vy*time) < marbleRadius)
+        return res; // marble is too far
+    
+    // test for marbles hit
+    //if(sqrt(pow(x - marblesCoords[0].x, 2) + pow(y - marblesCoords[0].y, 2)) < marbleRadius)
+    {
+        float r = marbleRadius;
+        float x2 = x + Vx*time;
+        float y2 = y + Vy*time;
+        float a = y - y2;
+        float b = x2 - x;
+        float c = x*y2 - x2*y;
+        
+        float x0 = -a*c/(a*a+b*b),  y0 = -b*c/(a*a+b*b);
+        if (c*c > r*r*(a*a+b*b)+FLT_EPSILON)
+            return CGPointMake(NAN, NAN);
+        
+        if (fabsf (c*c - r*r*(a*a+b*b)) < FLT_EPSILON)
+            return CGPointMake(x0, y0);
+        
+        float d = r*r - c*c/(a*a+b*b);
+        float mult = sqrt (d / (a*a+b*b));
+        float ax,ay,bx,by;
+        ax = x0 + b * mult;
+        bx = x0 - b * mult;
+        ay = y0 - a * mult;
+        by = y0 + a * mult;
+
+        if(sqrt((x-ax)*(x-ax)+(y-ay)*(y-ay)) < sqrt((x-bx)*(x-bx)+(y-by)*(y-by)))
+            return CGPointMake(ax, ay);
+        else
+            return CGPointMake(bx, by);
+        
+    }
+    
+    return CGPointMake(NAN, NAN);
+}
+
 - (CC3Vector)findLowestPlane
 {
     CC3Vector lowest = CC3VectorMake(0, 0, -1);
@@ -148,9 +203,16 @@
         
         _Wy = (Vx * t)*RadiansToDegreesFactor;
         _Wx = -(Vy * t)*RadiansToDegreesFactor;
-        
-        x += Vx*t;
-        y += Vy*t;
+    
+        //CGPoint hitPoint = [self testMarblesHit:t];
+        //if(hitPoint.x != NAN) {
+        //    x = hitPoint.x;
+        //    y = hitPoint.y;
+        //}
+        //else {
+            x += Vx*t;
+            y += Vy*t;
+        //}
         
         // stop
         if(ABS(Vx) < DICE_VELOCITY_STOP_THRESHOLD) Vx = 0;
@@ -265,28 +327,50 @@
     
     // Positions
     glEnableVertexAttribArray(self.cubeShader.aPosition);
-    //glVertexAttribPointer(self.phongShader.aPosition, 3, GL_FLOAT, GL_FALSE, 0, starshipPositions);
     glVertexAttribPointer(self.cubeShader.aPosition, 3, GL_FLOAT, GL_FALSE, 0, CUBE_Verts);
     
     // Normals
     glEnableVertexAttribArray(self.cubeShader.aNormal);
-    //glVertexAttribPointer(self.phongShader.aNormal, 3, GL_FLOAT, GL_FALSE, 0, starshipNormals);
     glVertexAttribPointer(self.cubeShader.aNormal, 3, GL_FLOAT, GL_FALSE, 0, CUBE_Normals);
     
     // Render by parts
-    //for(int i=0; i<starshipMaterials; i++)
     for(int i=0; i<CUBE_NumMaterials; i++)
     {
         // Set material
-        //glUniform3f(self.phongShader.uDiffuse, starshipDiffuses[i][0], starshipDiffuses[i][1], starshipDiffuses[i][2]);
         glUniform3f(self.cubeShader.uDiffuse, CUBE_Diffuse[i][0], CUBE_Diffuse[i][1], CUBE_Diffuse[i][2]);
-        //glUniform3f(self.phongShader.uSpecular, starshipSpeculars[i][0], starshipSpeculars[i][1], starshipSpeculars[i][2]);
         glUniform3f(self.cubeShader.uSpecular, CUBE_Specular[i][0], CUBE_Specular[i][1], CUBE_Specular[i][2]);
         
         // Draw vertices
         glDrawArrays(GL_TRIANGLES, CUBE_First[i], CUBE_Count[i]);
     }
+    
+    // Draw data
+    if(DRAW_DATA)
+    {
+        CC3GLMatrix *modelView = [CC3GLMatrix matrix];
+        [modelView populateFromTranslation:CC3VectorMake(0, 0, -SHIFT_Z)];
 
+        glUniformMatrix4fv(self.cubeShader.uModelViewMatrix, 1, GL_FALSE, modelView.glMatrix);
+        glUniform3f(self.cubeShader.uDiffuse, 1.0, 1.0, 1.0);
+        glUniform3f(self.cubeShader.uSpecular, 0.0, 0.0, 0.0);
+        
+        for (unsigned int mi = 0; mi < MARBLES; ++mi) {
+            if(marblesCoords[mi].x == NAN)
+                continue;
+            
+            int segments = 30;
+            GLfloat vertices[segments*3];
+            int count=0;
+            for (GLfloat i = 0; i < 360.0f; i+=(360.0f/segments))
+            {
+                vertices[count++] = marblesCoords[mi].x + (cos(DegreesToRadians(i))*marbleRadius);
+                vertices[count++] = marblesCoords[mi].y + (sin(DegreesToRadians(i))*marbleRadius);
+                vertices[count++] = -2.8;
+            }
+            glVertexAttribPointer (self.cubeShader.aPosition, 3, GL_FLOAT, GL_FALSE, 0, vertices);
+            glDrawArrays(GL_LINE_LOOP, 0, segments);
+        }
+    }
 }
 
 #pragma mark - External dice control
@@ -346,6 +430,25 @@
     float distance = sqrtf(powf(posInScene.x - x, 2) + powf(posInScene.y - y, 2));
     //NSLog(@"Touch distance: %g", distance);
     return distance < 1.4;
+}
+
+-(void) setMarblesCoords:(CGPoint [])marbles andCount:(int)count withRadius:(float)radius
+{
+    float PV_HEIGTH = PV_WIDTH * self.frame.size.height / self.frame.size.width;
+    for (unsigned int i = 0; i < MARBLES; ++i) {
+        if(i < count){
+            // translate to scene coords
+            CGPoint pos = marbles[i];
+            float mx = (pos.x - self.bounds.size.width/2)/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
+            float my = -(pos.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*FAR/NEAR;
+            marblesCoords[i] = CGPointMake(mx, my);
+            //NSLog(@"Marble coord: [%g, %g]", mx, my);
+        }
+        else
+            marblesCoords[i] = CGPointMake(NAN, NAN);
+    }
+    marbleRadius = radius/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
+    //NSLog(@"Marble radius: %g", marbleRadius);
 }
 
 # pragma mark - Touches Events

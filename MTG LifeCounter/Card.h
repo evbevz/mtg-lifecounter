@@ -47,5 +47,6 @@
 @protocol ViewControllerDelegate
 
 -(void)setPlayerLifeAmount:(int)amount;
+-(void)marbleMovedTo:(CGPoint)pos;
 
 @end

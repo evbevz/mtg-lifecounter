@@ -43,5 +43,6 @@ struct PlayerData
 
 -(void)showPoison;
 -(void)setPlayerLifeAmount:(int)amount;
+-(void)marbleMovedTo:(CGPoint)pos;
 
 @end

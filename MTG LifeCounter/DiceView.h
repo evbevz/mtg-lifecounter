@@ -15,5 +15,6 @@
 -(BOOL) diceTouched:(CGPoint)pos;
 -(void) setDiceDefaultPlace:(CGPoint)pos;
 -(void) moveDiceToDefaultPlace;
+-(void) setMarblesCoords:(CGPoint [])marbles andCount:(int)count withRadius:(float)radius;
 
 @end

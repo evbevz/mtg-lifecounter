@@ -12,6 +12,11 @@
 
 @interface CardView() 
 {
+    CGFloat         animationDx;
+    CGFloat         animationDy;
+    CGFloat         duration;
+    CFTimeInterval  animationStartTime;
+    CADisplayLink*  displayLink;
 }
 
 -(void)drawBorder:(CGRect)rect :(CGContextRef)context;
@@ -219,17 +224,26 @@
         {
             [self.parent setPlayerLifeAmount:lifeAmount];
         }
+
         
         // Animation
         float distance = sqrt(pow([self getTopLeftCellCenter].x + cellWidth * col - marble.center.x, 2) +
         pow([self getTopLeftCellCenter].y + cellHeight * row - marble.center.y, 2));
         float velocity = cellWidth/2; // px/s
-        
+        duration = distance/velocity + 0.2;
         [UIView beginAnimations:@"flipCard" context:(void*)0];
-        [UIView setAnimationDuration:(distance/velocity + 0.2)];
+        [UIView setAnimationDuration:(duration)];
         [UIView setAnimationDelegate:self];
+        [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
         
-        marble.center = CGPointMake([self getTopLeftCellCenter].x + cellWidth * col, [self getTopLeftCellCenter].y + cellHeight * row);
+        displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateDuringAnimation:)];
+        [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        animationStartTime = CACurrentMediaTime();
+        CGPoint animationEndPos = CGPointMake([self getTopLeftCellCenter].x + cellWidth * col, [self getTopLeftCellCenter].y + cellHeight * row);
+
+        animationDx = animationEndPos.x - marble.center.x;
+        animationDy = animationEndPos.y - marble.center.y;
+        marble.center = animationEndPos;
         
         [UIView commitAnimations];
         
@@ -260,8 +274,28 @@
             marblePos = CGPointMake(marblePos.x, pos.y - moveOffset.y);
         
         marble.center = marblePos;
+        
+        if(parent != nil)
+            [self.parent marbleMovedTo:marble.center];
     }
 }
 
+- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
+{
+    [displayLink removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    if(parent != nil)
+        [parent marbleMovedTo:marble.center];
+}
+
+- (void)updateDuringAnimation:(CADisplayLink*)displayLinkParam
+{
+    float animationTime = CACurrentMediaTime() - animationStartTime;
+    if(parent != nil){
+        CGFloat x = marble.center.x - animationDx + animationDx/duration*animationTime;
+        CGFloat y = marble.center.y - animationDy + animationDy/duration*animationTime;
+        CGPoint pos = CGPointMake(x,y);
+        [parent marbleMovedTo:pos];
+    }
+}
 
 @end

@@ -30,6 +30,7 @@
 
 @interface ViewController () {
     DiceView*     glView;
+    bool          playerIsSelected;
 }
 
 - (void)selectPlayer:(int)i;
@@ -48,6 +49,7 @@
 	x_scale = [UIScreen mainScreen].bounds.size.width / 768;
     
     current_player = 0;
+    playerIsSelected = false;
     
     UIImageView *main = [[UIImageView alloc] initWithFrame:self.view.frame];
     main.image = [UIImage imageNamed:@"Background.png"];
@@ -180,6 +182,7 @@
     [self.view addSubview:glView];
     glView.backgroundColor = [UIColor clearColor];
     [glView setDiceDefaultPlace:CGPointMake(glView.bounds.size.width - DICE_POS_X_OFFSET, glView.bounds.size.height - DICE_POS_Y_OFFSET)];
+    [self updateMarbleCoords];
 }
 
 - (void)viewDidUnload
@@ -223,6 +226,7 @@
     for (int i = 0; i < PLAYER_BUTTONS_CNT; ++i) {
         if (btn[i] == button) 
         {
+            [self diceAreaTouched:button];
             [self selectPlayer:i];
         }
     }
@@ -328,7 +332,9 @@
         [UIView setAnimationDelegate:self];
         marbles[toPlayer].alpha = 1;
         [UIView commitAnimations];
-  }
+    }
+    [self updateMarbleCoords];
+
 }
 
 - (void)selectPlayer:(int)i
@@ -342,12 +348,38 @@
     
     poison_val = players[i].poison;
     [self showPoison];
-    
+    playerIsSelected = true;
 }
 
 - (void)setPlayerLifeAmount:(int)amount
 {
     players[current_player].life = amount;
+}
+
+- (void)updateMarbleCoords
+{
+    float radius = btn[0].frame.size.width / 2 * 1.3;
+    CGPoint coords[PLAYER_BUTTONS_CNT];
+    for (unsigned int i = 0; i < PLAYER_BUTTONS_CNT; ++i) {
+        if(!playerIsSelected || current_player != i)
+            coords[i] = CGPointMake(btn[i].frame.origin.x + btn[i].frame.size.width / 2, btn[i].frame.origin.y + btn[i].frame.size.height / 2);
+        else
+            coords[i] = CGPointMake(marbles[i].frame.origin.x + marbles[i].frame.size.width / 2 + card.frame.origin.x, marbles[i].frame.origin.y + marbles[i].frame.size.height / 2 + card.frame.origin.y);
+    }
+    [glView setMarblesCoords:coords andCount:PLAYER_BUTTONS_CNT withRadius:radius];
+}
+
+- (void)marbleMovedTo:(CGPoint)pos
+{
+    float radius = btn[0].frame.size.width / 2 * 1.3;
+    CGPoint coords[PLAYER_BUTTONS_CNT];
+    for (unsigned int i = 0; i < PLAYER_BUTTONS_CNT; ++i) {
+        if(!playerIsSelected || current_player != i)
+            coords[i] = CGPointMake(btn[i].frame.origin.x + btn[i].frame.size.width / 2, btn[i].frame.origin.y + btn[i].frame.size.height / 2);
+        else
+            coords[i] = CGPointMake(card.frame.origin.x + pos.x, card.frame.origin.y + pos.y);
+    }
+    [glView setMarblesCoords:coords andCount:PLAYER_BUTTONS_CNT withRadius:radius];
 }
 
 #pragma mark - ViewController motion methods
