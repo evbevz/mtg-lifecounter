@@ -24,8 +24,9 @@
 
 #define DICE_VELOCITY_STOP_THRESHOLD 1.5   // pix/sec
 #define DICE_EDGE_ANGLE_CORRECTION_WEIGHT 1.7
+#define DICE_RADIUS 1
 
-#define MARBLES 5
+#define MAX_MARBLES 5
 
 #define DRAW_DATA 1
 
@@ -47,7 +48,9 @@
     CGPoint     diceDefaultPlace;
     
     float       marbleRadius;
-    CGPoint     marblesCoords[MARBLES];
+    CGPoint     marblesCoords[MAX_MARBLES];
+    int         marblesCount;
+    CGPoint     lastHitPoint;
 }
 
 @property (strong, nonatomic) CubeShader* cubeShader;
@@ -77,9 +80,8 @@
     Vx = Vy = x = y = 0;
     savedRotation = NULL;
     marbleRadius = 0;
-    for (unsigned int i = 0; i < MARBLES; ++i) {
-        marblesCoords[i] = CGPointMake(NAN, NAN);
-    }
+    marblesCount = 0;
+    lastHitPoint = CGPointMake(NAN, NAN);
     
     CADisplayLink* displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(render:)];
     [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
@@ -98,27 +100,38 @@
 - (CGPoint)testMarblesHit:(float)time
 {
     CGPoint res = CGPointMake(NAN, NAN);
-    
-    
-    if(sqrt(Vx*time*Vx*time + Vy*time*Vy*time) < marbleRadius)
-        return res; // marble is too far
+    CGPoint l; // last point in this turn
+    bool wasHit = false;
+    int marbleNum = -1;
     
     // test for marbles hit
-    //if(sqrt(pow(x - marblesCoords[0].x, 2) + pow(y - marblesCoords[0].y, 2)) < marbleRadius)
+    float r = marbleRadius;
+    for(unsigned int m = 0; m < marblesCount; ++m)
     {
-        float r = marbleRadius;
-        float x2 = x + Vx*time;
-        float y2 = y + Vy*time;
-        float a = y - y2;
-        float b = x2 - x;
-        float c = x*y2 - x2*y;
+        // move coord to circle
+        float x1 = x - marblesCoords[m].x;
+        float y1 = y - marblesCoords[m].y;
+        float x2 = x1 + Vx*time;
+        float y2 = y1 + Vy*time;
+        float a = y1 - y2;
+        float b = x2 - x1;
+        float c = x1*y2 - x2*y1;
         
         float x0 = -a*c/(a*a+b*b),  y0 = -b*c/(a*a+b*b);
         if (c*c > r*r*(a*a+b*b)+FLT_EPSILON)
-            return CGPointMake(NAN, NAN);
+            continue;
         
-        if (fabsf (c*c - r*r*(a*a+b*b)) < FLT_EPSILON)
-            return CGPointMake(x0, y0);
+        // two intersection points exists (can to be the same)
+        
+        // check moving direction
+        if(Vx > 0 && x1 > 0)
+            continue;
+        if(Vx < 0 && x1 < 0)
+            continue;
+        if(Vy > 0 && y1 > 0)
+            continue;
+        if(Vy < 0 && y1 < 0)
+            continue;
         
         float d = r*r - c*c/(a*a+b*b);
         float mult = sqrt (d / (a*a+b*b));
@@ -128,14 +141,37 @@
         ay = y0 - a * mult;
         by = y0 + a * mult;
 
-        if(sqrt((x-ax)*(x-ax)+(y-ay)*(y-ay)) < sqrt((x-bx)*(x-bx)+(y-by)*(y-by)))
-            return CGPointMake(ax, ay);
+        CGPoint pA = CGPointMake(ax + marblesCoords[m].x, ay + marblesCoords[m].y); // move coords back
+        CGPoint pB = CGPointMake(bx + marblesCoords[m].x, by + marblesCoords[m].y); // move coords back
+        CGPoint p;
+        // get nearest point
+        if(sqrt((x1-ax)*(x1-ax)+(y1-ay)*(y1-ay)) < sqrt((x1-bx)*(x1-bx)+(y1-by)*(y1-by)))
+            p = pA;
         else
-            return CGPointMake(bx, by);
+            p = pB;
         
+        // compare with last point in this turn
+        if(wasHit && (sqrt((x - l.x)*(x - l.x) + (y - l.y)*(y - l.y)) < sqrt((x - p.x)*(x - p.x) + (y - p.y)*(y - p.y))))
+            continue;
+        else
+        {
+            l = p;
+            marbleNum = m;
+        }
+        wasHit = true;
     }
     
-    return CGPointMake(NAN, NAN);
+    if(wasHit)
+    {
+        float x2 = x + Vx*time;
+        float y2 = y + Vy*time;
+        if(((x < l.x && l.x < x2) || (x > l.x && l.x > x2)) && ((y < l.y && l.y < y2) || (y > l.y && l.y > y2)))
+            res = l; // hitPoint is between x and x2
+        else if (sqrt(pow(x2 - marblesCoords[marbleNum].x, 2) + pow(y2 - marblesCoords[marbleNum].y, 2)) < marbleRadius + DICE_RADIUS)
+            res = l; // dice and marble is closer than radiuses summ
+
+    }
+    return res;
 }
 
 - (CC3Vector)findLowestPlane
@@ -204,15 +240,19 @@
         _Wy = (Vx * t)*RadiansToDegreesFactor;
         _Wx = -(Vy * t)*RadiansToDegreesFactor;
     
-        //CGPoint hitPoint = [self testMarblesHit:t];
-        //if(hitPoint.x != NAN) {
-        //    x = hitPoint.x;
-        //    y = hitPoint.y;
-        //}
-        //else {
+        CGPoint hitPoint = [self testMarblesHit:t];
+        if(!isnan(hitPoint.x)) {
+            lastHitPoint = hitPoint;
+            float l = sqrt(powf(hitPoint.x - x, 2) + powf(hitPoint.y - y, 2));
+            x += (l - DICE_RADIUS) * (hitPoint.x - x) / l;
+            y += (l - DICE_RADIUS) * (hitPoint.y - y) / l;
+            Vx = -Vx;
+            Vy = -Vy;
+        }
+        else {
             x += Vx*t;
             y += Vy*t;
-        //}
+        }
         
         // stop
         if(ABS(Vx) < DICE_VELOCITY_STOP_THRESHOLD) Vx = 0;
@@ -243,7 +283,7 @@
         {
             _Wy = asin(planeNormal.x) * RadiansToDegreesFactor;
             _Wx = -asin(planeNormal.y) * RadiansToDegreesFactor;
-            NSLog(@"PlaneNormal: [%g, %g, %g]. Make horizontal.", planeNormal.x, planeNormal.y, planeNormal.z);
+            //NSLog(@"PlaneNormal: [%g, %g, %g]. Make horizontal.", planeNormal.x, planeNormal.y, planeNormal.z);
         }
         else
         {
@@ -354,10 +394,9 @@
         glUniform3f(self.cubeShader.uDiffuse, 1.0, 1.0, 1.0);
         glUniform3f(self.cubeShader.uSpecular, 0.0, 0.0, 0.0);
         
-        for (unsigned int mi = 0; mi < MARBLES; ++mi) {
-            if(marblesCoords[mi].x == NAN)
-                continue;
-            
+        // marbles
+        for (unsigned int mi = 0; mi < marblesCount; ++mi)
+        {
             int segments = 30;
             GLfloat vertices[segments*3];
             int count=0;
@@ -370,6 +409,50 @@
             glVertexAttribPointer (self.cubeShader.aPosition, 3, GL_FLOAT, GL_FALSE, 0, vertices);
             glDrawArrays(GL_LINE_LOOP, 0, segments);
         }
+        
+        // hitPoint
+        if(!isnan(lastHitPoint.x))
+        {
+            int segments = 10;
+            GLfloat vertices[segments*3];
+            int count=0;
+            for (GLfloat i = 0; i < 360.0f; i+=(360.0f/segments))
+            {
+                vertices[count++] = lastHitPoint.x + (cos(DegreesToRadians(i))*0.2);
+                vertices[count++] = lastHitPoint.y + (sin(DegreesToRadians(i))*0.2);
+                vertices[count++] = -2.8;
+            }
+            glVertexAttribPointer (self.cubeShader.aPosition, 3, GL_FLOAT, GL_FALSE, 0, vertices);
+            glDrawArrays(GL_TRIANGLE_FAN, 0, segments);
+            
+        }
+
+        // dice zone
+        {
+            int segments = 20;
+            GLfloat vertices[segments*3];
+            int count=0;
+            for (GLfloat i = 0; i < 360.0f; i+=(360.0f/segments))
+            {
+                vertices[count++] = x + (cos(DegreesToRadians(i))*DICE_RADIUS);
+                vertices[count++] = y + (sin(DegreesToRadians(i))*DICE_RADIUS);
+                vertices[count++] = 0.0;
+            }
+            glVertexAttribPointer (self.cubeShader.aPosition, 3, GL_FLOAT, GL_FALSE, 0, vertices);
+            glDrawArrays(GL_LINE_LOOP, 0, segments);
+            
+        }
+        
+        // move vector
+        CGFloat vertices[6];
+        vertices[0] = x;
+        vertices[1] = y;
+        vertices[2] = -2.8;
+        vertices[3] = x + Vx;
+        vertices[4] = y + Vy;
+        vertices[5] = 0;
+        glVertexAttribPointer (self.cubeShader.aPosition, 3, GL_FLOAT, GL_FALSE, 0, vertices);
+        glDrawArrays(GL_LINES, 0, 2);
     }
 }
 
@@ -434,18 +517,15 @@
 
 -(void) setMarblesCoords:(CGPoint [])marbles andCount:(int)count withRadius:(float)radius
 {
+    marblesCount = MIN(count, MAX_MARBLES);
     float PV_HEIGTH = PV_WIDTH * self.frame.size.height / self.frame.size.width;
-    for (unsigned int i = 0; i < MARBLES; ++i) {
-        if(i < count){
-            // translate to scene coords
-            CGPoint pos = marbles[i];
-            float mx = (pos.x - self.bounds.size.width/2)/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
-            float my = -(pos.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*FAR/NEAR;
-            marblesCoords[i] = CGPointMake(mx, my);
-            //NSLog(@"Marble coord: [%g, %g]", mx, my);
-        }
-        else
-            marblesCoords[i] = CGPointMake(NAN, NAN);
+    for (unsigned int i = 0; i < marblesCount; ++i) {
+        // translate to scene coords
+        CGPoint pos = marbles[i];
+        float mx = (pos.x - self.bounds.size.width/2)/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
+        float my = -(pos.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*FAR/NEAR;
+        marblesCoords[i] = CGPointMake(mx, my);
+        //NSLog(@"Marble coord: [%g, %g]", mx, my);
     }
     marbleRadius = radius/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
     //NSLog(@"Marble radius: %g", marbleRadius);

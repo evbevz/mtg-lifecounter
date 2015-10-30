@@ -254,7 +254,7 @@
 {
     if(marble_tracking && marble != nil)
     {
-        NSLog(@"marble touch move");
+        //NSLog(@"marble touch move");
         CGPoint pos = [touch locationInView:self];
         CGPoint marblePos = marble.center;
         
