@@ -28,13 +28,13 @@
 
 #define MAX_MARBLES 5
 
-#define DRAW_DATA 0
+#define DRAW_DATA 1
 
 @interface DiceView ()
 {
     float Vx, Vy;
     float x, y;
-    CFTimeInterval _throwStartTime;
+    CFTimeInterval throwStartTime;
     
     CGPoint     dice_throw_start;
     CGPoint     dice_throw_end;
@@ -88,6 +88,21 @@
     CADisplayLink* displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(render:)];
     [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     
+    /*
+    float Z1 = 0, Z2 = 0, X1 = 0, X2 = 0, Y1 = 0, Y2 = 0;
+    for(int i = 0; i < CUBE_NumVerts/3; i++)
+    {
+        X1 = MIN(CUBE_Verts[i], X1);
+        X2 = MAX(CUBE_Verts[i], X2);
+        Y1 = MIN(CUBE_Verts[i+1], Y1);
+        Y2 = MAX(CUBE_Verts[i+1], Y2);
+        Z1 = MIN(CUBE_Verts[i+2], Z1);
+        Z2 = MAX(CUBE_Verts[i+2], Z2);
+    }
+    NSLog(@"Cube size: [%g x %g x %g]", ABS(X2 - X1), ABS(Y2 - Y1), ABS(Z2 - Z1));
+    NSLog(@"Cube center: [%g, %g, %g", (X1 + X2)/2, (Y1 + Y2)/2, (Z1 + Z2)/2);
+    */
+        
     return self;
 }
 
@@ -99,7 +114,7 @@
 
 #pragma mark - Render
 
-- (CGPoint)testMarblesHit:(float)time
+- (CGPoint)testMarblesHit:(float)time withVx:(float)vx withVy:(float)vy
 {
     CGPoint res = CGPointMake(NAN, NAN);
     CGPoint l; // last point in this turn
@@ -113,8 +128,8 @@
         // move coord to circle
         float x1 = x - marblesCoords[m].x;
         float y1 = y - marblesCoords[m].y;
-        float x2 = x1 + Vx*time;
-        float y2 = y1 + Vy*time;
+        float x2 = x1 + vx*time;
+        float y2 = y1 + vy*time;
         float a = y1 - y2;
         float b = x2 - x1;
         float c = x1*y2 - x2*y1;
@@ -126,13 +141,13 @@
         // two intersection points exists (can to be the same)
         
         // check moving direction
-        if(Vx > 0 && x1 > 0)
+        if(vx > 0 && x1 > 0)
             continue;
-        if(Vx < 0 && x1 < 0)
+        if(vx < 0 && x1 < 0)
             continue;
-        if(Vy > 0 && y1 > 0)
+        if(vy > 0 && y1 > 0)
             continue;
-        if(Vy < 0 && y1 < 0)
+        if(vy < 0 && y1 < 0)
             continue;
         
         float d = r*r - c*c/(a*a+b*b);
@@ -165,14 +180,14 @@
     
     if(wasHit)
     {
-        float x2 = x + Vx*time;
-        float y2 = y + Vy*time;
+        float x2 = x + vx*time;
+        float y2 = y + vy*time;
         if(((x < l.x && l.x < x2) || (x > l.x && l.x > x2)) && ((y < l.y && l.y < y2) || (y > l.y && l.y > y2)))
             res = l; // hitPoint is between x and x2
         else if (sqrt(pow(x2 - marblesCoords[marbleNum].x, 2) + pow(y2 - marblesCoords[marbleNum].y, 2)) < r)
             res = l; // dice and marble is closer than radiuses summ
         
-        GLKVector2 vI = GLKVector2Make(Vx, Vy);
+        GLKVector2 vI = GLKVector2Make(vx, vy);
         GLKVector2 vN = GLKVector2Normalize(GLKVector2Make(marblesCoords[marbleNum].x - res.x, marblesCoords[marbleNum].y - res.y));
         reflection = GLKVector2Subtract(vI, GLKVector2MultiplyScalar(vN, 2.0 * GLKVector2DotProduct(vN, vI)));
 
@@ -234,7 +249,7 @@
         Vy = Vy > 0? MAX(0, Vy + acceleration * Vy / V * t) : MIN(0, Vy + acceleration * Vy / V * t);
         
         // velocity - apply max roll duration limit
-        float roll_time = MIN(CACurrentMediaTime() - _throwStartTime, MAX_ROLL_DURATION);
+        float roll_time = MIN(CACurrentMediaTime() - throwStartTime, MAX_ROLL_DURATION);
         float correction = pow((MAX_ROLL_DURATION - roll_time) / MAX_ROLL_DURATION, MAX_DURATION_CORRECTION_WEIGHT);
         Vx = Vx * correction;
         Vy = Vy * correction;
@@ -246,7 +261,7 @@
         _Wy = (Vx * t)*RadiansToDegreesFactor;
         _Wx = -(Vy * t)*RadiansToDegreesFactor;
     
-        CGPoint hitPoint = [self testMarblesHit:t];
+        CGPoint hitPoint = [self testMarblesHit:t withVx:Vx withVy:Vy];
         if(!isnan(hitPoint.x)) {
             lastHitPoint = hitPoint;
             x = hitPoint.x;
@@ -488,7 +503,7 @@
     Vx = x0 / time / MAX(1, sqrtf(ABS(30.0 - velocity)));
     Vy = y0 / time / MAX(1, sqrtf(ABS(30.0 - velocity)));
     
-    _throwStartTime = CACurrentMediaTime();
+    throwStartTime = CACurrentMediaTime();
     NSLog(@"Dice throw: %g:%g time: %g", x0, y0, time);
 }
 
@@ -499,8 +514,18 @@
     float dx = delta.width/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
     float dy = -delta.height/self.bounds.size.height*PV_HEIGTH*FAR/NEAR;
     
-    x += dx;
-    y += dy;
+    CGPoint hitPoint = [self testMarblesHit:1 withVx:dx withVy:dy];
+    if(!isnan(hitPoint.x))
+    {
+        x = hitPoint.x;
+        y = hitPoint.y;
+        lastHitPoint = hitPoint;
+    }
+    else
+    {
+        x += dx;
+        y += dy;
+    }
 }
 
 -(void) moveDiceTo:(CGPoint)pos
@@ -538,6 +563,8 @@
 {
     marblesCount = MIN(count, MAX_MARBLES);
     float PV_HEIGTH = PV_WIDTH * self.frame.size.height / self.frame.size.width;
+    marbleRadius = radius/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
+    float r = marbleRadius + DICE_RADIUS;
     for (unsigned int i = 0; i < marblesCount; ++i) {
         // translate to scene coords
         CGPoint pos = marbles[i];
@@ -545,8 +572,28 @@
         float my = -(pos.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*FAR/NEAR;
         marblesCoords[i] = CGPointMake(mx, my);
         //NSLog(@"Marble coord: [%g, %g]", mx, my);
+        
+        // test dice hit
+        float distance2 = (mx-x)*(mx-x) + (my-y)*(my-y);
+        float distance = sqrt(distance2);
+        float dx = 0, dy = 0;
+        if(distance2 < r*r)
+        {
+            if(distance == 0){
+                dx = -r;
+                dy = 0;
+            }
+            else{
+                dx = r*(x-mx)/distance + mx - x;
+                dy = r*(y-my)/distance + my - y;
+            }
+            x += dx;
+            y += dy;
+            Vx = MIN(50, 100*dx);
+            Vy = MIN(50, 100*dy);
+            throwStartTime = CACurrentMediaTime();
+        }
     }
-    marbleRadius = radius/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
     //NSLog(@"Marble radius: %g", marbleRadius);
 }
 

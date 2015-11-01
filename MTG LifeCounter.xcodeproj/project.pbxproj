@@ -231,6 +231,7 @@
 		0484CF8D14B3089E00C90495 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				59F856011BC015C200D53C80 /* model */,
 				59F855FC1BC014EC00D53C80 /* Shader.h */,
 				59F855FD1BC014EC00D53C80 /* Shader.m */,
 				59F855F51BC014C600D53C80 /* Cube.fsh */,
@@ -267,7 +268,6 @@
 		04B24A83143C8DA300549F8C = {
 			isa = PBXGroup;
 			children = (
-				59F856011BC015C200D53C80 /* model */,
 				8490200F1A4BDB5700441126 /* Cocos3DMathLib */,
 				0484CF8D14B3089E00C90495 /* Shaders */,
 				0432315E143CBC61007968AF /* Resources */,
