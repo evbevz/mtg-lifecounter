@@ -25,11 +25,11 @@
 #define DICE_VELOCITY_STOP_THRESHOLD 1.5   // pix/sec
 #define DICE_EDGE_ANGLE_CORRECTION_WEIGHT 1.7
 #define DICE_RADIUS (0.7 * SCALE_FACTOR)
-#define DICE_TO_MARBLE_MANUAL_HIT_MULTILIFIER 50
+#define DICE_TO_MARBLE_MANUAL_HIT_MULTILIFIER 100
 
 #define MAX_MARBLES 5
 
-#define DRAW_DATA 1
+#define DRAW_DATA 0
 
 @interface DiceView ()
 {
@@ -142,13 +142,8 @@
         // two intersection points exists (can to be the same)
         
         // check moving direction
-        if(vx > 0 && x1 > 0)
-            continue;
-        if(vx < 0 && x1 < 0)
-            continue;
-        if(vy > 0 && y1 > 0)
-            continue;
-        if(vy < 0 && y1 < 0)
+        if(((vx > 0 && x1 > 0) || (vx < 0 && x1 < 0))
+            && ((vy > 0 && y1 > 0) || (vy < 0 && y1 < 0)))
             continue;
         
         float d = r*r - c*c/(a*a+b*b);
@@ -193,6 +188,17 @@
         reflection = GLKVector2Subtract(vI, GLKVector2MultiplyScalar(vN, 2.0 * GLKVector2DotProduct(vN, vI)));
 
     }
+    /*
+    else
+    {
+        for(unsigned int im = 0; im < marblesCount; ++im)
+        {
+            if(GLKVector2Distance(GLKVector2Make(x, y), GLKVector2Make(marblesCoords[im].x, marblesCoords[im].y)) < r){
+                NSLog(@"Error!");
+            }
+        }
+    }
+    */
     return res;
 }
 
@@ -430,6 +436,17 @@
             }
             glVertexAttribPointer (self.cubeShader.aPosition, 3, GL_FLOAT, GL_FALSE, 0, vertices);
             glDrawArrays(GL_LINE_LOOP, 0, segments);
+            
+            // and hit zones
+            count=0;
+            for (GLfloat i = 0; i < 360.0f; i+=(360.0f/segments))
+            {
+                vertices[count++] = marblesCoords[mi].x + (cos(DegreesToRadians(i))*(marbleRadius + DICE_RADIUS));
+                vertices[count++] = marblesCoords[mi].y + (sin(DegreesToRadians(i))*(marbleRadius + DICE_RADIUS));
+                vertices[count++] = 0;
+            }
+            glVertexAttribPointer (self.cubeShader.aPosition, 3, GL_FLOAT, GL_FALSE, 0, vertices);
+            glDrawArrays(GL_LINE_LOOP, 0, segments);
         }
         
         // hitPoint
@@ -513,8 +530,8 @@
 {
     // translate to scene coords
     float PV_HEIGTH = PV_WIDTH * self.frame.size.height / self.frame.size.width;
-    float dx = delta.width/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
-    float dy = -delta.height/self.bounds.size.height*PV_HEIGTH*FAR/NEAR;
+    float dx = delta.width/self.bounds.size.width*PV_WIDTH*SHIFT_Z/NEAR;
+    float dy = -delta.height/self.bounds.size.height*PV_HEIGTH*SHIFT_Z/NEAR;
     
     CGPoint hitPoint = [self testMarblesHit:1 withVx:dx withVy:dy];
     if(!isnan(hitPoint.x))
@@ -525,9 +542,7 @@
         
         if(dice_locked)
         {
-            throwStartTime = CACurrentMediaTime();
-            Vx = MIN(50, DICE_TO_MARBLE_MANUAL_HIT_MULTILIFIER*dx);
-            Vy = MIN(50, DICE_TO_MARBLE_MANUAL_HIT_MULTILIFIER*dy);
+            [self throwDice:0.1 withX0:DICE_TO_MARBLE_MANUAL_HIT_MULTILIFIER*dx withY0:DICE_TO_MARBLE_MANUAL_HIT_MULTILIFIER*dy];
             dice_locked = NO;
         }
 
@@ -543,8 +558,8 @@
 {
     // translate to scene coords
     float PV_HEIGTH = PV_WIDTH * self.frame.size.height / self.frame.size.width;
-    x = (pos.x - self.bounds.size.width/2)/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
-    y = -(pos.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*FAR/NEAR;
+    x = (pos.x - self.bounds.size.width/2)/self.bounds.size.width*PV_WIDTH*SHIFT_Z/NEAR;
+    y = -(pos.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*SHIFT_Z/NEAR;
 }
 
 -(void) moveDiceToDefaultPlace
@@ -563,8 +578,8 @@
 {
     float PV_HEIGTH = PV_WIDTH * self.frame.size.height / self.frame.size.width;
     CGPoint posInScene;
-    posInScene.x = (pos.x - self.bounds.size.width/2)/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
-    posInScene.y = -(pos.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*FAR/NEAR;
+    posInScene.x = (pos.x - self.bounds.size.width/2)/self.bounds.size.width*PV_WIDTH*SHIFT_Z/NEAR;
+    posInScene.y = -(pos.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*SHIFT_Z/NEAR;
     float distance = sqrtf(powf(posInScene.x - x, 2) + powf(posInScene.y - y, 2));
     //NSLog(@"Touch distance: %g", distance);
     return distance < 1.4;
@@ -600,9 +615,7 @@
             }
             x += dx;
             y += dy;
-            Vx = MIN(50, DICE_TO_MARBLE_MANUAL_HIT_MULTILIFIER*dx);
-            Vy = MIN(50, DICE_TO_MARBLE_MANUAL_HIT_MULTILIFIER*dy);
-            throwStartTime = CACurrentMediaTime();
+            [self throwDice:0.1 withX0:DICE_TO_MARBLE_MANUAL_HIT_MULTILIFIER*dx withY0:DICE_TO_MARBLE_MANUAL_HIT_MULTILIFIER*dy];
         }
     }
     //NSLog(@"Marble radius: %g", marbleRadius);
