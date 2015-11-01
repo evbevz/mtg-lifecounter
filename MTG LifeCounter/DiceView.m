@@ -28,7 +28,7 @@
 
 #define MAX_MARBLES 5
 
-#define DRAW_DATA 1
+#define DRAW_DATA 0
 
 @interface DiceView ()
 {
@@ -51,6 +51,7 @@
     CGPoint     marblesCoords[MAX_MARBLES];
     int         marblesCount;
     CGPoint     lastHitPoint;
+    GLKVector2  reflection;
 }
 
 @property (strong, nonatomic) CubeShader* cubeShader;
@@ -82,6 +83,7 @@
     marbleRadius = 0;
     marblesCount = 0;
     lastHitPoint = CGPointMake(NAN, NAN);
+    reflection = GLKVector2Make(NAN, NAN);
     
     CADisplayLink* displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(render:)];
     [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
@@ -105,7 +107,7 @@
     int marbleNum = -1;
     
     // test for marbles hit
-    float r = marbleRadius;
+    float r = marbleRadius + DICE_RADIUS;
     for(unsigned int m = 0; m < marblesCount; ++m)
     {
         // move coord to circle
@@ -167,8 +169,12 @@
         float y2 = y + Vy*time;
         if(((x < l.x && l.x < x2) || (x > l.x && l.x > x2)) && ((y < l.y && l.y < y2) || (y > l.y && l.y > y2)))
             res = l; // hitPoint is between x and x2
-        else if (sqrt(pow(x2 - marblesCoords[marbleNum].x, 2) + pow(y2 - marblesCoords[marbleNum].y, 2)) < marbleRadius + DICE_RADIUS)
+        else if (sqrt(pow(x2 - marblesCoords[marbleNum].x, 2) + pow(y2 - marblesCoords[marbleNum].y, 2)) < r)
             res = l; // dice and marble is closer than radiuses summ
+        
+        GLKVector2 vI = GLKVector2Make(Vx, Vy);
+        GLKVector2 vN = GLKVector2Normalize(GLKVector2Make(marblesCoords[marbleNum].x - res.x, marblesCoords[marbleNum].y - res.y));
+        reflection = GLKVector2Subtract(vI, GLKVector2MultiplyScalar(vN, 2.0 * GLKVector2DotProduct(vN, vI)));
 
     }
     return res;
@@ -243,11 +249,10 @@
         CGPoint hitPoint = [self testMarblesHit:t];
         if(!isnan(hitPoint.x)) {
             lastHitPoint = hitPoint;
-            float l = sqrt(powf(hitPoint.x - x, 2) + powf(hitPoint.y - y, 2));
-            x += (l - DICE_RADIUS) * (hitPoint.x - x) / l;
-            y += (l - DICE_RADIUS) * (hitPoint.y - y) / l;
-            Vx = -Vx;
-            Vy = -Vy;
+            x = hitPoint.x;
+            y = hitPoint.y;
+            Vx = reflection.x;
+            Vy = reflection.y;
         }
         else {
             x += Vx*t;
@@ -447,12 +452,26 @@
         CGFloat vertices[6];
         vertices[0] = x;
         vertices[1] = y;
-        vertices[2] = -2.8;
+        vertices[2] = 0;
         vertices[3] = x + Vx;
         vertices[4] = y + Vy;
         vertices[5] = 0;
         glVertexAttribPointer (self.cubeShader.aPosition, 3, GL_FLOAT, GL_FALSE, 0, vertices);
         glDrawArrays(GL_LINES, 0, 2);
+        
+        // reflection
+        if(!isnan(reflection.x))
+        {
+            CGFloat vertices[6];
+            vertices[0] = lastHitPoint.x;
+            vertices[1] = lastHitPoint.y;
+            vertices[2] = 0;
+            vertices[3] = lastHitPoint.x + reflection.x;
+            vertices[4] = lastHitPoint.y + reflection.y;
+            vertices[5] = 0;
+            glVertexAttribPointer (self.cubeShader.aPosition, 3, GL_FLOAT, GL_FALSE, 0, vertices);
+            glDrawArrays(GL_LINES, 0, 2);
+        }
     }
 }
 
