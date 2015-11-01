@@ -24,7 +24,7 @@
 
 #define DICE_VELOCITY_STOP_THRESHOLD 1.5   // pix/sec
 #define DICE_EDGE_ANGLE_CORRECTION_WEIGHT 1.7
-#define DICE_RADIUS 1
+#define DICE_RADIUS (0.7 * SCALE_FACTOR)
 
 #define MAX_MARBLES 5
 
@@ -312,7 +312,8 @@
         }
     }
     CC3GLMatrix *modelView = [CC3GLMatrix matrix];
-    [modelView populateFromTranslation:CC3VectorMake(x, y, -SHIFT_Z)];
+    [modelView populateIdentity];
+    [modelView translateBy:CC3VectorMake(x, y, -SHIFT_Z)];
     [modelView scaleBy:CC3VectorMake(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR)];
     
     // test for field walls - invert future velocity
@@ -424,7 +425,7 @@
             {
                 vertices[count++] = marblesCoords[mi].x + (cos(DegreesToRadians(i))*marbleRadius);
                 vertices[count++] = marblesCoords[mi].y + (sin(DegreesToRadians(i))*marbleRadius);
-                vertices[count++] = -2.8;
+                vertices[count++] = 0;
             }
             glVertexAttribPointer (self.cubeShader.aPosition, 3, GL_FLOAT, GL_FALSE, 0, vertices);
             glDrawArrays(GL_LINE_LOOP, 0, segments);
@@ -440,7 +441,7 @@
             {
                 vertices[count++] = lastHitPoint.x + (cos(DegreesToRadians(i))*0.2);
                 vertices[count++] = lastHitPoint.y + (sin(DegreesToRadians(i))*0.2);
-                vertices[count++] = -2.8;
+                vertices[count++] = 0;
             }
             glVertexAttribPointer (self.cubeShader.aPosition, 3, GL_FLOAT, GL_FALSE, 0, vertices);
             glDrawArrays(GL_TRIANGLE_FAN, 0, segments);
@@ -456,7 +457,7 @@
             {
                 vertices[count++] = x + (cos(DegreesToRadians(i))*DICE_RADIUS);
                 vertices[count++] = y + (sin(DegreesToRadians(i))*DICE_RADIUS);
-                vertices[count++] = 0.0;
+                vertices[count++] = 0;
             }
             glVertexAttribPointer (self.cubeShader.aPosition, 3, GL_FLOAT, GL_FALSE, 0, vertices);
             glDrawArrays(GL_LINE_LOOP, 0, segments);
@@ -563,13 +564,13 @@
 {
     marblesCount = MIN(count, MAX_MARBLES);
     float PV_HEIGTH = PV_WIDTH * self.frame.size.height / self.frame.size.width;
-    marbleRadius = radius/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
+    marbleRadius = radius/self.bounds.size.width*PV_WIDTH*SHIFT_Z/NEAR;
     float r = marbleRadius + DICE_RADIUS;
     for (unsigned int i = 0; i < marblesCount; ++i) {
         // translate to scene coords
         CGPoint pos = marbles[i];
-        float mx = (pos.x - self.bounds.size.width/2)/self.bounds.size.width*PV_WIDTH*FAR/NEAR;
-        float my = -(pos.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*FAR/NEAR;
+        float mx = (pos.x - self.bounds.size.width/2)/self.bounds.size.width*PV_WIDTH*SHIFT_Z/NEAR;
+        float my = -(pos.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*SHIFT_Z/NEAR;
         marblesCoords[i] = CGPointMake(mx, my);
         //NSLog(@"Marble coord: [%g, %g]", mx, my);
         
