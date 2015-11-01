@@ -25,6 +25,7 @@
 #define DICE_VELOCITY_STOP_THRESHOLD 1.5   // pix/sec
 #define DICE_EDGE_ANGLE_CORRECTION_WEIGHT 1.7
 #define DICE_RADIUS (0.7 * SCALE_FACTOR)
+#define DICE_TO_MARBLE_MANUAL_HIT_MULTILIFIER 50
 
 #define MAX_MARBLES 5
 
@@ -521,6 +522,15 @@
         x = hitPoint.x;
         y = hitPoint.y;
         lastHitPoint = hitPoint;
+        
+        if(dice_locked)
+        {
+            throwStartTime = CACurrentMediaTime();
+            Vx = MIN(50, DICE_TO_MARBLE_MANUAL_HIT_MULTILIFIER*dx);
+            Vy = MIN(50, DICE_TO_MARBLE_MANUAL_HIT_MULTILIFIER*dy);
+            dice_locked = NO;
+        }
+
     }
     else
     {
@@ -590,8 +600,8 @@
             }
             x += dx;
             y += dy;
-            Vx = MIN(50, 100*dx);
-            Vy = MIN(50, 100*dy);
+            Vx = MIN(50, DICE_TO_MARBLE_MANUAL_HIT_MULTILIFIER*dx);
+            Vy = MIN(50, DICE_TO_MARBLE_MANUAL_HIT_MULTILIFIER*dy);
             throwStartTime = CACurrentMediaTime();
         }
     }
