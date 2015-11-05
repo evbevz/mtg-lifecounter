@@ -46,6 +46,7 @@
 		04B24AC9143C8DA400549F8C /* MTG_LifeCounterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B24AC8143C8DA400549F8C /* MTG_LifeCounterTests.m */; };
 		04B83BD0148E0C2800F0843E /* Bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 04B83BCF148E0C2800F0843E /* Bubble.png */; };
 		04BE2B28148E496A00A7469B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04BE2B27148E496A00A7469B /* CoreGraphics.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		5988F1DF1BEB95710085F3C7 /* Default-568h.png in Resources */ = {isa = PBXBuildFile; fileRef = 5988F1DE1BEB95710085F3C7 /* Default-568h.png */; settings = {ASSET_TAGS = (); }; };
 		59F1BDE81BDA764300901C99 /* DiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 59F1BDE71BDA764300901C99 /* DiceView.m */; settings = {ASSET_TAGS = (); }; };
 		59F1BDEA1BDA849500901C99 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59F1BDE91BDA849500901C99 /* GLKit.framework */; };
 		59F855F91BC014C600D53C80 /* Cube.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 59F855F51BC014C600D53C80 /* Cube.fsh */; settings = {ASSET_TAGS = (); }; };
@@ -132,6 +133,7 @@
 		04B83BCF148E0C2800F0843E /* Bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Bubble.png; path = Resources/img/Bubble.png; sourceTree = "<group>"; };
 		04BE2B23148E470700A7469B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		04BE2B27148E496A00A7469B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		5988F1DE1BEB95710085F3C7 /* Default-568h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h.png"; sourceTree = "<group>"; };
 		59F1BDE61BDA764300901C99 /* DiceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiceView.h; sourceTree = "<group>"; };
 		59F1BDE71BDA764300901C99 /* DiceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DiceView.m; sourceTree = "<group>"; };
 		59F1BDE91BDA849500901C99 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
@@ -385,8 +387,9 @@
 				84C37BA816D1702200CB2951 /* Default-Landscape~ipad.png */,
 				84C37BA616D1700600CB2951 /* Default-Portrait@2x~ipad.png */,
 				84C37BA416D16FE000CB2951 /* Default-Portrait~ipad.png */,
-				84BC7C6416CAAA3500308BB6 /* Default@2x.png */,
 				84BC7C6216CAAA2800308BB6 /* Default.png */,
+				84BC7C6416CAAA3500308BB6 /* Default@2x.png */,
+				5988F1DE1BEB95710085F3C7 /* Default-568h.png */,
 				84C4018816D17D3700B81569 /* Default-568h@2x.png */,
 			);
 			name = "Deployment Images";
@@ -476,6 +479,7 @@
 				59F855F91BC014C600D53C80 /* Cube.fsh in Resources */,
 				04906AB41487F51F000D51BE /* Btn+20.png in Resources */,
 				04906AB6148BB2C0000D51BE /* MarbleBlue.png in Resources */,
+				5988F1DF1BEB95710085F3C7 /* Default-568h.png in Resources */,
 				04906ACB148CBB3E000D51BE /* Poison_0.png in Resources */,
 				04906ACC148CBB3E000D51BE /* Poison_1.png in Resources */,
 				04906ACD148CBB3E000D51BE /* Poison_2.png in Resources */,
