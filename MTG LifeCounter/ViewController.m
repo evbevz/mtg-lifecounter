@@ -22,10 +22,10 @@
 #define MAX_SCALE               MAX(x_scale, y_scale)
 
 #define DICE_POS_X_OFFSET         40
-#define DICE_POS_Y_OFFSET         50
+#define DICE_POS_Y_OFFSET         40
 #define DICE_AREA_SIZE            50
 #define DICE_AREA_X_OFFSET        10
-#define DICE_AREA_Y_OFFSET        15
+#define DICE_AREA_Y_OFFSET        10
 
 
 @interface ViewController () {

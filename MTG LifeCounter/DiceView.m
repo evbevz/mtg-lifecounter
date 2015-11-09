@@ -16,7 +16,7 @@
 #define FAR 60.0
 #define PV_WIDTH 10.0
 #define SHIFT_Z 57.0
-#define SCALE_FACTOR 1.5
+#define SCALE_FACTOR 1.9
 
 #define ACCELERATION -10
 #define MAX_ROLL_DURATION 3.0               // sec
