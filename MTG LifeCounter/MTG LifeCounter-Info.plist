@@ -42,8 +42,6 @@
 	<string>1.1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<false/>
-	<key>NSMainNibFile~ipad</key>
-	<string>	</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>GaramondPremrPro-Smbd.otf</string>

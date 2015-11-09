@@ -21,11 +21,9 @@
 #define MIN_SCALE               MIN(x_scale, y_scale)
 #define MAX_SCALE               MAX(x_scale, y_scale)
 
-#define DICE_POS_X_OFFSET         40
-#define DICE_POS_Y_OFFSET         40
-#define DICE_AREA_SIZE            50
-#define DICE_AREA_X_OFFSET        10
-#define DICE_AREA_Y_OFFSET        10
+#define DICE_AREA_SIZE            100
+#define DICE_AREA_X_OFFSET        30
+#define DICE_AREA_Y_OFFSET        30
 
 
 @interface ViewController () {
@@ -46,9 +44,10 @@
     [super viewDidLoad];
     
     CGRect frame = [UIScreen mainScreen].bounds;
-    if(frame.size.height/frame.size.width > 480/320)
+    //NSLog(@"Main Frame: %g x %g", frame.size.width, frame.size.height);
+    if(frame.size.height/frame.size.width > 480.0/320.0)
     {
-        frame.size.height = frame.size.width * 480 / 320;
+        frame.size.height = frame.size.width * 480.0 / 320.0;
         frame.origin.y = ([UIScreen mainScreen].bounds.size.height - frame.size.height)/2;
     }
     y_scale = frame.size.height / 1024;
@@ -63,7 +62,7 @@
     UIImageView *main = [[UIImageView alloc] initWithFrame:frame];
     main.image = [UIImage imageNamed:@"Background.png"];
     [self.view addSubview:main];
-    NSLog(@"Main Frame: %g x %g", main.frame.size.width, main.frame.size.height);
+    //NSLog(@"Main Frame: %g x %g", main.frame.size.width, main.frame.size.height);
     
     
     //NSLog(@"Create CardView");
@@ -180,7 +179,7 @@
 
     // Dice default pos area
     UIButton *dicePosArea = [UIButton buttonWithType:UIButtonTypeCustom];
-    dicePosArea.frame = CGRectMake(frame.size.width - DICE_AREA_X_OFFSET - DICE_AREA_SIZE, frame.size.height - DICE_AREA_Y_OFFSET - DICE_AREA_SIZE + frame.origin.y, DICE_AREA_SIZE, DICE_AREA_SIZE);
+    dicePosArea.frame = CGRectMake(frame.size.width - DICE_AREA_X_OFFSET * MAX_SCALE - DICE_AREA_SIZE * MAX_SCALE, frame.size.height - DICE_AREA_Y_OFFSET * MAX_SCALE - DICE_AREA_SIZE * MAX_SCALE + frame.origin.y, DICE_AREA_SIZE * MAX_SCALE, DICE_AREA_SIZE * MAX_SCALE);
     [dicePosArea addTarget:self action:@selector(diceAreaTouched:) forControlEvents:UIControlEventTouchUpInside];
     //dicePosArea.backgroundColor = CardNumbersColor;
     [self.view addSubview:dicePosArea];
@@ -189,7 +188,7 @@
     glView = [[DiceView alloc] initWithFrame:frame];
     [self.view addSubview:glView];
     glView.backgroundColor = [UIColor clearColor];
-    [glView setDiceDefaultPlace:CGPointMake(glView.bounds.size.width - DICE_POS_X_OFFSET, glView.bounds.size.height - DICE_POS_Y_OFFSET)];
+    [glView setDiceDefaultPlace:CGPointMake(dicePosArea.frame.origin.x + dicePosArea.frame.size.width/2, dicePosArea.frame.origin.y + dicePosArea.frame.size.height/2)];
     [self updateMarbleCoords];
 }
 

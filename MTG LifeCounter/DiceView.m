@@ -559,7 +559,7 @@
     // translate to scene coords
     float PV_HEIGTH = PV_WIDTH * self.frame.size.height / self.frame.size.width;
     x = (pos.x - self.bounds.size.width/2)/self.bounds.size.width*PV_WIDTH*SHIFT_Z/NEAR;
-    y = -(pos.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*SHIFT_Z/NEAR;
+    y = -(pos.y - self.frame.origin.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*SHIFT_Z/NEAR;
 }
 
 -(void) moveDiceToDefaultPlace
