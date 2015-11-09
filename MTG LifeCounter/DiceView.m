@@ -595,7 +595,7 @@
         // translate to scene coords
         CGPoint pos = marbles[i];
         float mx = (pos.x - self.bounds.size.width/2)/self.bounds.size.width*PV_WIDTH*SHIFT_Z/NEAR;
-        float my = -(pos.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*SHIFT_Z/NEAR;
+        float my = -(pos.y - self.frame.origin.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*SHIFT_Z/NEAR;
         marblesCoords[i] = CGPointMake(mx, my);
         //NSLog(@"Marble coord: [%g, %g]", mx, my);
         

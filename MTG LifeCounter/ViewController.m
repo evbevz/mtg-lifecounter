@@ -45,23 +45,31 @@
 {
     [super viewDidLoad];
     
-    y_scale = [UIScreen mainScreen].bounds.size.height / 1024;
-	x_scale = [UIScreen mainScreen].bounds.size.width / 768;
+    CGRect frame = [UIScreen mainScreen].bounds;
+    if(frame.size.height/frame.size.width > 480/320)
+    {
+        frame.size.height = frame.size.width * 480 / 320;
+        frame.origin.y = ([UIScreen mainScreen].bounds.size.height - frame.size.height)/2;
+    }
+    y_scale = frame.size.height / 1024;
+	x_scale = frame.size.width / 768;
     
     current_player = 0;
     playerIsSelected = false;
     
-    UIImageView *main = [[UIImageView alloc] initWithFrame:self.view.frame];
-    main.image = [UIImage imageNamed:@"Background.png"];
-    self.view = main;
+    UIImageView *blackField = [[UIImageView alloc] initWithFrame:self.view.frame];
+    self.view = blackField;
     [self.view setUserInteractionEnabled:true];
-    
+    UIImageView *main = [[UIImageView alloc] initWithFrame:frame];
+    main.image = [UIImage imageNamed:@"Background.png"];
+    [self.view addSubview:main];
+    NSLog(@"Main Frame: %g x %g", main.frame.size.width, main.frame.size.height);
     
     
     //NSLog(@"Create CardView");
-    card = [[CardView alloc] initWithFrame:self.view.frame];
+    card = [[CardView alloc] initWithFrame:frame];
     card.backgroundImage = [UIImage imageNamed:@"Field.png"];
-    card.frame = CGRectMake(140.0 * x_scale, 110.0 * y_scale, card.backgroundImage.size.width * x_scale, card.backgroundImage.size.height * y_scale);
+    card.frame = CGRectMake(140.0 * x_scale, 110.0 * y_scale + main.frame.origin.y, card.backgroundImage.size.width * x_scale, card.backgroundImage.size.height * y_scale);
     card.margin = 2;
     card.font = [UIFont fontWithName:@"GaramondPremrPro-Smbd" size:70 * x_scale];
     card.linesColor = [UIColor clearColor];
@@ -71,7 +79,7 @@
     card.parent = self;
     [self.view addSubview:card];
     
-    float bottomBaseLine = card.frame.origin.y + card.frame.size.height + ([UIScreen mainScreen].bounds.size.height - (card.frame.origin.y + card.frame.size.height)) / 2.3;
+    float bottomBaseLine = card.frame.origin.y + card.frame.size.height + (frame.size.height - (card.frame.origin.y - frame.origin.y + card.frame.size.height)) / 2.3;
     
     // +20/-20
     UIImageView *btn20back = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Btn20Back.png"]];
@@ -172,13 +180,13 @@
 
     // Dice default pos area
     UIButton *dicePosArea = [UIButton buttonWithType:UIButtonTypeCustom];
-    dicePosArea.frame = CGRectMake(self.view.bounds.size.width - DICE_AREA_X_OFFSET - DICE_AREA_SIZE, self.view.bounds.size.height - DICE_AREA_Y_OFFSET - DICE_AREA_SIZE, DICE_AREA_SIZE, DICE_AREA_SIZE);
+    dicePosArea.frame = CGRectMake(frame.size.width - DICE_AREA_X_OFFSET - DICE_AREA_SIZE, frame.size.height - DICE_AREA_Y_OFFSET - DICE_AREA_SIZE + frame.origin.y, DICE_AREA_SIZE, DICE_AREA_SIZE);
     [dicePosArea addTarget:self action:@selector(diceAreaTouched:) forControlEvents:UIControlEventTouchUpInside];
     //dicePosArea.backgroundColor = CardNumbersColor;
     [self.view addSubview:dicePosArea];
     
     // Dice GL
-    glView = [[DiceView alloc] initWithFrame:self.view.bounds];
+    glView = [[DiceView alloc] initWithFrame:frame];
     [self.view addSubview:glView];
     glView.backgroundColor = [UIColor clearColor];
     [glView setDiceDefaultPlace:CGPointMake(glView.bounds.size.width - DICE_POS_X_OFFSET, glView.bounds.size.height - DICE_POS_Y_OFFSET)];
