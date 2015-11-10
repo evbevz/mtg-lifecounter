@@ -69,4 +69,15 @@
      */
 }
 
+- (void)application:(UIApplication *)application willChangeStatusBarFrame:(CGRect)newStatusBarFrame {
+
+    // remove "Unable to simultaneously satisfy constraints" error
+    for(UIWindow *window in [[UIApplication sharedApplication] windows])
+    {
+        if([window.class.description isEqual:@"UITextEffectsWindow"])
+        {
+            [window removeConstraints:window.constraints];
+        }
+    }
+}
 @end
