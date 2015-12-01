@@ -35,6 +35,9 @@
 {
     float Vx, Vy;
     float x, y;
+    CGPoint     dice_last_position;
+    CGPoint     dice_last_velocity;
+    
     CFTimeInterval throwStartTime;
     
     CGPoint     dice_throw_start;
@@ -378,9 +381,22 @@
     glUniformMatrix3fv(self.cubeShader.uNormalMatrix, 1, 0, normalMatrix.m);
 }
 
+- (bool)needUpdate
+{
+    bool updated = x != dice_last_position.x
+    || y != dice_last_position.y
+    || Vx != dice_last_velocity.x
+    || Vy != dice_last_velocity.y;
+    
+    dice_last_position = CGPointMake(x, y);
+    dice_last_velocity = CGPointMake(Vx, Vy);
+    return updated;
+}
+
 - (void)render:(CADisplayLink*)displayLink{
     interval = displayLink.duration;
-    [self setNeedsDisplay];
+    if([self needUpdate])
+        [self setNeedsDisplay];
 }
 
 // Only override drawRect: if you perform custom drawing.
