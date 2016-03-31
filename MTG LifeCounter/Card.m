@@ -282,7 +282,7 @@
 
 - (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
 {
-    [displayLink removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [displayLink invalidate];
     if(parent != nil)
         [parent marbleMovedTo:marble.center];
 }
