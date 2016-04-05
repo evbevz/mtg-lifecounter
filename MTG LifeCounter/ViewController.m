@@ -13,6 +13,7 @@
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 #define CARD_ROTATE_DURATION    0.4
+#define SHOW_20_DURATION        0.4
 
 #define CardNumbersColor        [UIColor colorWithRed:228.0/255 green:178.0/255 blue:114.0/255 alpha:1]
 #define CardNumbersBorderColor  [UIColor colorWithRed:57.0/255 green:34.0/255 blue:4.0/255 alpha:1]
@@ -21,14 +22,17 @@
 #define MIN_SCALE               MIN(x_scale, y_scale)
 #define MAX_SCALE               MAX(x_scale, y_scale)
 
-#define DICE_AREA_SIZE            100
-#define DICE_AREA_X_OFFSET        30
-#define DICE_AREA_Y_OFFSET        30
+#define DICE_AREA_SIZE            60
+#define DICE_AREA_X_OFFSET        50
 
+#define CARD_LIFE_BASE_X_OFFSET   10
 
 @interface ViewController () {
     DiceView*     glView;
     bool          playerIsSelected;
+    UIImageView   *btns20;
+    UIImageView   *main;
+    float         bottomBaseLine;
 }
 
 - (void)selectPlayer:(int)i;
@@ -59,7 +63,7 @@
     UIImageView *blackField = [[UIImageView alloc] initWithFrame:self.view.frame];
     self.view = blackField;
     [self.view setUserInteractionEnabled:true];
-    UIImageView *main = [[UIImageView alloc] initWithFrame:frame];
+    main = [[UIImageView alloc] initWithFrame:frame];
     main.image = [UIImage imageNamed:@"Background.png"];
     [self.view addSubview:main];
     //NSLog(@"Main Frame: %g x %g", main.frame.size.width, main.frame.size.height);
@@ -78,63 +82,41 @@
     card.parent = self;
     [self.view addSubview:card];
     
-    float bottomBaseLine = card.frame.origin.y + card.frame.size.height + (frame.size.height - (card.frame.origin.y - frame.origin.y + card.frame.size.height)) / 2.3;
-    
-    // +20/-20
-    UIImageView *btn20back = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Btn20Back.png"]];
-    float width = btn20back.image.size.width * MAX_SCALE;
-    float height = btn20back.image.size.height * MAX_SCALE;
-    btn20back.frame = CGRectMake(card.frame.origin.x + card.frame.size.width/2 - width/2, bottomBaseLine - height/2, width, height);
-    [self.view addSubview:btn20back];
-    
-    UIImage *img = [UIImage imageNamed:@"Btn-20.png"];
-	btn20_dec = [UIButton buttonWithType:UIButtonTypeCustom];
-    width = img.size.width * MAX_SCALE;
-    height = img.size.height * MAX_SCALE;
-    btn20_dec.frame = CGRectMake(card.frame.origin.x + card.frame.size.width/2 - width - 5.0*MAX_SCALE, bottomBaseLine - height/2 + 1, width, height);
-	[btn20_dec setImage:img forState:UIControlStateNormal];
-    [btn20_dec addTarget:self action:@selector(counterButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btn20_dec];
-
-    img = [UIImage imageNamed:@"Btn+20.png"];
-	btn20_inc = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn20_inc.frame = CGRectMake(card.frame.origin.x + card.frame.size.width/2 + 5.0*MAX_SCALE, bottomBaseLine - height/2 + 1, width, height);
-	[btn20_inc setImage:img forState:UIControlStateNormal];
-    [btn20_inc addTarget:self action:@selector(counterButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btn20_inc];
+    bottomBaseLine = card.frame.origin.y + card.frame.size.height + (frame.size.height - (card.frame.origin.y - frame.origin.y + card.frame.size.height)) / 2.3;
 
     // Poison
     poison_val = 0;
     poison_img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@%d.png",POISON_PREFIX,poison_val]]];
-    width = poison_img.image.size.width * MAX_SCALE;
-    height = poison_img.image.size.height * MAX_SCALE;
+    float width = poison_img.image.size.width * MAX_SCALE;
+    float height = poison_img.image.size.height * MAX_SCALE;
     poison_img.frame = CGRectMake(45.0 * x_scale, card.frame.origin.y + card.frame.size.height - poison_img.image.size.height * MAX_SCALE + 10 * MAX_SCALE, width, height);
     [self.view addSubview:poison_img];
-    
-    UIImageView *poison_btn_back = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PoisonBtnsBack.png"]];
-    width = poison_btn_back.image.size.width * MAX_SCALE;
-    height = poison_btn_back.image.size.height * MAX_SCALE;
-    poison_btn_back.frame = CGRectMake(27.0 * x_scale, bottomBaseLine - height/2, width, height);
-    [self.view addSubview:poison_btn_back];
-    
-    img = [UIImage imageNamed:@"PoisonBtn+.png"];
-    poison_inc = [UIButton buttonWithType:UIButtonTypeCustom];
-    width = img.size.width * MAX_SCALE;
-    height = img.size.height * MAX_SCALE;
-    poison_inc.frame = CGRectMake(poison_btn_back.frame.origin.x + poison_btn_back.frame.size.width/2 - 2.0 * MAX_SCALE, bottomBaseLine - height/2 + 1, width, height);
-    [poison_inc setImage:img forState:UIControlStateNormal];
-    [poison_inc setImage:[UIImage imageNamed:@"PoisonBtn+A.png"] forState:UIControlStateHighlighted];
-    [poison_inc addTarget:self action:@selector(poisonButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:poison_inc];
+    poison_img.userInteractionEnabled = YES;
+    UITapGestureRecognizer *poisonTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(poisonButtonTouched:)];
+    [poison_img addGestureRecognizer:poisonTapGesture];
 
-    img = [UIImage imageNamed:@"PoisonBtn-.png"];
-    poison_dec = [UIButton buttonWithType:UIButtonTypeCustom];
-    poison_dec.frame = CGRectMake(poison_btn_back.frame.origin.x + poison_btn_back.frame.size.width/2 - width + 2.0 * MAX_SCALE, bottomBaseLine - height/2 + 1, width, height);
-    [poison_dec setImage:img forState:UIControlStateNormal];
-    [poison_dec setImage:[UIImage imageNamed:@"PoisonBtn-A.png"] forState:UIControlStateHighlighted];
-    [poison_dec addTarget:self action:@selector(poisonButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:poison_dec];
-
+    
+    // +20/-20
+    int lblHeight = frame.origin.y + frame.size.height - bottomBaseLine;
+    UILabel *baseCardAmnt = [[UILabel alloc] initWithFrame:CGRectMake(CARD_LIFE_BASE_X_OFFSET, bottomBaseLine - lblHeight/2, frame.size.width/4, lblHeight)];
+    baseCardAmnt.backgroundColor = [UIColor clearColor];
+    baseCardAmnt.textColor = CardNumbersBorderColor;
+    baseCardAmnt.text = @"+20/-20";
+    baseCardAmnt.userInteractionEnabled = YES;
+    baseCardAmnt.adjustsFontSizeToFitWidth = YES;
+    UITapGestureRecognizer *totalAmntTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(baseCardAmntTap:)];
+    [baseCardAmnt addGestureRecognizer:totalAmntTapGesture];
+    baseCardAmnt.font = [UIFont fontWithName:@"GaramondPremrPro-Smbd" size:70 * x_scale];
+    [self.view addSubview:baseCardAmnt];
+    NSLog(@"Label frame: %@", NSStringFromCGRect(baseCardAmnt.frame));
+    
+    // Dice default place area
+    UIButton *dicePosArea = [UIButton buttonWithType:UIButtonTypeCustom];
+    [dicePosArea setImage:[UIImage imageNamed:@"dice-place.png"] forState:UIControlStateNormal];
+    dicePosArea.frame = CGRectMake(frame.size.width - DICE_AREA_X_OFFSET * MAX_SCALE - DICE_AREA_SIZE * MAX_SCALE, bottomBaseLine - DICE_AREA_SIZE/2 * MAX_SCALE, DICE_AREA_SIZE * MAX_SCALE, DICE_AREA_SIZE * MAX_SCALE);
+    [dicePosArea addTarget:self action:@selector(diceAreaTouched:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:dicePosArea];
+    
     //bubbles & marbles
     marble_img[0] = [UIImage imageNamed:@"MarbleBlue.png"];
     marble_img[1] = [UIImage imageNamed:@"MarbleGreen.png"];
@@ -176,13 +158,6 @@
     }
     
     canChangePlayer = true;
-
-    // Dice default pos area
-    UIButton *dicePosArea = [UIButton buttonWithType:UIButtonTypeCustom];
-    dicePosArea.frame = CGRectMake(frame.size.width - DICE_AREA_X_OFFSET * MAX_SCALE - DICE_AREA_SIZE * MAX_SCALE, frame.size.height - DICE_AREA_Y_OFFSET * MAX_SCALE - DICE_AREA_SIZE * MAX_SCALE + frame.origin.y, DICE_AREA_SIZE * MAX_SCALE, DICE_AREA_SIZE * MAX_SCALE);
-    [dicePosArea addTarget:self action:@selector(diceAreaTouched:) forControlEvents:UIControlEventTouchUpInside];
-    //dicePosArea.backgroundColor = CardNumbersColor;
-    [self.view addSubview:dicePosArea];
     
     // Dice GL
     glView = [[DiceView alloc] initWithFrame:frame];
@@ -190,6 +165,32 @@
     glView.backgroundColor = [UIColor clearColor];
     [glView setDiceDefaultPlace:CGPointMake(dicePosArea.frame.origin.x + dicePosArea.frame.size.width/2, dicePosArea.frame.origin.y + dicePosArea.frame.size.height/2)];
     [self updateMarbleCoords];
+    
+    // +20/-20 buttons view
+    btns20 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Btn20Back.png"]];
+    width = btns20.image.size.width * MAX_SCALE;
+    height = btns20.image.size.height * MAX_SCALE;
+    btns20.frame = CGRectMake(0, frame.size.height, width, height);
+    [self.view addSubview:btns20];
+    
+    UIImage *img = [UIImage imageNamed:@"Btn-20.png"];
+    btn20_dec = [UIButton buttonWithType:UIButtonTypeCustom];
+    width = img.size.width * MAX_SCALE;
+    height = img.size.height * MAX_SCALE;
+    btn20_dec.frame = CGRectMake(btns20.frame.size.width/2 - width - 5.0*MAX_SCALE, btns20.frame.size.height/2 - height/2 + 1, width, height);
+    [btn20_dec setImage:img forState:UIControlStateNormal];
+    [btn20_dec addTarget:self action:@selector(counterButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
+    [btns20 addSubview:btn20_dec];
+    
+    img = [UIImage imageNamed:@"Btn+20.png"];
+    btn20_inc = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn20_inc.frame = CGRectMake(btns20.frame.size.width/2 + 5.0*MAX_SCALE, btns20.frame.size.height/2 - height/2 + 1, width, height);
+    [btn20_inc setImage:img forState:UIControlStateNormal];
+    [btn20_inc addTarget:self action:@selector(counterButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
+    [btns20 addSubview:btn20_inc];
+    btns20.userInteractionEnabled = YES;
+    btns20.alpha = 0;
+
 }
 
 - (void)viewDidUnload
@@ -241,6 +242,7 @@
 
 - (void)counterButtonTouched:(UIButton*)button
 {
+    int increment = (button == btn20_dec ? -1 : 1);
     if(button == btn20_dec && card.lifeBase >= 20)
     {
         card.lifeBase -= 20;
@@ -252,17 +254,20 @@
         players[current_player].life += 20;
     }
     [card setNeedsDisplay];
+    [self show20:false withDirection:increment];
 }
 
-- (void)poisonButtonTouched:(UIButton*)button
+- (void)poisonButtonTouched:(UITapGestureRecognizer*)gesture
 {
-    if(button == poison_inc && poison_val < 10)
+    UIView *poison = gesture.view;
+    CGPoint pos = [gesture locationInView:poison];
+    if(pos.y < poison.frame.size.height/2 && poison_val < 10)
     {
         poison_val++;
         [self showPoison];
     }
     
-    if(button == poison_dec && poison_val > 0)
+    if(pos.y > poison.frame.size.height/2 && poison_val > 0)
     {
         poison_val--;
         [self showPoison];
@@ -276,6 +281,14 @@
 {
     [glView moveDiceToDefaultPlace];
     [glView throwDice:1 withX0:0 withY0:0];
+}
+
+- (void)baseCardAmntTap:(UITapGestureRecognizer*)recognizer
+{
+    if(btns20.alpha == 0)
+        [self show20:true withDirection:1];
+    else
+        [self show20:false withDirection:-1];
 }
 
 #pragma mark - Display events
@@ -342,6 +355,39 @@
     }
     [self updateMarbleCoords];
 
+}
+
+- (void)show20:(Boolean)show withDirection:(int)direction
+{
+    canChangePlayer = false;
+
+    if(show)
+    {
+        btns20.frame = CGRectMake(card.frame.origin.x + card.frame.size.width / 2 - btns20.frame.size.width/2,
+                                  card.frame.origin.y + card.frame.size.height - btns20.frame.size.height*1.1,
+                                  btns20.frame.size.width, btns20.frame.size.height);
+    }
+    [UIView beginAnimations:@"show20" context:(void*)NULL];
+    [UIView setAnimationDuration:SHOW_20_DURATION];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDidStopSelector:@selector(show20DidStop:finished:context:)];
+    [UIView setAnimationTransition:(direction < 0 ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft) forView:btns20 cache:YES];
+    
+    btns20.alpha = (show ? 1: 0);
+
+    [UIView commitAnimations];
+}
+
+- (void)show20DidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
+{
+    if([animationID isEqual: @"show20"])
+    {
+        canChangePlayer = true;
+        if(btns20.alpha == 0)
+            btns20.frame = CGRectMake(card.frame.origin.x + card.frame.size.width / 2 - btns20.frame.size.width/2,
+                                  self.view.frame.size.height, btns20.frame.size.width, btns20.frame.size.height);
+    }
+    
 }
 
 - (void)selectPlayer:(int)i
