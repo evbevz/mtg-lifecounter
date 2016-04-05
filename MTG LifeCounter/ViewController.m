@@ -191,6 +191,8 @@
     btns20.userInteractionEnabled = YES;
     btns20.alpha = 0;
 
+    // init player
+    [self selectPlayer:0];
 }
 
 - (void)viewDidUnload
