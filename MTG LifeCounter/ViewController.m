@@ -60,21 +60,21 @@
     current_player = 0;
     playerIsSelected = false;
     
+    // Black field
     UIImageView *blackField = [[UIImageView alloc] initWithFrame:self.view.frame];
     self.view = blackField;
     [self.view setUserInteractionEnabled:true];
     main = [[UIImageView alloc] initWithFrame:frame];
     main.image = [UIImage imageNamed:@"Background.png"];
     [self.view addSubview:main];
-    //NSLog(@"Main Frame: %g x %g", main.frame.size.width, main.frame.size.height);
     
     
-    //NSLog(@"Create CardView");
+    // Card
     card = [[CardView alloc] initWithFrame:frame];
     card.backgroundImage = [UIImage imageNamed:@"Field.png"];
     card.frame = CGRectMake(140.0 * x_scale, 110.0 * y_scale + main.frame.origin.y, card.backgroundImage.size.width * x_scale, card.backgroundImage.size.height * y_scale);
     card.margin = 2;
-    card.font = [UIFont fontWithName:@"GaramondPremrPro-Smbd" size:70 * x_scale];
+    card.font = [UIFont fontWithName:@"GaramondPremrPro-Smbd" size:80 * x_scale];
     card.linesColor = [UIColor clearColor];
     card.fontColor = CardNumbersColor;
     card.fontBorderColor = CardNumbersBorderColor;
@@ -242,18 +242,20 @@
 
 - (void)counterButtonTouched:(UIButton*)button
 {
+    if(!canChangePlayer)
+        return;
+
     int increment = (button == btn20_dec ? -1 : 1);
     if(button == btn20_dec && card.lifeBase >= 20)
     {
-        card.lifeBase -= 20;
+        [card setLifeBase:(card.lifeBase - 20) withAnimation:YES];
         players[current_player].life -= 20;
     }
     if(button == btn20_inc && card.lifeBase < 1980)
     {
-        card.lifeBase += 20;
+        [card setLifeBase:(card.lifeBase + 20) withAnimation:YES];
         players[current_player].life += 20;
     }
-    [card setNeedsDisplay];
     [self show20:false withDirection:increment];
 }
 
@@ -300,8 +302,6 @@
 
 - (void)flipCard:(int)toPlayer
 {
-	NSLog(@"showCardForButton");
-    
     canChangePlayer = false;
     [UIView beginAnimations:@"flipCard" context:(void*)toPlayer];
     [UIView setAnimationDuration:CARD_ROTATE_DURATION];
@@ -314,7 +314,7 @@
         btn[current_player].alpha = 1;
     }
     
-    card.lifeBase = (players[toPlayer].life - 1) / 20 * 20;
+    [card setLifeBase:((players[toPlayer].life - 1) / 20 * 20) withAnimation:NO];
     [card setNeedsDisplay];
     NSLog(@"New lifebase = %d", card.lifeBase);
     
@@ -333,8 +333,6 @@
 }
 - (void)flipCardAnimationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
 {
-	//NSLog(@"animationDidStop");
-    
 	if([animationID isEqual: @"flipCard"])
     {
         canChangePlayer = true;

@@ -8,7 +8,9 @@
 
 #import "Card.h"
 
+#define CHANGE_LABELS_DURATION  0.3
 
+typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationDirection;
 
 @interface CardView() 
 {
@@ -17,6 +19,13 @@
     CGFloat         duration;
     CFTimeInterval  animationStartTime;
     CADisplayLink*  displayLink;
+    
+    CADisplayLink*  changeLabelsDisplayLink;
+    CFTimeInterval  changeLabelsStartTime;
+    int             labelsLifeBase;
+    float           labelsAlpha;
+    
+    LabelsAnimationDirection    direction;
 }
 
 -(void)drawBorder:(CGRect)rect :(CGContextRef)context;
@@ -50,7 +59,7 @@
         marble_tracking = false;
         self.delegate = self;
         parent = nil;
-                
+        labelsAlpha = 1;
     }
     
 
@@ -115,31 +124,32 @@
     
     y_offset = 0.85;
     CGContextSelectFont(context, font.fontName.UTF8String, font.lineHeight, kCGEncodingMacRoman);
-    if(lifeBase >= 80)
-    {
-        y_offset = 0.8;
-        CGContextSelectFont(context, font.fontName.UTF8String, font.lineHeight * 0.9, kCGEncodingMacRoman);
-    }
-    if(lifeBase >= 980)
+    if(labelsLifeBase >= 80)
     {
         y_offset = 0.8;
         CGContextSelectFont(context, font.fontName.UTF8String, font.lineHeight * 0.8, kCGEncodingMacRoman);
     }
+    if(labelsLifeBase >= 980)
+    {
+        y_offset = 0.8;
+        CGContextSelectFont(context, font.fontName.UTF8String, font.lineHeight * 0.7, kCGEncodingMacRoman);
+    }
     CGContextSetTextDrawingMode(context, kCGTextFill);
     CGContextSetTextMatrix(context, CGAffineTransformMake(1.0, 0.0, 0.0, -1.0, 0.0, 0.0));
-    CGContextSetFillColorWithColor(context, fontColor.CGColor);
+    CGColorRef fillColor = CGColorCreateCopyWithAlpha(fontColor.CGColor, labelsAlpha);
+    CGContextSetFillColorWithColor(context, fillColor);
     CGContextSetStrokeColorWithColor(context,fontBorderColor.CGColor);
     
     char txt[5];
-    for(int life = lifeBase + 20; life > lifeBase; --life)
+    for(int life = labelsLifeBase + 20; life > labelsLifeBase; --life)
     {
         sprintf(txt, "%d", life);
         
         float cellWidth = (rect.size.width - 2*margin)/4;
         float cellHeight = (rect.size.height - 2*margin)/5;
         
-        int col = (lifeBase + 20 - life) % 4;
-        int row = (lifeBase + 20 - life) / 4;
+        int col = (labelsLifeBase + 20 - life) % 4;
+        int row = (labelsLifeBase + 20 - life) / 4;
         //NSLog(@"col = %d \t row = %d", col, row);
         
         NSString *str = [[NSString alloc] initWithUTF8String:txt];
@@ -289,6 +299,8 @@
 
 - (void)updateDuringAnimation:(CADisplayLink*)displayLinkParam
 {
+    // update marble position while it moving
+
     float animationTime = CACurrentMediaTime() - animationStartTime;
     if(parent != nil){
         CGFloat x = marble.center.x - animationDx + animationDx/duration*animationTime;
@@ -298,4 +310,45 @@
     }
 }
 
+- (void) setLifeBase:(int)value withAnimation:(Boolean)animate
+{
+    lifeBase = value;
+    if (!animate)
+    {
+        labelsLifeBase = value;
+        [self setNeedsDisplay];
+        return;
+    }
+    
+    // animate
+    changeLabelsDisplayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(changeLabels:)];
+    [changeLabelsDisplayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    changeLabelsStartTime = CACurrentMediaTime();
+
+    direction = HideLabels;
+    [self setNeedsDisplay];
+}
+
+- (void) changeLabels:(CADisplayLink*)link
+{
+    CFTimeInterval time =  CACurrentMediaTime() - changeLabelsStartTime;
+    
+    if(direction == HideLabels)
+        labelsAlpha = MAX(0, (CHANGE_LABELS_DURATION - time) / CHANGE_LABELS_DURATION);
+    else
+        labelsAlpha = MIN(1, 1 - (CHANGE_LABELS_DURATION - time) / CHANGE_LABELS_DURATION);
+    
+    if(direction == HideLabels && labelsAlpha == 0)
+    {
+        direction = ShowLabels;
+        labelsLifeBase = lifeBase;
+        changeLabelsStartTime = CACurrentMediaTime();
+    }
+    else if (direction == ShowLabels && labelsAlpha == 1)
+    {
+        [link invalidate];
+    }
+    
+    [self setNeedsDisplay];
+}
 @end

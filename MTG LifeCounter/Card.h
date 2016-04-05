@@ -32,6 +32,7 @@
 
 - (CGPoint) getTopLeftCellCenter;
 - (void)    showMarble:(UIImageView*)marbleView withValue:(int)lifeAmount;
+- (void)    setLifeBase:(int)value withAnimation:(Boolean)animate;
 
 @property(nonatomic, retain) UIColor    *linesColor;
 @property(nonatomic, retain) UIImage    *backgroundImage;
@@ -39,7 +40,7 @@
 @property(nonatomic, retain) UIFont     *font;
 @property(nonatomic, retain) UIColor    *fontColor;
 @property(nonatomic, retain) UIColor    *fontBorderColor;
-@property(nonatomic, readwrite) int lifeBase;
+@property(nonatomic, readonly)   int    lifeBase;
 @property(nonatomic, assign) id     parent;
 
 @end
