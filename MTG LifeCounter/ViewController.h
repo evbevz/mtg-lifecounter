@@ -10,7 +10,7 @@
 #import <GLKit/GLKit.h>
 #import "Card.h"
 
-#define PLAYER_BUTTONS_CNT      3
+#define PLAYER_BUTTONS_CNT      2
 
 struct PlayerData
 {

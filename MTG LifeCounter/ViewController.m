@@ -22,10 +22,12 @@
 #define MIN_SCALE               MIN(x_scale, y_scale)
 #define MAX_SCALE               MAX(x_scale, y_scale)
 
-#define DICE_AREA_SIZE            60
-#define DICE_AREA_X_OFFSET        50
+#define DICE_AREA_SIZE            80
+#define DICE_AREA_X_OFFSET        60
 
-#define CARD_LIFE_BASE_X_OFFSET   10
+#define MARBLE_BUTTONS_X_OFFSET   10
+
+#define MARBLE_SCALE              1.5
 
 @interface ViewController () {
     DiceView*     glView;
@@ -72,7 +74,8 @@
     // Card
     card = [[CardView alloc] initWithFrame:frame];
     card.backgroundImage = [UIImage imageNamed:@"Field.png"];
-    card.frame = CGRectMake(140.0 * x_scale, 110.0 * y_scale + main.frame.origin.y, card.backgroundImage.size.width * x_scale, card.backgroundImage.size.height * y_scale);
+    float card_offset_x = 120;
+    card.frame = CGRectMake(card_offset_x * x_scale, 110.0 * y_scale + main.frame.origin.y, frame.size.width - (card_offset_x + 63) * x_scale, card.backgroundImage.size.height * y_scale * 0.95);
     card.margin = 2;
     card.font = [UIFont fontWithName:@"GaramondPremrPro-Smbd" size:80 * x_scale];
     card.linesColor = [UIColor clearColor];
@@ -89,7 +92,7 @@
     poison_img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@%d.png",POISON_PREFIX,poison_val]]];
     float width = poison_img.image.size.width * MAX_SCALE;
     float height = poison_img.image.size.height * MAX_SCALE;
-    poison_img.frame = CGRectMake(45.0 * x_scale, card.frame.origin.y + card.frame.size.height - poison_img.image.size.height * MAX_SCALE + 10 * MAX_SCALE, width, height);
+    poison_img.frame = CGRectMake(25.0 * x_scale, card.frame.origin.y + card.frame.size.height - poison_img.image.size.height * MAX_SCALE + 10 * MAX_SCALE, width, height);
     [self.view addSubview:poison_img];
     poison_img.userInteractionEnabled = YES;
     UITapGestureRecognizer *poisonTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(poisonButtonTouched:)];
@@ -98,7 +101,7 @@
     
     // +20/-20
     int lblHeight = frame.origin.y + frame.size.height - bottomBaseLine;
-    UILabel *baseCardAmnt = [[UILabel alloc] initWithFrame:CGRectMake(CARD_LIFE_BASE_X_OFFSET, bottomBaseLine - lblHeight/2, frame.size.width/4, lblHeight)];
+    UILabel *baseCardAmnt = [[UILabel alloc] initWithFrame:CGRectMake(frame.size.width/2, bottomBaseLine - lblHeight/2, frame.size.width/4, lblHeight)];
     baseCardAmnt.backgroundColor = [UIColor clearColor];
     baseCardAmnt.textColor = CardNumbersBorderColor;
     baseCardAmnt.text = @"+20/-20";
@@ -106,7 +109,7 @@
     baseCardAmnt.adjustsFontSizeToFitWidth = YES;
     UITapGestureRecognizer *totalAmntTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(baseCardAmntTap:)];
     [baseCardAmnt addGestureRecognizer:totalAmntTapGesture];
-    baseCardAmnt.font = [UIFont fontWithName:@"GaramondPremrPro-Smbd" size:70 * x_scale];
+    baseCardAmnt.font = [UIFont fontWithName:@"GaramondPremrPro-Smbd" size:80 * x_scale];
     [self.view addSubview:baseCardAmnt];
     NSLog(@"Label frame: %@", NSStringFromCGRect(baseCardAmnt.frame));
     
@@ -119,40 +122,36 @@
     
     //bubbles & marbles
     marble_img[0] = [UIImage imageNamed:@"MarbleBlue.png"];
-    marble_img[1] = [UIImage imageNamed:@"MarbleGreen.png"];
-    marble_img[2] = [UIImage imageNamed:@"MarbleRed.png"];
+    marble_img[1] = [UIImage imageNamed:@"MarbleRed.png"];
+    marble_img[2] = [UIImage imageNamed:@"MarbleGreen.png"];
     marble_img[3] = [UIImage imageNamed:@"MarbleWhite.png"];
     marble_img[4] = [UIImage imageNamed:@"MarbleBlack.png"];
-    float bubblesBase = card.frame.origin.x / 1.75;
+    float bubblesAreaWidth = frame.size.width / 2 - MARBLE_BUTTONS_X_OFFSET;
     bubble = [UIImage imageNamed:@"Bubble.png"];
-    width = bubble.size.width * MAX_SCALE;
-    height = bubble.size.height * MAX_SCALE;
-    float top = card.frame.origin.y ;
+    width = bubble.size.width * MAX_SCALE * MARBLE_SCALE;
+    height = bubble.size.height * MAX_SCALE * MARBLE_SCALE;
     for(int i = 0; i < PLAYER_BUTTONS_CNT; ++i)
     {
         // marble place
         UIImageView *marble_place = [[UIImageView alloc] initWithImage:bubble];
-        marble_place.frame = CGRectMake(bubblesBase - width/2, top, width, height);
+        marble_place.frame = CGRectMake(MARBLE_BUTTONS_X_OFFSET + bubblesAreaWidth/PLAYER_BUTTONS_CNT/2*(2*i + 1) - width/2, bottomBaseLine - height/2, width, height);
         [self.view addSubview:marble_place];
         
         // marble button        
         btn[i] = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn[i].frame = CGRectMake(bubblesBase - width/2, top, width, height);
+        btn[i].frame = marble_place.frame;
         [btn[i] setImage:marble_img[i] forState:UIControlStateNormal];
-        CGFloat edge_top = (marble_img[i].size.height - bubble.size.height)/2 * MAX_SCALE;
-        CGFloat edge_left = (marble_img[i].size.width - bubble.size.width)/2 * MAX_SCALE;
+        CGFloat edge_top = (marble_img[i].size.height - bubble.size.height)/2 * MAX_SCALE * MARBLE_SCALE;
+        CGFloat edge_left = (marble_img[i].size.width - bubble.size.width)/2 * MAX_SCALE * MARBLE_SCALE;
         btn[i].imageEdgeInsets = UIEdgeInsetsMake(-edge_top,-edge_left,-edge_top,-edge_left);
         [btn[i] addTarget:self action:@selector(playerButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
-        //btn[i].alpha = 0.5;
         
         [self.view addSubview:btn[i]];
         
         // marble
         marbles[i] = [[UIImageView alloc] initWithImage:marble_img[i]];
-        marbles[i].frame = CGRectMake(0,0,marble_img[i].size.width * MAX_SCALE, marble_img[i].size.height * MAX_SCALE);
-        //marbles[i].alpha = 0.5;
+        marbles[i].frame = CGRectMake(0,0,marble_img[i].size.width * MAX_SCALE * MARBLE_SCALE, marble_img[i].size.height * MAX_SCALE * MARBLE_SCALE);
         
-        top += (card.frame.size.height - poison_img.frame.size.height*0.9)/PLAYER_BUTTONS_CNT;
         players[i].poison = 0;
         players[i].life = 20;
     }
@@ -411,7 +410,7 @@
 
 - (void)updateMarbleCoords
 {
-    float radius = btn[0].frame.size.width / 2 * 1.3;
+    float radius = btn[0].frame.size.width / 2 * 1.1;
     CGPoint coords[PLAYER_BUTTONS_CNT];
     for (unsigned int i = 0; i < PLAYER_BUTTONS_CNT; ++i) {
         if(!playerIsSelected || current_player != i)
@@ -424,7 +423,7 @@
 
 - (void)marbleMovedTo:(CGPoint)pos
 {
-    float radius = btn[0].frame.size.width / 2 * 1.3;
+    float radius = btn[0].frame.size.width / 2 * 1.1;
     CGPoint coords[PLAYER_BUTTONS_CNT];
     for (unsigned int i = 0; i < PLAYER_BUTTONS_CNT; ++i) {
         if(!playerIsSelected || current_player != i)

@@ -267,19 +267,20 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
         //NSLog(@"marble touch move");
         CGPoint pos = [touch locationInView:self];
         CGPoint marblePos = marble.center;
+        float x_margin = cellWidth/2;
+        float y_margin = cellHeight/2.5;
         
-        
-        if(pos.x - moveOffset.x - cellWidth/3 < margin)
-            marblePos = CGPointMake(margin + cellWidth/3, marblePos.y);
-        else if(pos.x - moveOffset.x + cellWidth/3 > self.frame.size.width - margin)
-            marblePos = CGPointMake(self.frame.size.width - margin - cellWidth/3, marblePos.y);
+        if(pos.x - moveOffset.x - x_margin < margin)
+            marblePos = CGPointMake(margin + x_margin, marblePos.y);
+        else if(pos.x - moveOffset.x + x_margin > self.frame.size.width - margin)
+            marblePos = CGPointMake(self.frame.size.width - margin - x_margin, marblePos.y);
         else
             marblePos = CGPointMake(pos.x - moveOffset.x, marblePos.y);
 
-        if(pos.y - moveOffset.y - cellHeight/4 < margin)
-            marblePos = CGPointMake(marblePos.x, margin + cellHeight/4);
-        else if(pos.y - moveOffset.y + cellHeight/4 > self.frame.size.height - margin)
-            marblePos = CGPointMake(marblePos.x, self.frame.size.height - margin - cellHeight/4);
+        if(pos.y - moveOffset.y - y_margin < margin)
+            marblePos = CGPointMake(marblePos.x, margin + y_margin);
+        else if(pos.y - moveOffset.y + y_margin > self.frame.size.height - margin)
+            marblePos = CGPointMake(marblePos.x, self.frame.size.height - margin - y_margin);
         else
             marblePos = CGPointMake(marblePos.x, pos.y - moveOffset.y);
         
