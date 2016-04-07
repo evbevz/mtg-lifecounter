@@ -101,17 +101,18 @@
     
     // +20/-20
     int lblHeight = frame.origin.y + frame.size.height - bottomBaseLine;
-    UILabel *baseCardAmnt = [[UILabel alloc] initWithFrame:CGRectMake(frame.size.width/2, bottomBaseLine - lblHeight/2, frame.size.width/4, lblHeight)];
+    float baseCardAmnt_x_offset = 20 * x_scale;
+    UILabel *baseCardAmnt = [[UILabel alloc] initWithFrame:CGRectMake(baseCardAmnt_x_offset, card.frame.origin.y, card_offset_x * x_scale - baseCardAmnt_x_offset, lblHeight)];
     baseCardAmnt.backgroundColor = [UIColor clearColor];
     baseCardAmnt.textColor = CardNumbersBorderColor;
-    baseCardAmnt.text = @"+20/-20";
+    baseCardAmnt.text = @"±20";
+    baseCardAmnt.font = [UIFont fontWithName:@"GaramondPremrPro-Smbd" size:80 * x_scale];
     baseCardAmnt.userInteractionEnabled = YES;
     baseCardAmnt.adjustsFontSizeToFitWidth = YES;
     UITapGestureRecognizer *totalAmntTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(baseCardAmntTap:)];
     [baseCardAmnt addGestureRecognizer:totalAmntTapGesture];
-    baseCardAmnt.font = [UIFont fontWithName:@"GaramondPremrPro-Smbd" size:80 * x_scale];
     [self.view addSubview:baseCardAmnt];
-    NSLog(@"Label frame: %@", NSStringFromCGRect(baseCardAmnt.frame));
+    NSLog(@"Label frame: %@, width: %f", NSStringFromCGRect(baseCardAmnt.frame), card_offset_x * x_scale - baseCardAmnt_x_offset);
     
     // Dice default place area
     UIButton *dicePosArea = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -362,8 +363,8 @@
 
     if(show)
     {
-        btns20.frame = CGRectMake(card.frame.origin.x + card.frame.size.width / 2 - btns20.frame.size.width/2,
-                                  card.frame.origin.y + card.frame.size.height - btns20.frame.size.height*1.1,
+        btns20.frame = CGRectMake(card.frame.origin.x + (card.frame.size.width - btns20.frame.size.width)/2,
+                                  (card.frame.origin.y - btns20.frame.size.height)/2 + 10 * y_scale, // border width = 10 px
                                   btns20.frame.size.width, btns20.frame.size.height);
     }
     [UIView beginAnimations:@"show20" context:(void*)NULL];
@@ -383,8 +384,7 @@
     {
         canChangePlayer = true;
         if(btns20.alpha == 0)
-            btns20.frame = CGRectMake(card.frame.origin.x + card.frame.size.width / 2 - btns20.frame.size.width/2,
-                                  self.view.frame.size.height, btns20.frame.size.width, btns20.frame.size.height);
+            btns20.frame = CGRectMake(0, -btns20.frame.size.height, btns20.frame.size.width, btns20.frame.size.height);
     }
     
 }

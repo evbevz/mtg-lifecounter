@@ -24,7 +24,7 @@
     
     [self.window makeKeyAndVisible];
     
-    application.idleTimerDisabled = YES;
+    //application.idleTimerDisabled = YES;
    
     return YES;
 }
