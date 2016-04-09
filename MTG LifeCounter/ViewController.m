@@ -66,6 +66,8 @@
     UIImageView *blackField = [[UIImageView alloc] initWithFrame:self.view.frame];
     self.view = blackField;
     [self.view setUserInteractionEnabled:true];
+    
+    // Background
     main = [[UIImageView alloc] initWithFrame:frame];
     main.image = [UIImage imageNamed:@"Background.png"];
     [self.view addSubview:main];
@@ -133,6 +135,10 @@
     height = bubble.size.height * MAX_SCALE * MARBLE_SCALE;
     for(int i = 0; i < PLAYER_BUTTONS_CNT; ++i)
     {
+        // marble
+        marbles[i] = [[UIImageView alloc] initWithImage:marble_img[i]];
+        marbles[i].frame = CGRectMake(0,0,marble_img[i].size.width * MAX_SCALE * MARBLE_SCALE, marble_img[i].size.height * MAX_SCALE * MARBLE_SCALE);
+
         // marble place
         UIImageView *marble_place = [[UIImageView alloc] initWithImage:bubble];
         marble_place.frame = CGRectMake(MARBLE_BUTTONS_X_OFFSET + bubblesAreaWidth/PLAYER_BUTTONS_CNT/2*(2*i + 1) - width/2, bottomBaseLine - height/2, width, height);
@@ -140,19 +146,16 @@
         
         // marble button        
         btn[i] = [UIButton buttonWithType:UIButtonTypeCustom];
-        btn[i].frame = marble_place.frame;
+        btn[i].frame = CGRectMake(marble_place.frame.origin.x, marble_place.frame.origin.y, width, height);
         [btn[i] setImage:marble_img[i] forState:UIControlStateNormal];
-        CGFloat edge_top = (marble_img[i].size.height - bubble.size.height)/2 * MAX_SCALE * MARBLE_SCALE;
-        CGFloat edge_left = (marble_img[i].size.width - bubble.size.width)/2 * MAX_SCALE * MARBLE_SCALE;
+        btn[i].contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
+        btn[i].contentHorizontalAlignment = UIControlContentVerticalAlignmentFill;
+        CGFloat edge_top = (marbles[i].frame.size.height - btn[i].frame.size.height)/2;
+        CGFloat edge_left = (marbles[i].frame.size.width - btn[i].frame.size.width)/2;
         btn[i].imageEdgeInsets = UIEdgeInsetsMake(-edge_top,-edge_left,-edge_top,-edge_left);
         [btn[i] addTarget:self action:@selector(playerButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
-        
         [self.view addSubview:btn[i]];
-        
-        // marble
-        marbles[i] = [[UIImageView alloc] initWithImage:marble_img[i]];
-        marbles[i].frame = CGRectMake(0,0,marble_img[i].size.width * MAX_SCALE * MARBLE_SCALE, marble_img[i].size.height * MAX_SCALE * MARBLE_SCALE);
-        
+               
         players[i].poison = 0;
         players[i].life = 20;
     }
@@ -179,14 +182,14 @@
     height = img.size.height * MAX_SCALE;
     btn20_dec.frame = CGRectMake(btns20.frame.size.width/2 - width - 5.0*MAX_SCALE, btns20.frame.size.height/2 - height/2 + 1, width, height);
     [btn20_dec setImage:img forState:UIControlStateNormal];
-    [btn20_dec addTarget:self action:@selector(counterButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
+    [btn20_dec addTarget:self action:@selector(lifeAmountButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
     [btns20 addSubview:btn20_dec];
     
     img = [UIImage imageNamed:@"Btn+20.png"];
     btn20_inc = [UIButton buttonWithType:UIButtonTypeCustom];
     btn20_inc.frame = CGRectMake(btns20.frame.size.width/2 + 5.0*MAX_SCALE, btns20.frame.size.height/2 - height/2 + 1, width, height);
     [btn20_inc setImage:img forState:UIControlStateNormal];
-    [btn20_inc addTarget:self action:@selector(counterButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
+    [btn20_inc addTarget:self action:@selector(lifeAmountButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
     [btns20 addSubview:btn20_inc];
     btns20.userInteractionEnabled = YES;
     btns20.alpha = 0;
@@ -242,7 +245,7 @@
     }
 }
 
-- (void)counterButtonTouched:(UIButton*)button
+- (void)lifeAmountButtonTouched:(UIButton*)button
 {
     if(!canChangePlayer)
         return;
@@ -364,8 +367,7 @@
     if(show)
     {
         btns20.frame = CGRectMake(card.frame.origin.x + (card.frame.size.width - btns20.frame.size.width)/2,
-                                  (card.frame.origin.y - btns20.frame.size.height)/2 + 10 * y_scale, // border width = 10 px
-                                  btns20.frame.size.width, btns20.frame.size.height);
+                                  card.frame.origin.y + (card.frame.size.height - btns20.frame.size.height)/2,                                  btns20.frame.size.width, btns20.frame.size.height);
     }
     [UIView beginAnimations:@"show20" context:(void*)NULL];
     [UIView setAnimationDuration:SHOW_20_DURATION];
