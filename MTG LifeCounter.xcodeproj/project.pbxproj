@@ -37,6 +37,17 @@
 		04B83BD0148E0C2800F0843E /* Bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 04B83BCF148E0C2800F0843E /* Bubble.png */; };
 		04BE2B28148E496A00A7469B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04BE2B27148E496A00A7469B /* CoreGraphics.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		5928061D1C0EC664008067B7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5928061C1C0EC664008067B7 /* Images.xcassets */; settings = {ASSET_TAGS = (); }; };
+		5939B1B31CBEA67B009012FD /* Poison_11.png in Resources */ = {isa = PBXBuildFile; fileRef = 5939B1A91CBEA67B009012FD /* Poison_11.png */; settings = {ASSET_TAGS = (); }; };
+		5939B1B41CBEA67B009012FD /* Poison_12.png in Resources */ = {isa = PBXBuildFile; fileRef = 5939B1AA1CBEA67B009012FD /* Poison_12.png */; settings = {ASSET_TAGS = (); }; };
+		5939B1B51CBEA67B009012FD /* Poison_13.png in Resources */ = {isa = PBXBuildFile; fileRef = 5939B1AB1CBEA67B009012FD /* Poison_13.png */; settings = {ASSET_TAGS = (); }; };
+		5939B1B61CBEA67B009012FD /* Poison_14.png in Resources */ = {isa = PBXBuildFile; fileRef = 5939B1AC1CBEA67B009012FD /* Poison_14.png */; settings = {ASSET_TAGS = (); }; };
+		5939B1B71CBEA67B009012FD /* Poison_15.png in Resources */ = {isa = PBXBuildFile; fileRef = 5939B1AD1CBEA67B009012FD /* Poison_15.png */; settings = {ASSET_TAGS = (); }; };
+		5939B1B81CBEA67B009012FD /* Poison_16.png in Resources */ = {isa = PBXBuildFile; fileRef = 5939B1AE1CBEA67B009012FD /* Poison_16.png */; settings = {ASSET_TAGS = (); }; };
+		5939B1B91CBEA67B009012FD /* Poison_17.png in Resources */ = {isa = PBXBuildFile; fileRef = 5939B1AF1CBEA67B009012FD /* Poison_17.png */; settings = {ASSET_TAGS = (); }; };
+		5939B1BA1CBEA67B009012FD /* Poison_18.png in Resources */ = {isa = PBXBuildFile; fileRef = 5939B1B01CBEA67B009012FD /* Poison_18.png */; settings = {ASSET_TAGS = (); }; };
+		5939B1BB1CBEA67B009012FD /* Poison_19.png in Resources */ = {isa = PBXBuildFile; fileRef = 5939B1B11CBEA67B009012FD /* Poison_19.png */; settings = {ASSET_TAGS = (); }; };
+		5939B1BC1CBEA67B009012FD /* Poison_20.png in Resources */ = {isa = PBXBuildFile; fileRef = 5939B1B21CBEA67B009012FD /* Poison_20.png */; settings = {ASSET_TAGS = (); }; };
+		5939B1BF1CBEB74A009012FD /* PoisonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5939B1BE1CBEB74A009012FD /* PoisonView.m */; settings = {ASSET_TAGS = (); }; };
 		597EEE391CB3D69900D52C4B /* dice-place.png in Resources */ = {isa = PBXBuildFile; fileRef = 597EEE381CB3D69900D52C4B /* dice-place.png */; settings = {ASSET_TAGS = (); }; };
 		5988F1DF1BEB95710085F3C7 /* Default-568h.png in Resources */ = {isa = PBXBuildFile; fileRef = 5988F1DE1BEB95710085F3C7 /* Default-568h.png */; settings = {ASSET_TAGS = (); }; };
 		59F1BDE81BDA764300901C99 /* DiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 59F1BDE71BDA764300901C99 /* DiceView.m */; settings = {ASSET_TAGS = (); }; };
@@ -107,6 +118,18 @@
 		04BE2B23148E470700A7469B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		04BE2B27148E496A00A7469B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		5928061C1C0EC664008067B7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = lifecounter/Images.xcassets; sourceTree = "<group>"; };
+		5939B1A91CBEA67B009012FD /* Poison_11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_11.png; path = Resources/img/Poison_11.png; sourceTree = "<group>"; };
+		5939B1AA1CBEA67B009012FD /* Poison_12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_12.png; path = Resources/img/Poison_12.png; sourceTree = "<group>"; };
+		5939B1AB1CBEA67B009012FD /* Poison_13.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_13.png; path = Resources/img/Poison_13.png; sourceTree = "<group>"; };
+		5939B1AC1CBEA67B009012FD /* Poison_14.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_14.png; path = Resources/img/Poison_14.png; sourceTree = "<group>"; };
+		5939B1AD1CBEA67B009012FD /* Poison_15.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_15.png; path = Resources/img/Poison_15.png; sourceTree = "<group>"; };
+		5939B1AE1CBEA67B009012FD /* Poison_16.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_16.png; path = Resources/img/Poison_16.png; sourceTree = "<group>"; };
+		5939B1AF1CBEA67B009012FD /* Poison_17.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_17.png; path = Resources/img/Poison_17.png; sourceTree = "<group>"; };
+		5939B1B01CBEA67B009012FD /* Poison_18.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_18.png; path = Resources/img/Poison_18.png; sourceTree = "<group>"; };
+		5939B1B11CBEA67B009012FD /* Poison_19.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_19.png; path = Resources/img/Poison_19.png; sourceTree = "<group>"; };
+		5939B1B21CBEA67B009012FD /* Poison_20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_20.png; path = Resources/img/Poison_20.png; sourceTree = "<group>"; };
+		5939B1BD1CBEB682009012FD /* PoisonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PoisonView.h; sourceTree = "<group>"; };
+		5939B1BE1CBEB74A009012FD /* PoisonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PoisonView.m; sourceTree = "<group>"; };
 		597EEE381CB3D69900D52C4B /* dice-place.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "dice-place.png"; path = "Resources/img/dice-place.png"; sourceTree = "<group>"; };
 		5988F1DE1BEB95710085F3C7 /* Default-568h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h.png"; sourceTree = "<group>"; };
 		59F1BDE61BDA764300901C99 /* DiceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiceView.h; sourceTree = "<group>"; };
@@ -214,6 +237,16 @@
 		04906ABA148CBB25000D51BE /* Poison */ = {
 			isa = PBXGroup;
 			children = (
+				5939B1A91CBEA67B009012FD /* Poison_11.png */,
+				5939B1AA1CBEA67B009012FD /* Poison_12.png */,
+				5939B1AB1CBEA67B009012FD /* Poison_13.png */,
+				5939B1AC1CBEA67B009012FD /* Poison_14.png */,
+				5939B1AD1CBEA67B009012FD /* Poison_15.png */,
+				5939B1AE1CBEA67B009012FD /* Poison_16.png */,
+				5939B1AF1CBEA67B009012FD /* Poison_17.png */,
+				5939B1B01CBEA67B009012FD /* Poison_18.png */,
+				5939B1B11CBEA67B009012FD /* Poison_19.png */,
+				5939B1B21CBEA67B009012FD /* Poison_20.png */,
 				04906ABB148CBB3E000D51BE /* Poison_0.png */,
 				04906ABC148CBB3E000D51BE /* Poison_1.png */,
 				04906ABD148CBB3E000D51BE /* Poison_2.png */,
@@ -276,6 +309,8 @@
 				043231611443480E007968AF /* Card.m */,
 				59F1BDE61BDA764300901C99 /* DiceView.h */,
 				59F1BDE71BDA764300901C99 /* DiceView.m */,
+				5939B1BD1CBEB682009012FD /* PoisonView.h */,
+				5939B1BE1CBEB74A009012FD /* PoisonView.m */,
 			);
 			path = "MTG LifeCounter";
 			sourceTree = "<group>";
@@ -395,19 +430,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				04B24AA1143C8DA400549F8C /* InfoPlist.strings in Resources */,
+				5939B1BC1CBEA67B009012FD /* Poison_20.png in Resources */,
+				5939B1B61CBEA67B009012FD /* Poison_14.png in Resources */,
+				5939B1B31CBEA67B009012FD /* Poison_11.png in Resources */,
 				04906AA71487E6B5000D51BE /* Background.png in Resources */,
 				04906AAA1487EB1D000D51BE /* Field.png in Resources */,
 				04906AB01487F332000D51BE /* Btn20Back.png in Resources */,
 				59F643631BFC569700DF7153 /* icon_120_120.png in Resources */,
+				5939B1B81CBEA67B009012FD /* Poison_16.png in Resources */,
 				04906AB31487F51F000D51BE /* Btn-20.png in Resources */,
 				59F855F91BC014C600D53C80 /* Cube.fsh in Resources */,
 				04906AB41487F51F000D51BE /* Btn+20.png in Resources */,
+				5939B1B41CBEA67B009012FD /* Poison_12.png in Resources */,
 				597EEE391CB3D69900D52C4B /* dice-place.png in Resources */,
 				04906AB6148BB2C0000D51BE /* MarbleBlue.png in Resources */,
 				5988F1DF1BEB95710085F3C7 /* Default-568h.png in Resources */,
+				5939B1BA1CBEA67B009012FD /* Poison_18.png in Resources */,
 				04906ACB148CBB3E000D51BE /* Poison_0.png in Resources */,
 				04906ACC148CBB3E000D51BE /* Poison_1.png in Resources */,
 				04906ACD148CBB3E000D51BE /* Poison_2.png in Resources */,
+				5939B1B71CBEA67B009012FD /* Poison_15.png in Resources */,
 				04906ACE148CBB3E000D51BE /* Poison_3.png in Resources */,
 				04906ACF148CBB3E000D51BE /* Poison_4.png in Resources */,
 				04906AD0148CBB3E000D51BE /* Poison_5.png in Resources */,
@@ -420,6 +462,7 @@
 				04906ADC148D2DFB000D51BE /* GaramondPremrPro-Smbd.otf in Resources */,
 				59F643651BFC56D800DF7153 /* icon_76_76.png in Resources */,
 				04B83BD0148E0C2800F0843E /* Bubble.png in Resources */,
+				5939B1B91CBEA67B009012FD /* Poison_17.png in Resources */,
 				59F855FA1BC014C600D53C80 /* Cube.vsh in Resources */,
 				849210BE16A34CBB007025C2 /* MarbleBlack.png in Resources */,
 				849210C216A34CCA007025C2 /* MarbleGreen.png in Resources */,
@@ -427,6 +470,8 @@
 				84C9895B16A71CB900E57DBD /* MarbleWhite.png in Resources */,
 				84BC7C5E16CAAA0D00308BB6 /* icon_57_57.png in Resources */,
 				84BC7C6116CAAA1B00308BB6 /* icon_114_114.png in Resources */,
+				5939B1B51CBEA67B009012FD /* Poison_13.png in Resources */,
+				5939B1BB1CBEA67B009012FD /* Poison_19.png in Resources */,
 				84BC7C6316CAAA2800308BB6 /* Default.png in Resources */,
 				84BC7C6516CAAA3500308BB6 /* Default@2x.png in Resources */,
 				84C37BA516D16FE000CB2951 /* Default-Portrait~ipad.png in Resources */,
@@ -451,6 +496,7 @@
 				04B24AB4143C8DA400549F8C /* ViewController.m in Sources */,
 				043231621443480E007968AF /* Card.m in Sources */,
 				59F855FB1BC014C600D53C80 /* CubeShader.m in Sources */,
+				5939B1BF1CBEB74A009012FD /* PoisonView.m in Sources */,
 				04906AB9148BBA73000D51BE /* ContentView.m in Sources */,
 				8490201A1A4BDB5700441126 /* CC3Foundation.m in Sources */,
 				8490201B1A4BDB5700441126 /* CC3GLMatrix.m in Sources */,

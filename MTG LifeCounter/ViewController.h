@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
 #import "Card.h"
+#import "PoisonView.h"
 
 #define PLAYER_BUTTONS_CNT      2
 
@@ -18,13 +19,12 @@ struct PlayerData
     int     life;
 };
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController<PoisonPlayerDelegate>
 {
     float   x_scale;
     float   y_scale;
     
-    int         poison_val;
-    UIImageView *poison_img;
+    PoisonView  *poison_img;
     UIButton    *poison_inc;
     UIButton    *poison_dec;
     

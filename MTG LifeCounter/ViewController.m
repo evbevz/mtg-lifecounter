@@ -17,7 +17,6 @@
 
 #define CardNumbersColor        [UIColor colorWithRed:228.0/255 green:178.0/255 blue:114.0/255 alpha:1]
 #define CardNumbersBorderColor  [UIColor colorWithRed:57.0/255 green:34.0/255 blue:4.0/255 alpha:1]
-#define POISON_PREFIX           @"Poison_"
 
 #define MIN_SCALE               MIN(x_scale, y_scale)
 #define MAX_SCALE               MAX(x_scale, y_scale)
@@ -90,15 +89,11 @@
     bottomBaseLine = card.frame.origin.y + card.frame.size.height + (frame.size.height - (card.frame.origin.y - frame.origin.y + card.frame.size.height)) / 2.3;
 
     // Poison
-    poison_val = 0;
-    poison_img = [[UIImageView alloc] initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@%d.png",POISON_PREFIX,poison_val]]];
+    poison_img = [[PoisonView alloc] initWithValue:0 withPlayer:self];
     float width = poison_img.image.size.width * MAX_SCALE;
     float height = poison_img.image.size.height * MAX_SCALE;
     poison_img.frame = CGRectMake(25.0 * x_scale, card.frame.origin.y + card.frame.size.height - poison_img.image.size.height * MAX_SCALE + 10 * MAX_SCALE, width, height);
     [self.view addSubview:poison_img];
-    poison_img.userInteractionEnabled = YES;
-    UITapGestureRecognizer *poisonTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(poisonButtonTouched:)];
-    [poison_img addGestureRecognizer:poisonTapGesture];
 
     
     // +20/-20
@@ -264,25 +259,6 @@
     [self show20:false withDirection:increment];
 }
 
-- (void)poisonButtonTouched:(UITapGestureRecognizer*)gesture
-{
-    UIView *poison = gesture.view;
-    CGPoint pos = [gesture locationInView:poison];
-    if(pos.y < poison.frame.size.height/2 && poison_val < 10)
-    {
-        poison_val++;
-        [self showPoison];
-    }
-    
-    if(pos.y > poison.frame.size.height/2 && poison_val > 0)
-    {
-        poison_val--;
-        [self showPoison];
-    }
-
-    players[current_player].poison = poison_val;
-
-}
 
 - (void)diceAreaTouched:(UIButton*)button
 {
@@ -299,11 +275,6 @@
 }
 
 #pragma mark - Display events
-
-- (void) showPoison
-{
-    poison_img.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@%d.png", POISON_PREFIX, poison_val]];
-}
 
 - (void)flipCard:(int)toPlayer
 {
@@ -400,8 +371,7 @@
     [card showMarble:NULL withValue:1];
     [self flipCard:i];
     
-    poison_val = players[i].poison;
-    [self showPoison];
+    [poison_img setValue:players[i].poison];
     playerIsSelected = true;
 }
 
@@ -434,6 +404,11 @@
             coords[i] = CGPointMake(card.frame.origin.x + pos.x, card.frame.origin.y + pos.y);
     }
     [glView setMarblesCoords:coords andCount:PLAYER_BUTTONS_CNT withRadius:radius];
+}
+
+-(void)setPlayerPoisonValue:(int)value
+{
+    players[current_player].poison = value;
 }
 
 #pragma mark - ViewController motion methods
