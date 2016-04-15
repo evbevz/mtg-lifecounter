@@ -327,24 +327,28 @@
     [modelView scaleBy:CC3VectorMake(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR)];
     
     // test for field walls - invert future velocity
-    if(x + 1 > (SHIFT_Z-1)/NEAR*PV_WIDTH/2)
+    float left = -self.bounds.size.width/self.bounds.size.width/2*PV_WIDTH*SHIFT_Z/NEAR;
+    float top = (self.frame.origin.y + self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*SHIFT_Z/NEAR;
+    float right = -left;
+    float bottom = -top;
+    if(x > right - DICE_RADIUS)
     {
-        x = (SHIFT_Z-1)/NEAR*PV_WIDTH/2 - 1;
+        x = right - DICE_RADIUS;
         Vx = -Vx;
     }
-    if(x - 1 < -(SHIFT_Z-1)/NEAR*PV_WIDTH/2)
+    if(x < left + DICE_RADIUS)
     {
-        x = -(SHIFT_Z-1)/NEAR*PV_WIDTH/2 + 1;
+        x = left + DICE_RADIUS;
         Vx = -Vx;
     }
-    if(y + 1 > (SHIFT_Z-1)/NEAR*PV_HEIGTH/2)
+    if(y > top - DICE_RADIUS)
     {
-        y = (SHIFT_Z-1)/NEAR*PV_HEIGTH/2 - 1;
+        y = top - DICE_RADIUS;
         Vy = -Vy;
     }
-    if(y - 1 < -(SHIFT_Z-1)/NEAR*PV_HEIGTH/2)
+    if(y < bottom + DICE_RADIUS)
     {
-        y = -(SHIFT_Z-1)/NEAR*PV_HEIGTH/2 + 1;
+        y = bottom + DICE_RADIUS;
         Vy = -Vy;
     }
     
@@ -522,6 +526,29 @@
             glVertexAttribPointer (self.cubeShader.aPosition, 3, GL_FLOAT, GL_FALSE, 0, vertices);
             glDrawArrays(GL_LINES, 0, 2);
         }
+        
+        // field walls
+        CGFloat walls[4*3];
+        float PV_HEIGTH = PV_WIDTH * self.frame.size.height / self.frame.size.width;
+        float left = -self.bounds.size.width/self.bounds.size.width/2*PV_WIDTH*SHIFT_Z/NEAR;
+        float top = (self.frame.origin.y + self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*SHIFT_Z/NEAR;
+        float right = -left;
+        float bottom = -top;
+
+        walls[0] = left + DICE_RADIUS;
+        walls[1] = top - DICE_RADIUS;
+        walls[2] = 0;
+        walls[3] = right - DICE_RADIUS;
+        walls[4] = top - DICE_RADIUS;
+        walls[5] = 0;
+        walls[6] = right - DICE_RADIUS;
+        walls[7] = bottom + DICE_RADIUS;
+        walls[8] = 0;
+        walls[9] = left + DICE_RADIUS;
+        walls[10] = bottom + DICE_RADIUS;
+        walls[11] = 0;
+        glVertexAttribPointer (self.cubeShader.aPosition, 3, GL_FLOAT, GL_FALSE, 0, walls);
+        glDrawArrays(GL_LINE_LOOP, 0, 4);
     }
 }
 
