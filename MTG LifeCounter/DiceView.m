@@ -625,7 +625,7 @@
     posInScene.y = -(pos.y - self.bounds.size.height/2)/self.bounds.size.height*PV_HEIGTH*SHIFT_Z/NEAR;
     float distance = sqrtf(powf(posInScene.x - x, 2) + powf(posInScene.y - y, 2));
     //NSLog(@"Touch distance: %g", distance);
-    return distance < 1.4;
+    return distance < DICE_RADIUS;
 }
 
 -(void) setMarblesCoords:(CGPoint [])marbles andCount:(int)count withRadius:(float)radius
