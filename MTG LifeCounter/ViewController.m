@@ -130,10 +130,14 @@
     height = bubble.size.height * MAX_SCALE * MARBLE_SCALE;
     for(int i = 0; i < PLAYER_BUTTONS_CNT; ++i)
     {
+        players[i].poison = 0;
+        players[i].life = 20;
+
         // marble
         marbles[i] = [[UIImageView alloc] initWithImage:marble_img[i]];
         marbles[i].frame = CGRectMake(0,0,marble_img[i].size.width * MAX_SCALE * MARBLE_SCALE, marble_img[i].size.height * MAX_SCALE * MARBLE_SCALE);
-
+        [marbles[i] addSubview:[self getMarbleLabel]];
+        
         // marble place
         UIImageView *marble_place = [[UIImageView alloc] initWithImage:bubble];
         marble_place.frame = CGRectMake(MARBLE_BUTTONS_X_OFFSET + bubblesAreaWidth/PLAYER_BUTTONS_CNT/2*(2*i + 1) - width/2, bottomBaseLine - height/2, width, height);
@@ -149,10 +153,13 @@
         CGFloat edge_left = (marbles[i].frame.size.width - btn[i].frame.size.width)/2;
         btn[i].imageEdgeInsets = UIEdgeInsetsMake(-edge_top,-edge_left,-edge_top,-edge_left);
         [btn[i] addTarget:self action:@selector(playerButtonTouched:) forControlEvents:UIControlEventTouchUpInside];
+        UILabel *btnLabel = [self getMarbleLabel];
+        btnLabel.text = [NSString stringWithFormat:@"%d", players[i].life];
+        float verticalShift = [[[UIDevice currentDevice] systemVersion] hasPrefix:@"6.1"] ? 10*MAX_SCALE : 0;
+        btnLabel.frame = CGRectMake(0,verticalShift,btn[i].frame.size.width, btn[i].frame.size.height);
+        [btn[i] addSubview:btnLabel];
         [self.view addSubview:btn[i]];
                
-        players[i].poison = 0;
-        players[i].life = 20;
     }
     
     canChangePlayer = true;
@@ -193,8 +200,24 @@
     [self selectPlayer:0];
 }
 
+- (UILabel*)getMarbleLabel
+{
+    UIFont *lblFont = [UIFont fontWithName:@"GaramondPremrPro-Smbd" size:80 * x_scale * 1.3];
+    NSString *str = [[NSString alloc] initWithUTF8String:"200"];
+    CGSize txtSize = [str sizeWithFont:lblFont];
+    float verticalShift = [[[UIDevice currentDevice] systemVersion] hasPrefix:@"6.1"] ? 10*MAX_SCALE : 0;
+    UILabel *marbleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, verticalShift + (marbles[0].frame.size.height - txtSize.height)/2, marbles[0].frame.size.width, txtSize.height)];
+    marbleLabel.font = lblFont;
+    marbleLabel.text = @"";
+    marbleLabel.textAlignment = NSTextAlignmentCenter;
+    marbleLabel.backgroundColor = [UIColor clearColor];
+    marbleLabel.alpha = 0.5;
+    marbleLabel.textColor = CardNumbersBorderColor;
+    return marbleLabel;
+}
+
 - (void)viewDidUnload
-{    
+{
     [super viewDidUnload];
     
 }
@@ -236,6 +259,7 @@
         {
             [self diceAreaTouched:button];
             [self selectPlayer:i];
+            break;
         }
     }
 }
@@ -249,12 +273,12 @@
     if(button == btn20_dec && card.lifeBase >= 20)
     {
         [card setLifeBase:(card.lifeBase - 20) withAnimation:YES];
-        players[current_player].life -= 20;
+        [self setPlayerLifeAmount:players[current_player].life - 20];
     }
     if(button == btn20_inc && card.lifeBase < 1980)
     {
         [card setLifeBase:(card.lifeBase + 20) withAnimation:YES];
-        players[current_player].life += 20;
+        [self setPlayerLifeAmount:players[current_player].life + 20];
     }
     [self show20:false withDirection:increment];
 }
@@ -317,6 +341,7 @@
         btn[toPlayer].hidden = true;
         btn[toPlayer].alpha = 1;
         current_player = toPlayer;
+        [self  updateMarbleLabel];
         
         marbles[toPlayer].alpha = 0;
         [card showMarble:marbles[toPlayer] withValue:players[toPlayer].life];
@@ -378,6 +403,24 @@
 - (void)setPlayerLifeAmount:(int)amount
 {
     players[current_player].life = amount;
+    [self updateMarbleLabel];
+    
+    UILabel *btnLabel = btn[current_player].subviews[1];
+    btnLabel.text = [NSString stringWithFormat:@"%d", amount];
+}
+
+- (void)updateMarbleLabel
+{
+    if(marbles[current_player].subviews.count)
+    {
+        UILabel *marbleLabel = marbles[current_player].subviews[0];
+        [UIView transitionWithView:marbleLabel
+                          duration:1.5f
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        animations:^{
+                            marbleLabel.text = [NSString stringWithFormat:@"%d", players[current_player].life];
+                        } completion:nil];
+    }
 }
 
 - (void)updateMarbleCoords
