@@ -48,6 +48,7 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
 @synthesize parent;
 @synthesize activeRadius;
 @synthesize cellHeight;
+@synthesize marblesSurface;
 
 
 - (id)initWithFrame:(CGRect)frame
@@ -171,55 +172,95 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
     }
     marble = marbleView;
     
-    if(marble != NULL)
+    if(marble != NULL && marblesSurface != NULL)
     {
         int col = (lifeBase + CELLS - lifeAmount) % COLS;
         int row = (lifeBase + CELLS - lifeAmount) / COLS;
     
         marble.frame = CGRectMake(0, 0, marble.frame.size.width, marble.frame.size.height);
-        marble.center = CGPointMake([self getTopLeftCellCenter].x + cellWidth * col, [self getTopLeftCellCenter].y + cellHeight * row);
-    
-        [self addSubview:marble];
+        CGPoint centerPoint = CGPointMake([self getTopLeftCellCenter].x + cellWidth * col, [self getTopLeftCellCenter].y + cellHeight * row);
+        centerPoint = [marblesSurface convertPoint:centerPoint fromView:self];
+        marble.center = centerPoint;
+        
+        [marblesSurface addSubview:marble];
     }
 }
-
 
 #pragma mark ContentView
 
 - (void)contentView:(ContentView*)view didBeganTouch:(UITouch*)touch
 {
-    CGPoint pos = [touch locationInView:self];
-    if(!marble_tracking && marble != nil && (sqrt(pow(marble.center.x - pos.x, 2) + pow(marble.center.y - pos.y, 2))) <= activeRadius)
+    if(!marble_tracking && marble != nil && marblesSurface != nil)
     {
-        NSLog(@"marble touch began");
-        marble_tracking = YES;
-        moveOffset = CGPointMake(pos.x - marble.center.x, pos.y - marble.center.y);
+        CGPoint pos = [touch locationInView:marblesSurface];
+        CGPoint marblePos = marble.center;
+        if((sqrt(pow(marblePos.x - pos.x, 2) + pow(marblePos.y - pos.y, 2))) <= activeRadius)
+        {
+            NSLog(@"marble touch began");
+            marble_tracking = YES;
+            moveOffset = CGPointMake(pos.x - marblePos.x, pos.y - marblePos.y);
+        }
     }
 }
 
 - (void)contentView:(ContentView*)view didEndTouch:(UITouch*)touch
 {
-    if(marble_tracking && marble != nil)
+    if(marble_tracking)
     {
-        NSLog(@"marble touch ended");
-        marble_tracking = NO;
-        
-        int col = (marble.center.x - margin) / cellWidth;
-        int row = (marble.center.y - margin) / cellHeight;
-        int lifeAmount = lifeBase + (COLS * (ROWS - row)) - col;
+       if( marble != nil && marblesSurface != nil)
+       {
+            NSLog(@"marble touch ended");
+            marble_tracking = NO;
+            CGPoint marblePos = [self convertPoint:marble.center fromView:marblesSurface];
+            int col = (marblePos.x - margin) / cellWidth;
+            int row = (marblePos.y - margin) / cellHeight;
+            int lifeAmount = lifeBase + (COLS * (ROWS - row)) - col;
 
-        if(self.parent != nil)
-        {
-            [self.parent setPlayerLifeAmount:lifeAmount];
-        }
+            if(self.parent != nil)
+            {
+                [self.parent setPlayerLifeAmount:lifeAmount];
+            }
 
+            
+            // Animation
+            float distance = sqrt(pow([self getTopLeftCellCenter].x + cellWidth * col - marblePos.x, 2) +
+                                  pow([self getTopLeftCellCenter].y + cellHeight * row - marblePos.y, 2));
+            float velocity = cellWidth/2; // px/s
+            duration = distance/velocity + 0.2;
+            [UIView beginAnimations:@"moveMarble" context:(void*)0];
+            [UIView setAnimationDuration:(duration)];
+            [UIView setAnimationDelegate:self];
+            [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
+            
+            displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateDuringAnimation:)];
+            [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+            animationStartTime = CACurrentMediaTime();
+            CGPoint animationEndPos = CGPointMake([self getTopLeftCellCenter].x + cellWidth * col, [self getTopLeftCellCenter].y + cellHeight * row);
+
+            animationDx = animationEndPos.x - marblePos.x;
+            animationDy = animationEndPos.y - marblePos.y;
+            marble.center = [marblesSurface convertPoint:animationEndPos fromView:self];
+            
+            [UIView commitAnimations];
+       }
+    }
+    else
+    {
+        // Field end touch
         
-        // Animation
-        float distance = sqrt(pow([self getTopLeftCellCenter].x + cellWidth * col - marble.center.x, 2) +
-        pow([self getTopLeftCellCenter].y + cellHeight * row - marble.center.y, 2));
-        float velocity = cellWidth/2; // px/s
-        duration = distance/velocity + 0.2;
-        [UIView beginAnimations:@"flipCard" context:(void*)0];
+        CGPoint fieldFrameOrigin = [self convertPoint:[parent getMarbleFieldFrame].origin fromView:marblesSurface];
+        CGFloat distance = (int)fieldFrameOrigin.y % (int)cellHeight;
+        
+        // check direction and bottom margin
+        CGRect meInMarbleField = [marblesSurface convertRect:self.frame fromView:self.superview];
+        CGRect marbleField = [parent getMarbleFieldFrame];
+        if([touch locationInView:self].y - [touch previousLocationInView:self].y < 0
+           && !(lifeBase == 0 && (meInMarbleField.origin.y + meInMarbleField.size.height) - (marbleField.origin.y + marbleField.size.height) <= 0))
+            distance -= cellHeight;
+        
+        float velocity = cellHeight/2; // px/s
+        duration = ABS(distance)/velocity + 0.1;
+        [UIView beginAnimations:@"moveField" context:(void*)0];
         [UIView setAnimationDuration:(duration)];
         [UIView setAnimationDelegate:self];
         [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
@@ -227,38 +268,37 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
         displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateDuringAnimation:)];
         [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         animationStartTime = CACurrentMediaTime();
-        CGPoint animationEndPos = CGPointMake([self getTopLeftCellCenter].x + cellWidth * col, [self getTopLeftCellCenter].y + cellHeight * row);
-
-        animationDx = animationEndPos.x - marble.center.x;
-        animationDy = animationEndPos.y - marble.center.y;
-        marble.center = animationEndPos;
-        
+        self.center = CGPointMake(self.center.x, self.center.y + distance);
         [UIView commitAnimations];
-        
     }
 }
 
 - (void)contentView:(ContentView*)view didMoveTouch:(UITouch*)touch
 {
-    if(marble_tracking && marble != nil)
+    float x_margin = cellWidth/2;
+    float y_margin = cellHeight/2.5;
+
+    if(marble_tracking && marble != nil && marblesSurface != nil)
     {
-        //NSLog(@"marble touch move");
-        CGPoint pos = [touch locationInView:self];
-        CGPoint marblePos = marble.center;
-        float x_margin = cellWidth/2;
-        float y_margin = cellHeight/2.5;
+        // Move marble
         
-        if(pos.x - moveOffset.x - x_margin < margin)
-            marblePos = CGPointMake(margin + x_margin, marblePos.y);
-        else if(pos.x - moveOffset.x + x_margin > self.frame.size.width - margin)
-            marblePos = CGPointMake(self.frame.size.width - margin - x_margin, marblePos.y);
+        //NSLog(@"marble touch move");
+        CGPoint pos = [touch locationInView:marblesSurface];
+        CGPoint marblePos = marble.center;
+        
+        CGRect allowed = [parent getMarbleFieldFrame];
+        
+        if(pos.x - moveOffset.x - x_margin - allowed.origin.x < margin)
+            marblePos = CGPointMake(margin + x_margin + allowed.origin.x, marblePos.y);
+        else if(pos.x - moveOffset.x + x_margin > allowed.origin.x + allowed.size.width - margin)
+            marblePos = CGPointMake(allowed.origin.x + allowed.size.width - margin - x_margin, marblePos.y);
         else
             marblePos = CGPointMake(pos.x - moveOffset.x, marblePos.y);
 
-        if(pos.y - moveOffset.y - y_margin < margin)
-            marblePos = CGPointMake(marblePos.x, margin + y_margin);
-        else if(pos.y - moveOffset.y + y_margin > self.frame.size.height - margin)
-            marblePos = CGPointMake(marblePos.x, self.frame.size.height - margin - y_margin);
+        if(pos.y - moveOffset.y - y_margin - allowed.origin.y < margin)
+            marblePos = CGPointMake(marblePos.x, margin + y_margin + allowed.origin.y);
+        else if(pos.y - moveOffset.y + y_margin > allowed.origin.y + allowed.size.height - margin)
+            marblePos = CGPointMake(marblePos.x, allowed.origin.y + allowed.size.height - margin - y_margin);
         else
             marblePos = CGPointMake(marblePos.x, pos.y - moveOffset.y);
         
@@ -269,10 +309,27 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
     }
     else
     {
+        // Move field
+        
         if(parent != nil)
         {
             CGFloat delta = [touch locationInView:self].y - [touch previousLocationInView:self].y;
-            [self.parent moveCardField:delta];
+                       
+            CGFloat actualMoved = [self.parent moveCardField:delta];
+            
+            if(marblesSurface != nil  && marble != nil)
+            {
+                CGPoint pos = CGPointMake(marble.center.x, marble.center.y + actualMoved);
+                
+                CGRect allowed = [parent getMarbleFieldFrame];
+                if(pos.y - y_margin - allowed.origin.y < margin)
+                    pos = CGPointMake(pos.x, margin + y_margin + allowed.origin.y);
+                else if(pos.y + y_margin > allowed.origin.y + allowed.size.height - margin)
+                    pos = CGPointMake(pos.x, allowed.origin.y + allowed.size.height - margin - y_margin);
+               
+                marble.center = pos;
+                [self.parent marbleMovedTo:marble.center];
+            }
         }
     }
 }

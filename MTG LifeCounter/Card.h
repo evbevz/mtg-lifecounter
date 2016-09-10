@@ -19,13 +19,14 @@
     UIFont  *font;
     float   cellWidth, cellHeight;
     float   activeRadius;
-    CGPoint moveOffset;
+    CGPoint moveOffset; // смещение от точки нажатия на марбл до центра марбла
     
     int     lifeBase;
     
     UIImageView *marble;
     bool        marble_tracking;
     
+    UIView  *marblesSurface;
     __unsafe_unretained id     parent;
     
 }
@@ -44,13 +45,14 @@
 @property(atomic, assign) id            parent;
 @property(atomic, assign) float         activeRadius;
 @property(atomic, readonly) float       cellHeight;
-
+@property(nonatomic, retain) UIView     *marblesSurface;
 @end
 
 @protocol ViewControllerDelegate
 
 -(void)setPlayerLifeAmount:(int)amount;
 -(void)marbleMovedTo:(CGPoint)pos;
--(void)moveCardField:(CGFloat)delta;
+-(CGFloat)moveCardField:(CGFloat)delta;
+-(CGRect)getMarbleFieldFrame;
 
 @end

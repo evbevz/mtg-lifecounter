@@ -72,10 +72,10 @@
     [self.view setUserInteractionEnabled:true];
     
    
-    // Card
+    // Card 
     card = [[CardView alloc] initWithFrame:frame];
     card.backgroundImage = [UIImage imageNamed:@"Field.png"];
-    card.frame = CGRectMake(CARD_NATIVE_OFFSET_X * x_scale, CARD_NATIVE_OFFSET_Y * y_scale + main.frame.origin.y - (CARD_NATIVE_BKHEIGHT - CARD_NATIVE_HEIGHT)*y_scale, CARD_NATIVE_WIDTH * x_scale, CARD_NATIVE_BKHEIGHT * y_scale);
+    card.frame = CGRectMake(CARD_NATIVE_OFFSET_X * x_scale, CARD_NATIVE_OFFSET_Y * y_scale + frame.origin.y - (CARD_NATIVE_BKHEIGHT - CARD_NATIVE_HEIGHT)*y_scale, CARD_NATIVE_WIDTH * x_scale, CARD_NATIVE_BKHEIGHT * y_scale);
     card.margin = 0;
     card.font = [UIFont fontWithName:@"GaramondPremrPro-Smbd" size:80 * x_scale];
     card.linesColor = [UIColor clearColor];
@@ -90,7 +90,8 @@
     main = [[UIImageView alloc] initWithFrame:frame];
     main.image = [UIImage imageNamed:@"BackGrHole.png"];
     [self.view addSubview:main];
-
+    card.marblesSurface = main;
+  
     float cardTopLine = CARD_NATIVE_OFFSET_Y * y_scale + main.frame.origin.y;
     bottomBaseLine = cardTopLine + card_height + (frame.size.height - (cardTopLine - frame.origin.y + card_height)) / 2.3;
 
@@ -237,16 +238,16 @@
     [glView throwDice:1 withX0:0 withY0:0];
 }
 
--(void)moveCardField:(CGFloat)delta
+-(CGFloat)moveCardField:(CGFloat)delta
 {
     CGFloat newOriginY = card.frame.origin.y + delta;
+    CGFloat actualMoved = delta;
     
     // check and shift card values
     if(newOriginY > CARD_NATIVE_OFFSET_Y * y_scale + main.frame.origin.y)
     {
         [card setLifeBase:(card.lifeBase + 20) withAnimation:NO];
         newOriginY -= card.cellHeight * 5;
-        [card showMarble:marbles[current_player] withValue:players[current_player].life];
     }
     else if(newOriginY < CARD_NATIVE_OFFSET_Y * y_scale + main.frame.origin.y - (CARD_NATIVE_BKHEIGHT - CARD_NATIVE_HEIGHT)*y_scale)
     {
@@ -254,18 +255,24 @@
         {
             [card setLifeBase:(card.lifeBase - 20) withAnimation:NO];
             newOriginY += card.cellHeight * 5;
-            [card showMarble:marbles[current_player] withValue:players[current_player].life];
         }
         else
+        {
             newOriginY = CARD_NATIVE_OFFSET_Y * y_scale + main.frame.origin.y - (CARD_NATIVE_BKHEIGHT - CARD_NATIVE_HEIGHT)*y_scale;
+            actualMoved = newOriginY - card.frame.origin.y;
+        }
     }
 
     card.frame = CGRectMake(card.frame.origin.x,
                             newOriginY,
                             card.frame.size.width,
                             card.frame.size.height);
-    
-    [self updateMarbleCoords];
+    return actualMoved;
+}
+
+-(CGRect)getMarbleFieldFrame
+{
+    return CGRectMake(CARD_NATIVE_OFFSET_X * x_scale, CARD_NATIVE_OFFSET_Y * y_scale, CARD_NATIVE_WIDTH * x_scale, CARD_NATIVE_HEIGHT * y_scale);
 }
 
 #pragma mark - Display events
@@ -362,6 +369,7 @@
     }
 }
 
+// TODO: коорлинаты подправить
 - (void)updateMarbleCoords
 {
     float radius = btn[0].frame.size.width / 2 * 1.1;
