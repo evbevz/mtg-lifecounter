@@ -40,8 +40,10 @@
 @property(nonatomic, retain) UIFont     *font;
 @property(nonatomic, retain) UIColor    *fontColor;
 @property(nonatomic, retain) UIColor    *fontBorderColor;
-@property(nonatomic, readonly)   int    lifeBase;
-@property(nonatomic, assign) id     parent;
+@property(nonatomic, readonly) int      lifeBase;
+@property(atomic, assign) id            parent;
+@property(atomic, assign) float         activeRadius;
+@property(atomic, readonly) float       cellHeight;
 
 @end
 
@@ -49,5 +51,6 @@
 
 -(void)setPlayerLifeAmount:(int)amount;
 -(void)marbleMovedTo:(CGPoint)pos;
+-(void)moveCardField:(CGFloat)delta;
 
 @end

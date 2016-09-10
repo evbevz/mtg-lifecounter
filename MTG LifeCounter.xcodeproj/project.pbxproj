@@ -8,11 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		043231621443480E007968AF /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = 043231611443480E007968AF /* Card.m */; };
-		04906AA71487E6B5000D51BE /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AA61487E6B5000D51BE /* Background.png */; };
 		04906AAA1487EB1D000D51BE /* Field.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AA91487EB1D000D51BE /* Field.png */; };
-		04906AB01487F332000D51BE /* Btn20Back.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AAF1487F332000D51BE /* Btn20Back.png */; };
-		04906AB31487F51F000D51BE /* Btn-20.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AB11487F51F000D51BE /* Btn-20.png */; };
-		04906AB41487F51F000D51BE /* Btn+20.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AB21487F51F000D51BE /* Btn+20.png */; };
 		04906AB6148BB2C0000D51BE /* MarbleBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906AB5148BB2C0000D51BE /* MarbleBlue.png */; };
 		04906AB9148BBA73000D51BE /* ContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04906AB8148BBA73000D51BE /* ContentView.m */; };
 		04906ACB148CBB3E000D51BE /* Poison_0.png in Resources */ = {isa = PBXBuildFile; fileRef = 04906ABB148CBB3E000D51BE /* Poison_0.png */; };
@@ -36,6 +32,7 @@
 		04B24AB4143C8DA400549F8C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B24AB3143C8DA400549F8C /* ViewController.m */; };
 		04B83BD0148E0C2800F0843E /* Bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 04B83BCF148E0C2800F0843E /* Bubble.png */; };
 		04BE2B28148E496A00A7469B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04BE2B27148E496A00A7469B /* CoreGraphics.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		59108B821CE8B214000BBA9D /* BackGrHole.png in Resources */ = {isa = PBXBuildFile; fileRef = 59108B811CE8B214000BBA9D /* BackGrHole.png */; settings = {ASSET_TAGS = (); }; };
 		5928061D1C0EC664008067B7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5928061C1C0EC664008067B7 /* Images.xcassets */; settings = {ASSET_TAGS = (); }; };
 		5939B1B31CBEA67B009012FD /* Poison_11.png in Resources */ = {isa = PBXBuildFile; fileRef = 5939B1A91CBEA67B009012FD /* Poison_11.png */; settings = {ASSET_TAGS = (); }; };
 		5939B1B41CBEA67B009012FD /* Poison_12.png in Resources */ = {isa = PBXBuildFile; fileRef = 5939B1AA1CBEA67B009012FD /* Poison_12.png */; settings = {ASSET_TAGS = (); }; };
@@ -82,11 +79,7 @@
 /* Begin PBXFileReference section */
 		043231601443480E007968AF /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
 		043231611443480E007968AF /* Card.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Card.m; sourceTree = "<group>"; };
-		04906AA61487E6B5000D51BE /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background.png; path = Resources/img/Background.png; sourceTree = "<group>"; };
 		04906AA91487EB1D000D51BE /* Field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Field.png; path = Resources/img/Field.png; sourceTree = "<group>"; };
-		04906AAF1487F332000D51BE /* Btn20Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Btn20Back.png; path = Resources/img/Btn20Back.png; sourceTree = "<group>"; };
-		04906AB11487F51F000D51BE /* Btn-20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Btn-20.png"; path = "Resources/img/Btn-20.png"; sourceTree = "<group>"; };
-		04906AB21487F51F000D51BE /* Btn+20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Btn+20.png"; path = "Resources/img/Btn+20.png"; sourceTree = "<group>"; };
 		04906AB5148BB2C0000D51BE /* MarbleBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = MarbleBlue.png; path = Resources/img/MarbleBlue.png; sourceTree = "<group>"; };
 		04906AB7148BBA73000D51BE /* ContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentView.h; sourceTree = "<group>"; };
 		04906AB8148BBA73000D51BE /* ContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentView.m; sourceTree = "<group>"; };
@@ -117,6 +110,7 @@
 		04B83BCF148E0C2800F0843E /* Bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Bubble.png; path = Resources/img/Bubble.png; sourceTree = "<group>"; };
 		04BE2B23148E470700A7469B /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		04BE2B27148E496A00A7469B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		59108B811CE8B214000BBA9D /* BackGrHole.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BackGrHole.png; path = Resources/img/BackGrHole.png; sourceTree = "<group>"; };
 		5928061C1C0EC664008067B7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = lifecounter/Images.xcassets; sourceTree = "<group>"; };
 		5939B1A91CBEA67B009012FD /* Poison_11.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_11.png; path = Resources/img/Poison_11.png; sourceTree = "<group>"; };
 		5939B1AA1CBEA67B009012FD /* Poison_12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_12.png; path = Resources/img/Poison_12.png; sourceTree = "<group>"; };
@@ -203,18 +197,15 @@
 		0432315F143CBC70007968AF /* img */ = {
 			isa = PBXGroup;
 			children = (
+				04906ABA148CBB25000D51BE /* Poison */,
+				59108B811CE8B214000BBA9D /* BackGrHole.png */,
 				597EEE381CB3D69900D52C4B /* dice-place.png */,
 				84C9895A16A71CB900E57DBD /* MarbleWhite.png */,
 				849210C016A34CCA007025C2 /* MarbleGreen.png */,
 				849210C116A34CCA007025C2 /* MarbleRed.png */,
 				849210BD16A34CBB007025C2 /* MarbleBlack.png */,
 				04906AB5148BB2C0000D51BE /* MarbleBlue.png */,
-				04906ABA148CBB25000D51BE /* Poison */,
 				04B83BCF148E0C2800F0843E /* Bubble.png */,
-				04906AB11487F51F000D51BE /* Btn-20.png */,
-				04906AB21487F51F000D51BE /* Btn+20.png */,
-				04906AAF1487F332000D51BE /* Btn20Back.png */,
-				04906AA61487E6B5000D51BE /* Background.png */,
 				04906AA91487EB1D000D51BE /* Field.png */,
 			);
 			name = img;
@@ -433,14 +424,10 @@
 				5939B1BC1CBEA67B009012FD /* Poison_20.png in Resources */,
 				5939B1B61CBEA67B009012FD /* Poison_14.png in Resources */,
 				5939B1B31CBEA67B009012FD /* Poison_11.png in Resources */,
-				04906AA71487E6B5000D51BE /* Background.png in Resources */,
 				04906AAA1487EB1D000D51BE /* Field.png in Resources */,
-				04906AB01487F332000D51BE /* Btn20Back.png in Resources */,
 				59F643631BFC569700DF7153 /* icon_120_120.png in Resources */,
 				5939B1B81CBEA67B009012FD /* Poison_16.png in Resources */,
-				04906AB31487F51F000D51BE /* Btn-20.png in Resources */,
 				59F855F91BC014C600D53C80 /* Cube.fsh in Resources */,
-				04906AB41487F51F000D51BE /* Btn+20.png in Resources */,
 				5939B1B41CBEA67B009012FD /* Poison_12.png in Resources */,
 				597EEE391CB3D69900D52C4B /* dice-place.png in Resources */,
 				04906AB6148BB2C0000D51BE /* MarbleBlue.png in Resources */,
@@ -472,6 +459,7 @@
 				84BC7C6116CAAA1B00308BB6 /* icon_114_114.png in Resources */,
 				5939B1B51CBEA67B009012FD /* Poison_13.png in Resources */,
 				5939B1BB1CBEA67B009012FD /* Poison_19.png in Resources */,
+				59108B821CE8B214000BBA9D /* BackGrHole.png in Resources */,
 				84BC7C6316CAAA2800308BB6 /* Default.png in Resources */,
 				84BC7C6516CAAA3500308BB6 /* Default@2x.png in Resources */,
 				84C37BA516D16FE000CB2951 /* Default-Portrait~ipad.png in Resources */,

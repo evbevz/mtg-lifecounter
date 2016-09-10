@@ -9,6 +9,9 @@
 #import "Card.h"
 
 #define CHANGE_LABELS_DURATION  0.3
+#define ROWS    10
+#define COLS    4
+#define CELLS   ROWS*COLS
 
 typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationDirection;
 
@@ -28,8 +31,6 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
     LabelsAnimationDirection    direction;
 }
 
--(void)drawBorder:(CGRect)rect :(CGContextRef)context;
--(void)drawNet:(CGRect)rect :(CGContextRef)context;
 -(void)drawLabels:(CGRect)rect :(CGContextRef)context;
 
 @end
@@ -45,13 +46,15 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
 @synthesize fontColor;
 @synthesize fontBorderColor;
 @synthesize parent;
+@synthesize activeRadius;
+@synthesize cellHeight;
 
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        margin = 5;
+        margin = 0;
         lifeBase = 0;
         linesColor = [UIColor blackColor];
         fontColor = [UIColor blackColor];
@@ -60,6 +63,8 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
         self.delegate = self;
         parent = nil;
         labelsAlpha = 1;
+        cellWidth = (frame.size.width - 2*margin) / COLS;
+        cellHeight = (frame.size.height - 2*margin) / ROWS;
     }
     
 
@@ -73,9 +78,9 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
 {
     NSLog(@"CardView:drawRect");
     
-    cellWidth = (rect.size.width - 2*margin) / 4;
-    cellHeight = (rect.size.height - 2*margin) /5;
-    activeRadius = MIN(cellHeight, cellWidth) / 2 * 0.8;
+    cellWidth = (rect.size.width - 2*margin) / COLS;
+    cellHeight = (rect.size.height - 2*margin) / ROWS;
+    //activeRadius = MIN(cellHeight, cellWidth) / 2 * 0.8;
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
@@ -86,36 +91,9 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
     if(backgroundImage)
         [backgroundImage drawInRect:rect];
     
-    [self drawBorder:rect:context];
-    [self drawNet:rect:context];
     [self drawLabels:rect:context];
 }
 
-- (void)drawBorder:(CGRect)rect :(CGContextRef)context
-{
-    CGContextStrokeRect(context, CGRectMake(rect.origin.x + margin, rect.origin.y + margin, rect.size.width - 2*margin, rect.size.height - 2*margin));
-}
-
-
-- (void)drawNet:(CGRect)rect :(CGContextRef)context
-{
-    CGPoint p[2];
-    
-    for(int lines = 1; lines < 5; ++lines)
-    {
-        p[0] = CGPointMake(margin, margin + lines * cellHeight);
-        p[1] = CGPointMake(rect.size.width - margin, p[0].y);
-        CGContextStrokeLineSegments(context, p, 2);
-    }
-
-    for(int lines = 1; lines < 4; ++lines)
-    {
-        p[0] = CGPointMake(margin + lines * cellWidth, margin);
-        p[1] = CGPointMake(p[0].x, rect.size.height - margin);
-        CGContextStrokeLineSegments(context, p, 2);
-    }
-
-}
 
 - (void)drawLabels:(CGRect)rect :(CGContextRef)context
 {
@@ -141,15 +119,15 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
     CGContextSetStrokeColorWithColor(context,fontBorderColor.CGColor);
     
     char txt[5];
-    for(int life = labelsLifeBase + 20; life > labelsLifeBase; --life)
+    for(int life = labelsLifeBase + CELLS; life > labelsLifeBase; --life)
     {
         sprintf(txt, "%d", life);
         
-        float cellWidth = (rect.size.width - 2*margin)/4;
-        float cellHeight = (rect.size.height - 2*margin)/5;
+        float cellWidth = (rect.size.width - 2*margin)/COLS;
+        float cellHeight = (rect.size.height - 2*margin)/ROWS;
         
-        int col = (labelsLifeBase + 20 - life) % 4;
-        int row = (labelsLifeBase + 20 - life) / 4;
+        int col = (labelsLifeBase + CELLS - life) % COLS;
+        int row = (labelsLifeBase + CELLS - life) / COLS;
         //NSLog(@"col = %d \t row = %d", col, row);
         
         NSString *str = [[NSString alloc] initWithUTF8String:txt];
@@ -157,11 +135,11 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
         
         if(life > 9)
             x_offset = 1.2;
-        if(life > 80)
+        if(life > 100 - CELLS)
             x_offset = 1.05;
         if(life > 99)
             x_offset = 1.1;
-        if(life > 980)
+        if(life > 1000 - CELLS)
             x_offset = 0.95;
         if(life > 999)
             x_offset = 1;
@@ -195,8 +173,8 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
     
     if(marble != NULL)
     {
-        int col = (lifeBase + 20 - lifeAmount) % 4;
-        int row = (lifeBase + 20 - lifeAmount) / 4;
+        int col = (lifeBase + CELLS - lifeAmount) % COLS;
+        int row = (lifeBase + CELLS - lifeAmount) / COLS;
     
         marble.frame = CGRectMake(0, 0, marble.frame.size.width, marble.frame.size.height);
         marble.center = CGPointMake([self getTopLeftCellCenter].x + cellWidth * col, [self getTopLeftCellCenter].y + cellHeight * row);
@@ -228,7 +206,7 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
         
         int col = (marble.center.x - margin) / cellWidth;
         int row = (marble.center.y - margin) / cellHeight;
-        int lifeAmount = lifeBase + (4 * (5 - row)) - col;       
+        int lifeAmount = lifeBase + (COLS * (ROWS - row)) - col;
 
         if(self.parent != nil)
         {
@@ -288,6 +266,14 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
         
         if(parent != nil)
             [self.parent marbleMovedTo:marble.center];
+    }
+    else
+    {
+        if(parent != nil)
+        {
+            CGFloat delta = [touch locationInView:self].y - [touch previousLocationInView:self].y;
+            [self.parent moveCardField:delta];
+        }
     }
 }
 
