@@ -378,7 +378,6 @@
     }
 }
 
-// TODO: коорлинаты подправить
 - (void)updateMarbleCoords
 {
     float radius = btn[0].frame.size.width / 2 * 1.1;
@@ -387,7 +386,7 @@
         if(!playerIsSelected || current_player != i)
             coords[i] = CGPointMake(btn[i].frame.origin.x + btn[i].frame.size.width / 2, btn[i].frame.origin.y + btn[i].frame.size.height / 2);
         else
-            coords[i] = CGPointMake(marbles[i].frame.origin.x + marbles[i].frame.size.width / 2 + card.frame.origin.x, marbles[i].frame.origin.y + marbles[i].frame.size.height / 2 + card.frame.origin.y);
+            coords[i] = CGPointMake(marbles[i].frame.origin.x + marbles[i].frame.size.width / 2 + main.frame.origin.x, marbles[i].frame.origin.y + marbles[i].frame.size.height / 2 + main.frame.origin.y);
     }
     [glView setMarblesCoords:coords andCount:PLAYER_BUTTONS_CNT withRadius:radius];
 }
@@ -400,7 +399,7 @@
         if(!playerIsSelected || current_player != i)
             coords[i] = CGPointMake(btn[i].frame.origin.x + btn[i].frame.size.width / 2, btn[i].frame.origin.y + btn[i].frame.size.height / 2);
         else
-            coords[i] = CGPointMake(card.frame.origin.x + pos.x, card.frame.origin.y + pos.y);
+            coords[i] = CGPointMake(main.frame.origin.x + pos.x, main.frame.origin.y + pos.y);
     }
     [glView setMarblesCoords:coords andCount:PLAYER_BUTTONS_CNT withRadius:radius];
 }
