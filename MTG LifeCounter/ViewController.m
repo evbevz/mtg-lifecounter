@@ -124,6 +124,8 @@
     {
         players[i].poison = 0;
         players[i].life = 20;
+        players[i].cardLifeBase = 0;
+        players[i].cardOriginY = card.frame.origin.y;
 
         // marble
         marbles[i] = [[UIImageView alloc] initWithImage:marble_img[i]];
@@ -267,6 +269,10 @@
                             newOriginY,
                             card.frame.size.width,
                             card.frame.size.height);
+    
+    players[current_player].cardOriginY = newOriginY;
+    players[current_player].cardLifeBase = card.lifeBase;
+    
     return actualMoved;
 }
 
@@ -291,7 +297,8 @@
         btn[current_player].alpha = 1;
     }
     
-    [card setLifeBase:((players[toPlayer].life - 1) / 20 * 20) withAnimation:NO];
+    [card setLifeBase:players[toPlayer].cardLifeBase withAnimation:NO];
+    card.frame = CGRectMake(card.frame.origin.x, players[toPlayer].cardOriginY, card.frame.size.width, card.frame.size.height);
     [card setNeedsDisplay];
     NSLog(@"New lifebase = %d", card.lifeBase);
     
@@ -348,11 +355,13 @@
 
 - (void)setPlayerLifeAmount:(int)amount
 {
-    players[current_player].life = amount;
-    [self updateMarbleLabel];
-    
-    UILabel *btnLabel = btn[current_player].subviews[1];
-    btnLabel.text = [NSString stringWithFormat:@"%d", amount];
+    if(players[current_player].life != amount)
+    {
+        players[current_player].life = amount;
+        [self updateMarbleLabel];
+        UILabel *btnLabel = btn[current_player].subviews[1];
+        btnLabel.text = [NSString stringWithFormat:@"%d", amount];
+    }    
 }
 
 - (void)updateMarbleLabel

@@ -17,6 +17,8 @@ struct PlayerData
 {
     int     poison;
     int     life;
+    int     cardLifeBase;
+    CGFloat cardOriginY;
 };
 
 @interface ViewController : UIViewController<PoisonPlayerDelegate>
