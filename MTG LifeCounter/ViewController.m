@@ -251,14 +251,14 @@
     // check and shift card values
     if(newOriginY > CARD_NATIVE_OFFSET_Y * y_scale + main.frame.origin.y)
     {
-        [card setLifeBase:(card.lifeBase + 20) withAnimation:NO];
+        [card setLifeBase:(card.lifeBase + 20)];
         newOriginY -= card.cellHeight * 5;
     }
     else if(newOriginY < CARD_NATIVE_OFFSET_Y * y_scale + main.frame.origin.y - (CARD_NATIVE_BKHEIGHT - CARD_NATIVE_HEIGHT)*y_scale)
     {
         if(card.lifeBase > 0)
         {
-            [card setLifeBase:(card.lifeBase - 20) withAnimation:NO];
+            [card setLifeBase:(card.lifeBase - 20)];
             newOriginY += card.cellHeight * 5;
         }
         else
@@ -300,7 +300,7 @@
         btn[current_player].alpha = 1;
     }
     
-    [card setLifeBase:players[toPlayer].cardLifeBase withAnimation:NO];
+    [card setLifeBase:players[toPlayer].cardLifeBase];
     card.frame = CGRectMake(card.frame.origin.x, players[toPlayer].cardOriginY, card.frame.size.width, card.frame.size.height);
     [card setNeedsDisplay];
     NSLog(@"New lifebase = %d", card.lifeBase);

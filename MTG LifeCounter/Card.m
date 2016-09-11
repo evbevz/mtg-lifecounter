@@ -23,8 +23,6 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
     CFTimeInterval  animationStartTime;
     CADisplayLink*  displayLink;
     
-    CADisplayLink*  changeLabelsDisplayLink;
-    CFTimeInterval  changeLabelsStartTime;
     int             labelsLifeBase;
     float           labelsAlpha;
     
@@ -351,45 +349,11 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
     }
 }
 
-- (void) setLifeBase:(int)value withAnimation:(Boolean)animate
+- (void) setLifeBase:(int)value
 {
     lifeBase = value;
-    if (!animate)
-    {
-        labelsLifeBase = value;
-        [self setNeedsDisplay];
-        return;
-    }
-    
-    // animate
-    changeLabelsDisplayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(changeLabels:)];
-    [changeLabelsDisplayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    changeLabelsStartTime = CACurrentMediaTime();
-
-    direction = HideLabels;
+    labelsLifeBase = value;
     [self setNeedsDisplay];
 }
 
-- (void) changeLabels:(CADisplayLink*)link
-{
-    CFTimeInterval time =  CACurrentMediaTime() - changeLabelsStartTime;
-    
-    if(direction == HideLabels)
-        labelsAlpha = MAX(0, (CHANGE_LABELS_DURATION - time) / CHANGE_LABELS_DURATION);
-    else
-        labelsAlpha = MIN(1, 1 - (CHANGE_LABELS_DURATION - time) / CHANGE_LABELS_DURATION);
-    
-    if(direction == HideLabels && labelsAlpha == 0)
-    {
-        direction = ShowLabels;
-        labelsLifeBase = lifeBase;
-        changeLabelsStartTime = CACurrentMediaTime();
-    }
-    else if (direction == ShowLabels && labelsAlpha == 1)
-    {
-        [link invalidate];
-    }
-    
-    [self setNeedsDisplay];
-}
 @end
