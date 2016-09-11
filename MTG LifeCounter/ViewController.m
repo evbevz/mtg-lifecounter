@@ -65,13 +65,7 @@
     
     current_player = 0;
     playerIsSelected = false;
-    
-    // Black field
-    UIImageView *blackField = [[UIImageView alloc] initWithFrame:self.view.frame];
-    self.view = blackField;
-    [self.view setUserInteractionEnabled:true];
-    
-   
+       
     // Card 
     card = [[CardView alloc] initWithFrame:frame];
     card.backgroundImage = [UIImage imageNamed:@"Field.png"];
@@ -165,6 +159,15 @@
     glView.backgroundColor = [UIColor clearColor];
     [glView setDiceDefaultPlace:CGPointMake(dicePosArea.frame.origin.x + dicePosArea.frame.size.width/2, dicePosArea.frame.origin.y + dicePosArea.frame.size.height/2)];
     [self updateMarbleCoords];
+
+    // top & bottom banners
+    CGRect screen = [UIScreen mainScreen].bounds;
+    UIView *blackFieldTop = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screen.size.width, frame.origin.y)];
+    blackFieldTop.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:blackFieldTop];
+    UIView *blackFieldBottom = [[UIView alloc] initWithFrame:CGRectMake(0, frame.origin.y + frame.size.height, screen.size.width, screen.size.height - frame.origin.y - frame.size.height)];
+    blackFieldBottom.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:blackFieldBottom];
     
     // init player
     [self selectPlayer:0];
