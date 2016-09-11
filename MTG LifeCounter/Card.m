@@ -65,6 +65,7 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
         labelsAlpha = 1;
         cellWidth = (frame.size.width - 2*margin) / COLS;
         cellHeight = (frame.size.height - 2*margin) / ROWS;
+        displayLink = nil;
     }
     
 
@@ -251,8 +252,11 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
         [UIView setAnimationDelegate:self];
         [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
         
-        displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateDuringAnimation:)];
-        [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        if(displayLink == nil)
+        {
+            displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateDuringAnimation:)];
+            [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        }
         animationStartTime = CACurrentMediaTime();
         CGPoint animationEndPos = CGPointMake([self getTopLeftCellCenter].x + cellWidth * col, [self getTopLeftCellCenter].y + cellHeight * row);
         
@@ -332,6 +336,7 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
 - (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
 {
     [displayLink invalidate];
+    displayLink = nil;
     if(parent != nil)
         [parent marbleMovedTo:marble.center];
 }
