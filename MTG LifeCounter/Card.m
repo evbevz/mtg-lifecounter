@@ -73,6 +73,13 @@ typedef enum LabelsAnimationDirection_ {HideLabels, ShowLabels} LabelsAnimationD
     return self;
 }
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    if(parent == nil || marblesSurface == nil)
+        return nil;
+    
+    return CGRectContainsPoint([self convertRect:[parent getMarbleFieldFrame] fromView:marblesSurface], point) ? self : nil;
+}
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
