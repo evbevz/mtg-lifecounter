@@ -33,6 +33,84 @@
 #define CARD_NATIVE_HEIGHT      721
 #define CARD_NATIVE_BKHEIGHT    1438
 
+#define IDLE_TIME               10.0
+
+
+#pragma mark - Lock Screen
+
+@interface LockView : UIView
+{
+    __unsafe_unretained id     parent;
+    NSTimer         *idleTimer;
+    BOOL            locked;
+    NSTimeInterval  lastEvent;
+}
+
+- (void)resetIdleTimer;
+
+@end
+
+@implementation LockView
+
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        locked = false;
+        [self resetIdleTimer];
+    }
+    return self;
+}
+
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    [self resetIdleTimer]; // reset idle timer on each user touch activity
+    
+    if(event == nil)
+        return nil;
+
+    if(locked)
+    {
+        NSLog(@"Screen unlock");
+        locked = NO;
+        lastEvent = event.timestamp; // to skip the same event will come second time
+        
+        return self; // cancel propagating current event
+    }
+    
+    if(event.timestamp == lastEvent)
+        return self; // skip double event
+    else
+        return nil;
+}
+
+- (void)resetIdleTimer
+{
+    if (!idleTimer) {
+        idleTimer = [NSTimer scheduledTimerWithTimeInterval:IDLE_TIME
+                                                     target:self
+                                                   selector:@selector(idleTimerExceeded)
+                                                   userInfo:nil
+                                                    repeats:NO];
+    }
+    else {
+        if (fabs([idleTimer.fireDate timeIntervalSinceNow]) < IDLE_TIME - 1.0) {
+            [idleTimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:IDLE_TIME]];
+        }
+    }
+}
+
+- (void)idleTimerExceeded
+{
+    idleTimer = nil;
+    //[self screenFadeOut];
+    NSLog(@"Screen lock");
+    locked = YES;
+}
+
+@end
+
+#pragma mark - ViewController
 
 @interface ViewController () {
     DiceView*     glView;
@@ -169,6 +247,10 @@
     blackFieldBottom.backgroundColor = [UIColor blackColor];
     [self.view addSubview:blackFieldBottom];
     
+    UIView *lockScreenView = [[LockView alloc] initWithFrame:screen];
+    lockScreenView.userInteractionEnabled = YES;
+    [self.view addSubview:lockScreenView];
+    
     // init player
     [self selectPlayer:0];
 }
@@ -220,7 +302,7 @@
     [self becomeFirstResponder];
 }
 
-#pragma mark -Touches
+#pragma mark - Touches
 
 - (void)playerButtonTouched:(UIButton*)button
 {
