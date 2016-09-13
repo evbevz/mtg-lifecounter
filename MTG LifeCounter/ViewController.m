@@ -33,7 +33,7 @@
 #define CARD_NATIVE_HEIGHT      721
 #define CARD_NATIVE_BKHEIGHT    1438
 
-#define IDLE_TIME               10.0
+#define IDLE_TIME               60.0
 
 
 #pragma mark - Lock Screen
@@ -44,7 +44,10 @@
     NSTimer         *idleTimer;
     BOOL            locked;
     NSTimeInterval  lastEvent;
+    UILabel         *amountLbl;
 }
+
+@property(atomic, assign)id parent;
 
 - (void)resetIdleTimer;
 
@@ -52,12 +55,26 @@
 
 @implementation LockView
 
+@synthesize parent;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         locked = false;
         [self resetIdleTimer];
+        
+        CGFloat x_scale = frame.size.width / 768;
+        UIFont *lblFont = [UIFont fontWithName:@"GaramondPremrPro-Smbd" size:(400 * x_scale)];
+        amountLbl = [[UILabel alloc] initWithFrame:frame];
+        amountLbl.font = lblFont;
+        amountLbl.text = @"";
+        amountLbl.textAlignment = NSTextAlignmentCenter;
+        amountLbl.backgroundColor = [UIColor clearColor];
+        amountLbl.textColor = [UIColor grayColor];
+        self.backgroundColor = [UIColor blackColor];
+        self.alpha = 0.0;
+        [self addSubview:amountLbl];
     }
     return self;
 }
@@ -71,9 +88,16 @@
 
     if(locked)
     {
-        NSLog(@"Screen unlock");
         locked = NO;
         lastEvent = event.timestamp; // to skip the same event will come second time
+        
+        amountLbl.text = @"";
+        [UIView transitionWithView:self
+                          duration:0.3f
+                           options:UIViewAnimationOptionCurveLinear
+                        animations:^{
+                            self.alpha = 0.0;
+                        } completion:nil];
         
         return self; // cancel propagating current event
     }
@@ -103,9 +127,27 @@
 - (void)idleTimerExceeded
 {
     idleTimer = nil;
-    //[self screenFadeOut];
-    NSLog(@"Screen lock");
     locked = YES;
+    amountLbl.text = @"";
+
+    [UIView transitionWithView:self
+                      duration:2.0f
+                       options:UIViewAnimationOptionCurveLinear
+                    animations:^{
+                        // black screen
+                        self.alpha = 1.0;
+                    } completion:^(BOOL finished){
+                        // show label
+                        amountLbl.alpha = 0.0;
+                        amountLbl.text = [NSString stringWithFormat:@"%d", [parent getLifeAmount]];
+                        [UIView transitionWithView:self
+                                          duration:1.0f
+                                           options:UIViewAnimationOptionCurveLinear
+                                        animations:^{
+                                            amountLbl.alpha = 1.0;
+                                        } completion:nil];
+                    }];
+
 }
 
 @end
@@ -247,8 +289,9 @@
     blackFieldBottom.backgroundColor = [UIColor blackColor];
     [self.view addSubview:blackFieldBottom];
     
-    UIView *lockScreenView = [[LockView alloc] initWithFrame:screen];
+    LockView *lockScreenView = [[LockView alloc] initWithFrame:screen];
     lockScreenView.userInteractionEnabled = YES;
+    lockScreenView.parent = self;
     [self.view addSubview:lockScreenView];
     
     // init player
@@ -300,6 +343,12 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [self becomeFirstResponder];
+    [UIApplication sharedApplication].idleTimerDisabled = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
 }
 
 #pragma mark - Touches
@@ -447,6 +496,11 @@
         UILabel *btnLabel = btn[current_player].subviews[1];
         btnLabel.text = [NSString stringWithFormat:@"%d", amount];
     }    
+}
+
+- (int)getLifeAmount
+{
+    return players[current_player].life;
 }
 
 - (void)updateMarbleLabel

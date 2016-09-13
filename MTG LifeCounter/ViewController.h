@@ -48,5 +48,6 @@ struct PlayerData
 -(void)marbleMovedTo:(CGPoint)pos;
 -(CGFloat)moveCardField:(CGFloat)delta;
 -(CGRect)getMarbleFieldFrame;
+-(int)getLifeAmount;
 
 @end
