@@ -9,6 +9,8 @@
 #import "PoisonView.h"
 
 #define POISON_PREFIX           @"Poison_"
+#define POISON_MIN_VALUE        0
+#define POISON_MAX_VALUE        20
 
 @interface PoisonView()
 {
@@ -26,7 +28,7 @@
 
 - (id)initWithValue:(int)value withPlayer:(id)playerDelegate
 {
-    int val = MIN(MAX(0, value), 20);
+    int val = MIN(MAX(POISON_MIN_VALUE, value), POISON_MAX_VALUE);
     self = [super initWithImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@%d.png",POISON_PREFIX, val]]];
     self.value = val;
     self.player = playerDelegate;
@@ -44,7 +46,10 @@
 
 - (void) showPoison
 {
-    self.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@%d.png", POISON_PREFIX, self.value]];
+    // normalize
+    int val = self.value;
+    val = MIN(MAX(POISON_MIN_VALUE, val),POISON_MAX_VALUE);
+    self.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@%d.png", POISON_PREFIX, val]];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
