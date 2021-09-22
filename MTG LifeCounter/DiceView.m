@@ -3,7 +3,7 @@
 //  MTG LifeCounter
 //
 //  Created by bevz on 23/10/15.
-//
+//  Copyright (c) 2021 Evgeny Bevz. All rights reserved.
 //
 
 #import "DiceView.h"

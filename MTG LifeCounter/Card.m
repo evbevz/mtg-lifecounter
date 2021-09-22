@@ -3,7 +3,7 @@
 //  MTG LifeCounter
 //
 //  Created by Mac on 10.10.11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2021 Evgeny Bevz. All rights reserved.
 //
 
 #import "Card.h"

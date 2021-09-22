@@ -3,7 +3,7 @@
 //  MTG LifeCounter
 //
 //  Created by bevz on 13.04.16.
-//  Copyright (c) 2016 bevz. All rights reserved.
+//  Copyright (c) 2021 Evgeny Bevz. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
