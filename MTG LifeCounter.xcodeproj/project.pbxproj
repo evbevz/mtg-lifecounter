@@ -45,6 +45,7 @@
 		5939B1BB1CBEA67B009012FD /* Poison_19.png in Resources */ = {isa = PBXBuildFile; fileRef = 5939B1B11CBEA67B009012FD /* Poison_19.png */; };
 		5939B1BC1CBEA67B009012FD /* Poison_20.png in Resources */ = {isa = PBXBuildFile; fileRef = 5939B1B21CBEA67B009012FD /* Poison_20.png */; };
 		5939B1BF1CBEB74A009012FD /* PoisonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5939B1BE1CBEB74A009012FD /* PoisonView.m */; };
+		5960FB2626FCA15D00ECF9E2 /* icon_1024_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 5960FB2526FCA15D00ECF9E2 /* icon_1024_1024.png */; };
 		597EEE391CB3D69900D52C4B /* dice-place.png in Resources */ = {isa = PBXBuildFile; fileRef = 597EEE381CB3D69900D52C4B /* dice-place.png */; };
 		5988F1DF1BEB95710085F3C7 /* Default-568h.png in Resources */ = {isa = PBXBuildFile; fileRef = 5988F1DE1BEB95710085F3C7 /* Default-568h.png */; };
 		59F1BDE81BDA764300901C99 /* DiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 59F1BDE71BDA764300901C99 /* DiceView.m */; };
@@ -124,6 +125,7 @@
 		5939B1B21CBEA67B009012FD /* Poison_20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Poison_20.png; path = Resources/img/Poison_20.png; sourceTree = "<group>"; };
 		5939B1BD1CBEB682009012FD /* PoisonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PoisonView.h; sourceTree = "<group>"; };
 		5939B1BE1CBEB74A009012FD /* PoisonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PoisonView.m; sourceTree = "<group>"; };
+		5960FB2526FCA15D00ECF9E2 /* icon_1024_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_1024_1024.png; path = ../LifeCounter_img/icon_1024_1024.png; sourceTree = "<group>"; };
 		597EEE381CB3D69900D52C4B /* dice-place.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "dice-place.png"; path = "Resources/img/dice-place.png"; sourceTree = "<group>"; };
 		5988F1DE1BEB95710085F3C7 /* Default-568h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h.png"; sourceTree = "<group>"; };
 		59F1BDE61BDA764300901C99 /* DiceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiceView.h; sourceTree = "<group>"; };
@@ -346,6 +348,7 @@
 		84BB36ED172589F70022BAC9 /* Deployment Images */ = {
 			isa = PBXGroup;
 			children = (
+				5960FB2526FCA15D00ECF9E2 /* icon_1024_1024.png */,
 				59F643661BFC570B00DF7153 /* icon_152_152.png */,
 				59F643621BFC569700DF7153 /* icon_120_120.png */,
 				84BC7C6016CAAA1B00308BB6 /* icon_114_114.png */,
@@ -395,6 +398,7 @@
 				TargetAttributes = {
 					04B24A8D143C8DA400549F8C = {
 						DevelopmentTeam = AB6C44EQS3;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -427,6 +431,7 @@
 				5939B1B31CBEA67B009012FD /* Poison_11.png in Resources */,
 				04906AAA1487EB1D000D51BE /* Field.png in Resources */,
 				59F643631BFC569700DF7153 /* icon_120_120.png in Resources */,
+				5960FB2626FCA15D00ECF9E2 /* icon_1024_1024.png in Resources */,
 				5939B1B81CBEA67B009012FD /* Poison_16.png in Resources */,
 				59F855F91BC014C600D53C80 /* Cube.fsh in Resources */,
 				5939B1B41CBEA67B009012FD /* Poison_12.png in Resources */,
@@ -565,9 +570,11 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = AB6C44EQS3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -579,9 +586,11 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = "MTG LifeCounter/MTG LifeCounter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bevz.lifecounter.free;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
@@ -595,9 +604,11 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = AB6C44EQS3;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -609,10 +620,12 @@
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				INFOPLIST_FILE = "MTG LifeCounter/MTG LifeCounter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.bevz.lifecounter.free;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
